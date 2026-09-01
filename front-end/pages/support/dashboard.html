@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Destination - Support Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  <link rel="stylesheet" href="../../css/cardcomponent.css" />
+  
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Support<br>Portal</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="reported_issues.html" class="nav-item">
+                    <i data-icon="alert"></i> Reported Issues
+                </a>
+                <a href="issue_log.html" class="nav-item">
+                    <i data-icon="file"></i> Issue Log
+                </a>
+                <a href="coordination_panel.html" class="nav-item">
+                    <i data-icon="users"></i> Coordination Panel
+                </a>
+                <a href="emergency_support.html" class="nav-item">
+                    <i data-icon="phone"></i> Emergency Support
+                </a>
+                <a href="resolution_updates.html" class="nav-item">
+                    <i data-icon="checkcircle"></i> Resolution Updates
+                </a>
+                <a href="trip_status.html" class="nav-item">
+                    <i data-icon="activity"></i> Trip Status Monitor
+                </a>
+                <a href="messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="notifications.html" data-dd-action="route" data-dd-target="notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">M</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Mahendra</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Support Executive</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="dashboard-container">
+        
+        <div class="welcome-banner">
+            <h1>Support Executive Dashboard</h1>
+            <p>Coordinate issue resolution and emergency response</p>
+        </div>
+
+        <!-- STATS GRID -->
+        <div class="stats-grid">
+          <!-- Active Trips -->
+          <div class="stat-card stat-blue" data-dd-action="route" data-dd-target="trip_status.html" data-navigate="trip_status.html" style="cursor: pointer;">
+            <div class="stat-top">
+              <span class="stat-icon"><i data-icon="activity"></i></span>
+              <span class="stat-value">42</span>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-title">Active Trips</div>
+              <span class="stat-link">Currently ongoing trips</span>
+            </div>
+          </div>
+
+          <!-- Issues In Progress -->
+          <div class="stat-card stat-green" data-dd-action="route" data-dd-target="reported_issues.html" data-navigate="reported_issues.html" style="cursor: pointer;">
+            <div class="stat-top">
+              <span class="stat-icon"><i data-icon="clock"></i></span>
+              <span class="stat-value">5</span>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-title">Issues In Progress</div>
+              <span class="stat-link">Currently being resolved</span>
+            </div>
+          </div>
+
+          <!-- Resolved Issues -->
+          <div class="stat-card stat-purple" data-dd-action="route" data-dd-target="resolution_updates.html" data-navigate="resolution_updates.html" style="cursor: pointer;">
+            <div class="stat-top">
+              <span class="stat-icon"><i data-icon="checkcircle"></i></span>
+              <span class="stat-value">127</span>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-title">Resolved Issues</div>
+              <span class="stat-link">Successfully resolved today</span>
+            </div>
+          </div>
+
+          <!-- Emergency Cases -->
+          <div class="stat-card stat-orange" data-dd-action="route" data-dd-target="emergency_support.html" data-navigate="emergency_support.html" style="cursor: pointer;">
+            <div class="stat-top">
+              <span class="stat-icon"><i data-icon="phone"></i></span>
+              <span class="stat-value">2</span>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-title">Emergency Cases</div>
+              <span class="stat-link">Requires immediate attention</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Overview Teal Banner -->
+        <div class="overview-banner" style="background:linear-gradient(135deg,#06b6d4,#0ea5e9); color:white; border-radius:12px; padding:24px; margin-bottom:24px;">
+            <div style="display:flex; flex-direction:column; gap:16px;">
+                <h2 style="font-size:1.2rem; font-weight:700; margin:0;">Today's Overview</h2>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:24px;">
+                    <div>
+                        <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; opacity:0.9;">Total Issues Reported</div>
+                        <div id="support-stat-total-issues" style="font-size:2rem; font-weight:800; margin-top:4px;">0</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; opacity:0.9;">Average Resolution Time</div>
+                        <div id="support-stat-avg-res" style="font-size:2rem; font-weight:800; margin-top:4px;">0h</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; opacity:0.9;">Customer Satisfaction</div>
+                        <div id="support-stat-csat" style="font-size:2rem; font-weight:800; margin-top:4px;">100%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assigned Travelers Section for Support -->
+        <div class="card" style="padding:20px; border-radius:16px; margin-bottom:24px; background:var(--bg-surface, #fff); border:1px solid var(--border-color, #e2e8f0);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <div>
+                    <h2 style="font-size:16px; font-weight:700; margin:0 0 4px 0; color:var(--text-primary, #0f172a);">Assigned Travelers under Support</h2>
+                    <p style="font-size:13px; color:var(--text-secondary, #64748b); margin:0;">Travelers load-balanced or assigned to your support executive queue</p>
+                </div>
+                <span class="badge" id="support-assigned-travelers-count-badge" style="font-size:13px; padding:6px 14px; border-radius:99px; background:#f0fdf4; color:#166534; font-weight:700; border:1px solid #bbf7d0;">0 Assigned</span>
+            </div>
+            <div class="table-container" style="overflow-x:auto;">
+                <table class="w-full text-left border-collapse" style="width:100%;">
+                    <thead>
+                        <tr style="border-bottom:1px solid var(--border-color, #e2e8f0); background:var(--bg-card-alt, #f8fafc);">
+                            <th style="padding:12px; font-size:13px; font-weight:700; color:#475569;">Traveler</th>
+                            <th style="padding:12px; font-size:13px; font-weight:700; color:#475569;">Contact Info</th>
+                            <th style="padding:12px; font-size:13px; font-weight:700; color:#475569;">Assigned Partner</th>
+                            <th style="padding:12px; font-size:13px; font-weight:700; color:#475569;">Support Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="support-assigned-travelers-tbody">
+                        <tr>
+                            <td colspan="4" style="padding:16px; text-align:center; color:#64748b;">Loading assigned travelers...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Quick Actions Grid -->
+        <div>
+            <!-- Action 1 -->
+            <div class="quick-action-btn" data-navigate="reported_issues.html">
+                <div><i data-icon="alert"></i></div>
+                <div>
+                    <div>View All Issues</div>
+                    <div>3 pending assignments</div>
+                </div>
+            </div>
+
+            <!-- Action 2 -->
+            <div class="quick-action-btn" data-navigate="emergency_support.html">
+                <div><i data-icon="phone"></i></div>
+                <div>
+                    <div>Emergency Support</div>
+                    <div>2 active emergencies</div>
+                </div>
+            </div>
+
+            <!-- Action 3 -->
+            <div class="quick-action-btn" data-navigate="coordination_panel.html">
+                <div><i data-icon="checkcircle"></i></div>
+                <div>
+                    <div>Coordination Panel</div>
+                    <div>64 stakeholders active</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div>
+            <h2>Recent Activity</h2>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div>
+                    <div>
+                        <span>Emergency reported</span>
+                        <span>5 min ago</span>
+                    </div>
+                    <div>Medical emergency - Paris Adventure (Sarah Johnson)</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div>
+                    <div>
+                        <span>Issue assigned</span>
+                        <span>18 min ago</span>
+                    </div>
+                    <div>Transportation delay assigned to vendor coordination team</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div>
+                    <div>
+                        <span>Issue resolved</span>
+                        <span>1 hour ago</span>
+                    </div>
+                    <div>Hotel check-in issue successfully resolved</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div>
+                    <div>
+                        <span>Coordination initiated</span>
+                        <span>3 hours ago</span>
+                    </div>
+                    <div>Contacted tour guide for Tokyo Experience trip</div>
+                </div>
+            </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+  
+</body>
+</html>
+
+
+
+
+
+

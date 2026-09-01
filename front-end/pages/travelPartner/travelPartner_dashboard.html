@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Travel Partner</title>
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/tablecomponent.css" />
+    <link rel="stylesheet" href="../../css/cardcomponent.css" />
+    
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="../../landing_page.html">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon gradient-primary">
+                        <span>DD</span>
+                    </div>
+                    <div>
+                        <div class="sidebar-logo-text">Dream Destination</div>
+                    </div>
+                </div>
+            </a>
+                        <nav class="sidebar-nav">
+                <a href="travelPartner_dashboard.html" class="nav-item active">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="travelPartner_trips.html" class="nav-item">
+                    <i data-icon="plane"></i> Trips
+                </a>
+                <a href="travelPartner_travelerSchedules.html" class="nav-item">
+                    <i data-icon="calendar"></i> Traveler Schedules
+                </a>
+                <a href="travelPartner_vendorAssignment.html" class="nav-item">
+                    <i data-icon="users"></i> Vendor Assignment
+                </a>
+                <a href="travelPartner_guideAssignment.html" class="nav-item">
+                    <i data-icon="mappin"></i> Guide Assignment
+                </a>
+                <a href="travelPartner_notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="travelPartner_execution.html" class="nav-item">
+                    <i data-icon="trendingup"></i> Execution
+                </a>
+                <a href="travelPartner_quickActions.html" class="nav-item">
+                    <i data-icon="zap"></i> Quick Actions
+                </a>
+                <a href="travelPartner_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../../login.html" class="nav-item logout">
+                    <i data-icon="logout"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="travelPartner_notifications.html" data-dd-action="route" data-dd-target="travelPartner_notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">D</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Dileep</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Travel Partner Admin</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <h1>Travel Partner Dashboard 👋</h1>
+                    <p>Welcome to your travel coordination dashboard</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card stat-blue" data-dd-action="route" data-dd-target="travelPartner_trips.html" onclick="window.location.href='travelPartner_trips.html'" style="cursor: pointer;">
+                        <div class="stat-top">
+                            <span class="stat-icon"><i data-icon="plane"></i></span>
+                            <span class="stat-value" id="tp-stat-active-trips">00</span>
+                        </div>
+                        <div class="stat-bottom">
+                            <div class="stat-title">Active Trips</div>
+                            <span class="stat-link">Trips currently being managed. &rarr;</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card stat-green" data-dd-action="route" data-dd-target="travelPartner_vendorAssignment.html" onclick="window.location.href='travelPartner_vendorAssignment.html'" style="cursor: pointer;">
+                        <div class="stat-top">
+                            <span class="stat-icon"><i data-icon="users"></i></span>
+                            <span class="stat-value" id="tp-stat-vendors">00</span>
+                        </div>
+                        <div class="stat-bottom">
+                            <div class="stat-title">Vendors Assigned</div>
+                            <span class="stat-link">Providing services. &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-purple" data-dd-action="route" data-dd-target="travelPartner_guideAssignment.html" onclick="window.location.href='travelPartner_guideAssignment.html'" style="cursor: pointer;">
+                        <div class="stat-top">
+                            <span class="stat-icon"><i data-icon="mappin"></i></span>
+                            <span class="stat-value" id="tp-stat-guides">00</span>
+                        </div>
+                        <div class="stat-bottom">
+                            <div class="stat-title">Guides Assigned</div>
+                            <span class="stat-link">Tour guides assigned. &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-orange" data-dd-action="route" data-dd-target="travelPartner_notifications.html" onclick="window.location.href='travelPartner_notifications.html'" style="cursor: pointer;">
+                        <div class="stat-top">
+                            <span class="stat-icon"><i data-icon="alert"></i></span>
+                            <span class="stat-value" id="tp-stat-issues">00</span>
+                        </div>
+                        <div class="stat-bottom">
+                            <div class="stat-title">Today Issues / Requests</div>
+                            <span class="stat-link">Problems & requests reported. &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Trips Table -->
+                <div class="tp-recent-section" style="padding:0 !important; background:transparent !important; box-shadow:none !important; color:inherit !important; margin-bottom:24px !important; border-radius:0 !important;">
+                <div class="card" style="padding:0 !important; border-radius:16px !important; overflow:hidden; margin-bottom:20px;">
+                    <div style="display:flex !important; justify-content:space-between; align-items:center; padding:20px 24px; border-bottom:1px solid var(--border, #e2e8f0); grid-template-columns:none !important;">
+                        <div>
+                            <h2 style="font-size:16px; font-weight:700; margin:0 0 4px 0;">Recent Trips</h2>
+                            <p style="font-size:13px; color:var(--muted-foreground, #64748b); margin:0;">Overview of your latest managed trips</p>
+                        </div>
+                        <a href="travelPartner_trips.html" style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,#0ea5e9,#14b8a6); color:white; padding:10px 20px; border-radius:999px; font-size:13px; font-weight:600; text-decoration:none; white-space:nowrap; flex-shrink:0;">
+                            View All Trips <i data-icon="arrowright"></i>
+                        </a>
+                    </div>
+                    <div class="table-container p-0" style="display:block !important; width:100% !important; grid-template-columns:none !important; overflow-x:auto;">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr>
+                                    <th class="p-4 font-semibold">Trip ID</th>
+                                    <th class="p-4 font-semibold">Traveler</th>
+                                    <th class="p-4 font-semibold">Destination</th>
+                                    <th class="p-4 font-semibold">Dates</th>
+                                    <th class="p-4 font-semibold">Status</th>
+                                    <th class="p-4 font-semibold">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="p-4 text-center text-gray-500">Loading live trips from backend...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Assigned Travelers Section -->
+                <div class="card" style="padding:0 !important; border-radius:16px !important; overflow:hidden; margin-bottom:24px;">
+                    <div style="display:flex !important; justify-content:space-between; align-items:center; padding:20px 24px; border-bottom:1px solid var(--border, #e2e8f0);">
+                        <div>
+                            <h2 style="font-size:16px; font-weight:700; margin:0 0 4px 0;">Assigned Travelers</h2>
+                            <p style="font-size:13px; color:var(--muted-foreground, #64748b); margin:0;">Travelers automatically and manually assigned to your management</p>
+                        </div>
+                        <span class="badge badge-blue" id="assigned-travelers-count-badge" style="font-size:13px; padding:6px 14px; border-radius:99px; background:#e0f2fe; color:#0369a1; font-weight:700;">0 Assigned</span>
+                    </div>
+                    <div class="table-container p-0" style="display:block !important; width:100% !important; overflow-x:auto;">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr style="background:var(--bg-card-alt, #f8fafc); border-bottom:1px solid var(--border, #e2e8f0);">
+                                    <th class="p-4 font-semibold" style="font-size:13px; color:#475569;">Traveler Name</th>
+                                    <th class="p-4 font-semibold" style="font-size:13px; color:#475569;">Contact Info</th>
+                                    <th class="p-4 font-semibold" style="font-size:13px; color:#475569;">Assigned Support Exec</th>
+                                    <th class="p-4 font-semibold" style="font-size:13px; color:#475569;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tp-assigned-travelers-tbody">
+                                <tr>
+                                    <td colspan="4" class="p-4 text-center text-gray-500">Loading assigned travelers...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Block -->
+                <div class="quick-actions-grid">
+                    <div class="quick-action-card" onclick="window.location.href='travelPartner_trips.html'">
+                        <div class="quick-action-icon">
+                            <i data-icon="plane"></i>
+                        </div>
+                        <h3>Manage Trips</h3>
+                        <p>Create and coordinate trips</p>
+                        <i data-icon="arrowright" class="quick-action-arrow"></i>
+                    </div>
+
+                    <div class="quick-action-card" onclick="window.location.href='travelPartner_execution.html'">
+                        <div class="quick-action-icon">
+                            <i data-icon="trendingup"></i>
+                        </div>
+                        <h3>Trip Execution</h3>
+                        <p>Monitor real-time progress</p>
+                        <i data-icon="arrowright" class="quick-action-arrow"></i>
+                    </div>
+
+                    <div class="quick-action-card" onclick="window.location.href='travelPartner_quickActions.html'">
+                        <div class="quick-action-icon">
+                            <i data-icon="zap"></i>
+                        </div>
+                        <h3>Quick Actions</h3>
+                        <p>Fast coordination tasks</p>
+                        <i data-icon="arrowright" class="quick-action-arrow"></i>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    
+</body>
+</html>
+
+
+
+
+
+
+

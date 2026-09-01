@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Destination - Customize Plan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Dream<br>Destination</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="traveler_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="traveler_mytrips.html" class="nav-item active">
+                    <i data-icon="plane"></i> My Trips
+                </a>
+                <a href="traveler_schedule.html" class="nav-item">
+                    <i data-icon="calendar"></i> Schedule
+                </a>
+                <a href="traveler_progress.html" class="nav-item">
+                    <i data-icon="activity"></i> Progress
+                </a>
+                <a href="traveler_alerts.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications & Alerts
+                </a>
+                <a href="traveler_messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="traveler_report_issue.html" class="nav-item">
+                    <i data-icon="alert"></i> Report Issue
+                </a>
+                <a href="traveler_support.html" class="nav-item">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="traveler_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="traveler_alerts.html" data-dd-action="route" data-dd-target="traveler_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="traveler_profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">JT</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">John Traveler</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Explorer</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="page-container">
+        
+        <div>
+            <button><i data-icon="arrowleft"></i></button>
+            <div>
+                <h1>Customize Your Package</h1>
+                <p>Review your base itinerary and submit your preferred trip parameters to your travel partner.</p>
+            </div>
+        </div>
+
+        <form id="customizeTripForm" onsubmit="handleCustomizeSubmit(event); return false;">
+            
+            <div class="card">
+                <h2>
+                    <i data-icon="calendar"></i> Decide Your Travel Dates
+                </h2>
+                
+                <div class="date-grid form-group">
+                    <div>
+                        <label class="form-label">Check-in Date *</label>
+                        <input type="date" id="custStartDate" class="form-input" required />
+                    </div>
+                    <div>
+                        <label class="form-label">Check-out Date *</label>
+                        <input type="date" id="custEndDate" class="form-input" required />
+                    </div>
+                </div>
+                
+                <div>
+                    <p>Select the dates that work best for you. Your travel partner will confirm availability and adjust the itinerary duration.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <i data-icon="mappin"></i> Customize Destinations & Places
+                </h2>
+                
+                <p>The following places were suggested by your partner. You can remove ones you don't like or request new additions.</p>
+                
+                <div class="places-list" id="placesList">
+                    <div class="place-item">
+                        <div class="place-info">
+                            <div class="place-icon"><i data-icon="star"></i></div>
+                            <div>
+                                <div>Male City Tour</div>
+                                <div>Recommended activity</div>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-place-btn" title="Remove place" onclick="this.closest('.place-item').remove()"><i data-icon="trash2"></i></button>
+                    </div>
+
+                    <div class="place-item">
+                        <div class="place-info">
+                            <div class="place-icon"><i data-icon="star"></i></div>
+                            <div>
+                                <div>Sunset Dolphin Cruise</div>
+                                <div>Highly rated by other travelers</div>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-place-btn" title="Remove place" onclick="this.closest('.place-item').remove()"><i data-icon="trash2"></i></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="button" class="add-btn" onclick="addCustomPlace()">
+                        <i data-icon="plus"></i> Request Additional Place or Activity
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <i data-icon="settings"></i> Preferences & Requests
+                </h2>
+
+                <div class="form-group">
+                    <label class="form-label">Accommodation Preference</label>
+                    <select class="form-select" id="custAccom">
+                        <option value="luxury">Luxury Resort (Partner Proposed)</option>
+                        <option value="premium">Premium Hotel</option>
+                        <option value="budget">Budget Friendly</option>
+                        <option value="villa">Private Water Villa</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Dietary Requirements or Special Requests</label>
+                    <textarea class="form-textarea" id="custNotes" rows="4" placeholder="E.g., We are vegetarians and would prefer rooms with a sunset view..."></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <a href="traveler_mytrips.html" class="t-btn" style="text-decoration:none;">Cancel</a>
+                
+                <button type="submit" class="t-btn" id="btnSendCustomize">
+                    Send Confirmation Request <i data-icon="send"></i>
+                </button>
+            </div>
+            
+        </form>
+
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+  <script src="../../js/workflow.js?v=live-20260811-02"></script>
+  <script src="../../js/trip_requests.js"></script>
+  <script>
+    function addCustomPlace() {
+        const placeName = prompt("Enter the place or activity name:");
+        if (!placeName || !placeName.trim()) return;
+        const list = document.getElementById('placesList');
+        const item = document.createElement('div');
+        item.className = 'place-item';
+        item.innerHTML = `
+            <div class="place-info">
+                <div class="place-icon"><i data-icon="star"></i></div>
+                <div>
+                    <div>${placeName.trim()}</div>
+                    <div>Custom requested place</div>
+                </div>
+            </div>
+            <button type="button" class="remove-place-btn" title="Remove place" onclick="this.closest('.place-item').remove()"><i data-icon="trash2"></i></button>
+        `;
+        list.appendChild(item);
+        if (typeof feather !== 'undefined') feather.replace();
+    }
+
+    function handleCustomizeSubmit(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        const start = document.getElementById('custStartDate')?.value;
+        const end = document.getElementById('custEndDate')?.value;
+        if (!start || !end) {
+            alert('Please select both check-in and check-out dates.');
+            return false;
+        }
+        const accom = document.getElementById('custAccom')?.value || 'luxury';
+        const notes = document.getElementById('custNotes')?.value || '';
+
+        const payload = {
+            packageName: 'Customized Package',
+            destination: 'Maldives',
+            startDate: start,
+            endDate: end,
+            accommodationType: accom,
+            notes: notes
+        };
+
+        if (window.DDWorkflow && typeof window.DDWorkflow.createTripRequest === 'function') {
+            window.DDWorkflow.createTripRequest(payload);
+        }
+
+        if (typeof showSuccessModal === 'function') {
+            showSuccessModal('Request Sent', 'Your customized trip plan has been submitted.', () => {
+                window.location.href = 'traveler_mytrips.html';
+            });
+        } else {
+            alert('Your customized trip plan has been submitted.');
+            window.location.href = 'traveler_mytrips.html';
+        }
+        return false;
+    }
+  </script>
+  
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Destination - Progress Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+      <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Dream<br>Destination</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="traveler_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="traveler_mytrips.html" class="nav-item">
+                    <i data-icon="plane"></i> My Trips
+                </a>
+                <a href="traveler_schedule.html" class="nav-item">
+                    <i data-icon="calendar"></i> Schedule
+                </a>
+                <a href="traveler_progress.html" class="nav-item active">
+                    <i data-icon="activity"></i> Progress
+                </a>
+                <a href="traveler_alerts.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications & Alerts
+                </a>
+                <a href="traveler_messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="traveler_report_issue.html" class="nav-item">
+                    <i data-icon="alert"></i> Report Issue
+                </a>
+                <a href="traveler_support.html" class="nav-item">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="traveler_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="traveler_alerts.html" data-dd-action="route" data-dd-target="traveler_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="traveler_profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">JT</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">John Traveler</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Explorer</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="page-content">
+        <div>
+            <h1>Trip Progress Tracker</h1>
+            <p>Monitor your Paris Adventure in real-time</p>
+        </div>
+
+        <div class="info-banner">
+            <i data-icon="activity"></i> Live updates from your Guides & Vendors
+        </div>
+
+        <div class="large-progress-banner">
+            <div class="pb-title">45% Complete</div>
+            <div class="pb-desc">You're doing great! Keep enjoying your trip.</div>
+            <div class="pb-bar-bg"><div class="pb-bar-fill"></div></div>
+            <i data-icon="trendingup" class="pb-icon"></i>
+        </div>
+
+        <div class="layout-split">
+            <!-- LEFT COLUMN -->
+            <div>
+                <div class="card-block">
+                    <div class="cb-title">Trip Stages</div>
+                    <div class="stage-timeline">
+                        <div class="st-item completed">
+                            <div class="st-icon"></div>
+                            <div>
+                                <div class="st-title">Trip Started</div>
+                                <div class="st-time">Mar 20, 08:00 AM</div>
+                            </div>
+                            <div class="st-badge">Completed</div>
+                        </div>
+                        <div class="st-item completed">
+                            <div class="st-icon"></div>
+                            <div>
+                                <div class="st-title">Airport Pickup</div>
+                                <div class="st-time">Mar 20, 10:00 AM</div>
+                            </div>
+                            <div class="st-badge">Completed</div>
+                        </div>
+                        <div class="st-item completed">
+                            <div class="st-icon"></div>
+                            <div>
+                                <div class="st-title">Hotel Check-in</div>
+                                <div class="st-time">Mar 20, 12:00 PM</div>
+                            </div>
+                            <div class="st-badge">Completed</div>
+                        </div>
+                        <div class="st-item active">
+                            <div class="st-icon"></div>
+                            <div>
+                                <div class="st-title">Activities</div>
+                                <div class="st-time">Mar 21</div>
+                            </div>
+                            <div class="st-badge">In Progress</div>
+                        </div>
+                        <div class="st-item">
+                            <div class="st-icon"></div>
+                            <div>
+                                <div class="st-title">Free Time</div>
+                                <div class="st-time">Mar 25</div>
+                            </div>
+                        </div>
+                        <div class="st-item">
+                            <div class="st-icon"></div>
+                            <div>
+                                <div class="st-title">Checkout</div>
+                                <div class="st-time">Mar 27, 11:00 AM</div>
+                            </div>
+                        </div>
+                        <div class="st-item">
+                            <div class="st-icon"></div>
+                            <div>
+                                <div class="st-title">Trip Completed</div>
+                                <div class="st-time">Mar 27</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-block">
+                    <div class="cb-title">Live Updates Feed</div>
+                    <div class="feed-item">
+                        <div class="fi-icon"><i data-icon="clock"></i></div>
+                        <div class="fi-content">
+                            <div class="fi-top">
+                                <div class="fi-title">Tour Activity Update</div>
+                                <div class="fi-time">15m ago</div>
+                            </div>
+                            <div class="fi-desc">Currently exploring the Louvre Museum with guide Pierre.<br><span>Location added</span></div>
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="fi-icon"><i data-icon="check"></i></div>
+                        <div class="fi-content">
+                            <div class="fi-top">
+                                <div class="fi-title">Lunch Reservation Confirmed</div>
+                                <div class="fi-time">2 hours ago</div>
+                            </div>
+                            <div class="fi-desc">Table reserved at Le Grand Vefour for 1:30 PM.<br><span>Vendor Update</span></div>
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="fi-icon"><i data-icon="calendar"></i></div>
+                        <div class="fi-content">
+                            <div class="fi-top">
+                                <div class="fi-title">Morning Tour Completed</div>
+                                <div class="fi-time">4 hours ago</div>
+                            </div>
+                            <div class="fi-desc">Eiffel Tower tour completed successfully.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+                <div class="card-block">
+                    <div class="cb-title"><i data-icon="activity"></i> Current Stage</div>
+                    <div>Activities Stage</div>
+                    <div>Exploring museums and cultural sites.</div>
+                    
+                    <div>
+                        <span>Started</span>
+                        <span>Mar 21</span>
+                    </div>
+                    <div>
+                        <span>Expected End</span>
+                        <span>Mar 24</span>
+                    </div>
+                    <div>
+                        <span>Status</span>
+                        <span>Active</span>
+                    </div>
+                </div>
+
+                <div class="card-block">
+                    <div class="cb-title">Trip Statistics</div>
+                    
+                    <div class="stat-row">
+                        <div class="stat-label"><span>Activities Completed</span> <span>3 / 8</span></div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <div class="stat-label"><span>Days Elapsed</span> <span>2 / 7</span></div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <div class="stat-label"><span>Vendor Updates</span> <span>14</span></div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                    </div>
+                </div>
+
+                <div class="card-block">
+                    <div class="cb-title">Quick Actions</div>
+                    <button class="quick-action-pill primary" onclick="window.location.href='traveler_schedule.html'">View Schedule</button>
+                    <button class="quick-action-pill">Share Status</button>
+                    <button class="quick-action-pill" onclick="window.location.href='traveler_messages.html'">Contact Guide</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+  <script src="../../js/workflow.js?v=live-20260811-02"></script>
+</body>
+</html>
+
+
+
+
+
+
+

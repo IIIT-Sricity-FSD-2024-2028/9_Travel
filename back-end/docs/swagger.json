@@ -1,0 +1,3163 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registered user wrapped in a consistent response."
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Session role, name, and email for the frontend."
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List all users."
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "post": {
+        "operationId": "UsersController_create",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create a user."
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "UsersController_findOne",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find one user by id or email."
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "patch": {
+        "operationId": "UsersController_update",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update a user."
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "delete": {
+        "operationId": "UsersController_remove",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a user."
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/guides": {
+      "get": {
+        "operationId": "GuidesController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List tour guides."
+          }
+        },
+        "tags": [
+          "guides"
+        ]
+      },
+      "post": {
+        "operationId": "GuidesController_create",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGuideDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create tour guide."
+          }
+        },
+        "tags": [
+          "guides"
+        ]
+      }
+    },
+    "/guides/{id}": {
+      "get": {
+        "operationId": "GuidesController_findOne",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find tour guide."
+          }
+        },
+        "tags": [
+          "guides"
+        ]
+      },
+      "patch": {
+        "operationId": "GuidesController_update",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGuideDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update tour guide."
+          }
+        },
+        "tags": [
+          "guides"
+        ]
+      },
+      "delete": {
+        "operationId": "GuidesController_remove",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete tour guide."
+          }
+        },
+        "tags": [
+          "guides"
+        ]
+      }
+    },
+    "/vendors": {
+      "get": {
+        "operationId": "VendorsController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List vendors."
+          }
+        },
+        "tags": [
+          "vendors"
+        ]
+      },
+      "post": {
+        "operationId": "VendorsController_create",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVendorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create vendor."
+          }
+        },
+        "tags": [
+          "vendors"
+        ]
+      }
+    },
+    "/vendors/{id}": {
+      "get": {
+        "operationId": "VendorsController_findOne",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find vendor."
+          }
+        },
+        "tags": [
+          "vendors"
+        ]
+      },
+      "patch": {
+        "operationId": "VendorsController_update",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVendorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update vendor."
+          }
+        },
+        "tags": [
+          "vendors"
+        ]
+      },
+      "delete": {
+        "operationId": "VendorsController_remove",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete vendor."
+          }
+        },
+        "tags": [
+          "vendors"
+        ]
+      }
+    },
+    "/trips": {
+      "get": {
+        "operationId": "TripsController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List all trips."
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      },
+      "post": {
+        "operationId": "TripsController_create",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTripDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create a trip directly."
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}": {
+      "get": {
+        "operationId": "TripsController_findOne",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find trip by id."
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      },
+      "patch": {
+        "operationId": "TripsController_update",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTripDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update trip."
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      },
+      "delete": {
+        "operationId": "TripsController_remove",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete trip."
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/assign-guide": {
+      "post": {
+        "operationId": "TripsController_assignGuide",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignGuideDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/guide/accept": {
+      "post": {
+        "operationId": "TripsController_acceptGuide",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/guide/reject": {
+      "post": {
+        "operationId": "TripsController_rejectGuide",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/assign-vendor": {
+      "post": {
+        "operationId": "TripsController_assignVendor",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignVendorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/vendor/accept": {
+      "post": {
+        "operationId": "TripsController_acceptVendor",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/vendor/reject": {
+      "post": {
+        "operationId": "TripsController_rejectVendor",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/start": {
+      "post": {
+        "operationId": "TripsController_start",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/schedule": {
+      "get": {
+        "operationId": "TripsController_schedule",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/schedule/{scheduleItemId}": {
+      "patch": {
+        "operationId": "TripsController_updateSchedule",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scheduleItemId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleProgressDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/guide-updates": {
+      "post": {
+        "operationId": "TripsController_guideUpdate",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuideUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/vendor-updates": {
+      "post": {
+        "operationId": "TripsController_vendorUpdate",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VendorUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trips/{id}/updates": {
+      "get": {
+        "operationId": "TripsController_updates",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/trip-requests": {
+      "get": {
+        "operationId": "TripRequestsController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List pending traveler trip requests."
+          }
+        },
+        "tags": [
+          "trip-requests"
+        ]
+      },
+      "post": {
+        "operationId": "TripRequestsController_create",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTripRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create traveler trip request."
+          }
+        },
+        "tags": [
+          "trip-requests"
+        ]
+      }
+    },
+    "/trip-requests/{id}/accept": {
+      "post": {
+        "operationId": "TripRequestsController_accept",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Travel partner accepts a traveler request."
+          }
+        },
+        "tags": [
+          "trip-requests"
+        ]
+      }
+    },
+    "/trip-requests/{id}": {
+      "delete": {
+        "operationId": "TripRequestsController_cancel",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cancel or delete a traveler trip request."
+          }
+        },
+        "tags": [
+          "trip-requests"
+        ]
+      }
+    },
+    "/issues": {
+      "get": {
+        "operationId": "IssuesController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "issues"
+        ]
+      },
+      "post": {
+        "operationId": "IssuesController_create",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIssueDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Report an issue to support."
+          }
+        },
+        "tags": [
+          "issues"
+        ]
+      }
+    },
+    "/issues/{id}": {
+      "get": {
+        "operationId": "IssuesController_findOne",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "issues"
+        ]
+      },
+      "patch": {
+        "operationId": "IssuesController_update",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIssueDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "issues"
+        ]
+      },
+      "delete": {
+        "operationId": "IssuesController_remove",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "issues"
+        ]
+      }
+    },
+    "/issues/{id}/resolve": {
+      "post": {
+        "operationId": "IssuesController_resolve",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveIssueDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resolve an issue and notify every trip member."
+          }
+        },
+        "tags": [
+          "issues"
+        ]
+      }
+    },
+    "/messages": {
+      "get": {
+        "operationId": "MessagesController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "tripId",
+            "required": false,
+            "in": "query",
+            "description": "Filter messages by trip id.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "required": false,
+            "in": "query",
+            "description": "Filter messages for user email.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-user-email",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-role",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List messages."
+          }
+        },
+        "tags": [
+          "messages"
+        ]
+      },
+      "post": {
+        "operationId": "MessagesController_create",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Send a message and notify recipients."
+          }
+        },
+        "tags": [
+          "messages"
+        ]
+      }
+    },
+    "/messages/{id}": {
+      "get": {
+        "operationId": "MessagesController_findOne",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "messages"
+        ]
+      },
+      "patch": {
+        "operationId": "MessagesController_update",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "messages"
+        ]
+      },
+      "delete": {
+        "operationId": "MessagesController_remove",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "messages"
+        ]
+      }
+    },
+    "/notifications": {
+      "get": {
+        "operationId": "NotificationsController_findAll",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "role",
+            "required": false,
+            "in": "query",
+            "description": "Filter notifications for a role key.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "required": false,
+            "in": "query",
+            "description": "Filter notifications for user email.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-user-email",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List notifications."
+          }
+        },
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/notifications/{id}/read": {
+      "patch": {
+        "operationId": "NotificationsController_markRead",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadNotificationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mark notification as read for a role."
+          }
+        },
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/notifications/{id}": {
+      "delete": {
+        "operationId": "NotificationsController_remove",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/workflow/state": {
+      "get": {
+        "operationId": "WorkflowController_state",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Complete in-memory state used by the static frontend workflow."
+          }
+        },
+        "tags": [
+          "workflow"
+        ]
+      },
+      "put": {
+        "operationId": "WorkflowController_replace",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowStateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replace workflow state from the frontend after a CRUD action."
+          }
+        },
+        "tags": [
+          "workflow"
+        ]
+      }
+    },
+    "/workflow/reset": {
+      "post": {
+        "operationId": "WorkflowController_reset",
+        "parameters": [
+          {
+            "name": "x-role",
+            "in": "header",
+            "description": "Role-based access header. Pass one of: Super User, Traveler, Travel Partner, Tour Guide, Vendor, Support Executive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Super User",
+                "Traveler",
+                "Travel Partner",
+                "Tour Guide",
+                "Vendor",
+                "Support Executive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reset all in-memory arrays to the initial Review-4 seed."
+          }
+        },
+        "tags": [
+          "workflow"
+        ]
+      }
+    },
+    "/upload": {
+      "post": {
+        "operationId": "UploadController_uploadFile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "File uploaded successfully"
+          }
+        },
+        "summary": "Upload document, image or file attachment (Multipart form-data)",
+        "tags": [
+          "File Upload"
+        ]
+      }
+    },
+    "/upload/{filename}": {
+      "get": {
+        "operationId": "UploadController_getFile",
+        "parameters": [
+          {
+            "name": "filename",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Retrieve uploaded file by filename",
+        "tags": [
+          "File Upload"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Dream Destination Review 4 API",
+    "description": "NestJS in-memory REST API with RBAC header authorization for traveler, travel partner, tour guide, vendor, support, and super user portals.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "x-role": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-role",
+        "description": "Role header required on every API. Use Super User, Traveler, Travel Partner, Tour Guide, Vendor, or Support Executive."
+      }
+    },
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Sarah Johnson"
+          },
+          "email": {
+            "type": "string",
+            "example": "sarah@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9876543210"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "role": {
+            "type": "string",
+            "example": "Traveler"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "phone",
+          "password"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "traveler@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "role": {
+            "type": "string",
+            "example": "Traveler"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "New User"
+          },
+          "email": {
+            "type": "string",
+            "example": "newuser@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9999999999"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "role": {
+            "type": "string",
+            "example": "Traveler"
+          },
+          "status": {
+            "type": "string",
+            "example": "Active",
+            "enum": [
+              "Active",
+              "Inactive",
+              "Suspended"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "New User"
+          },
+          "email": {
+            "type": "string",
+            "example": "newuser@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9999999999"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "role": {
+            "type": "string",
+            "example": "Traveler"
+          },
+          "status": {
+            "type": "string",
+            "example": "Active",
+            "enum": [
+              "Active",
+              "Inactive",
+              "Suspended"
+            ]
+          }
+        }
+      },
+      "CreateGuideDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Arun Kumar"
+          },
+          "languages": {
+            "type": "string",
+            "example": "English, Hindi"
+          },
+          "experience": {
+            "type": "string",
+            "example": "8 years"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.8
+          }
+        },
+        "required": [
+          "name",
+          "languages",
+          "experience"
+        ]
+      },
+      "UpdateGuideDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Arun Kumar"
+          },
+          "languages": {
+            "type": "string",
+            "example": "English, Hindi"
+          },
+          "experience": {
+            "type": "string",
+            "example": "8 years"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.8
+          }
+        }
+      },
+      "CreateVendorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "ABC Travels"
+          },
+          "type": {
+            "type": "string",
+            "example": "Transport"
+          },
+          "location": {
+            "type": "string",
+            "example": "Goa"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.5
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "location"
+        ]
+      },
+      "UpdateVendorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "ABC Travels"
+          },
+          "type": {
+            "type": "string",
+            "example": "Transport"
+          },
+          "location": {
+            "type": "string",
+            "example": "Goa"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.5
+          }
+        }
+      },
+      "CreateTripDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Goa Beach Tour"
+          },
+          "destination": {
+            "type": "string",
+            "example": "Goa, India"
+          },
+          "travelerName": {
+            "type": "string",
+            "example": "Rahul Sharma"
+          },
+          "travelerEmail": {
+            "type": "string",
+            "example": "rahul@example.com"
+          },
+          "startDate": {
+            "type": "string",
+            "example": "2026-05-12"
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2026-05-16"
+          },
+          "adults": {
+            "type": "number",
+            "example": 2
+          },
+          "children": {
+            "type": "number",
+            "example": 0
+          },
+          "budget": {
+            "type": "number",
+            "example": 4500
+          },
+          "status": {
+            "type": "string",
+            "example": "planning"
+          },
+          "interests": {
+            "example": [
+              "beach",
+              "heritage"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string",
+            "example": "Need family-friendly activities."
+          }
+        },
+        "required": [
+          "title",
+          "destination",
+          "travelerName"
+        ]
+      },
+      "UpdateTripDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Goa Beach Tour"
+          },
+          "destination": {
+            "type": "string",
+            "example": "Goa, India"
+          },
+          "travelerName": {
+            "type": "string",
+            "example": "Rahul Sharma"
+          },
+          "travelerEmail": {
+            "type": "string",
+            "example": "rahul@example.com"
+          },
+          "startDate": {
+            "type": "string",
+            "example": "2026-05-12"
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2026-05-16"
+          },
+          "adults": {
+            "type": "number",
+            "example": 2
+          },
+          "children": {
+            "type": "number",
+            "example": 0
+          },
+          "budget": {
+            "type": "number",
+            "example": 4500
+          },
+          "status": {
+            "type": "string",
+            "example": "planning"
+          },
+          "interests": {
+            "example": [
+              "beach",
+              "heritage"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string",
+            "example": "Need family-friendly activities."
+          }
+        }
+      },
+      "AssignGuideDto": {
+        "type": "object",
+        "properties": {
+          "guideId": {
+            "type": "string",
+            "example": "GUIDE-1"
+          },
+          "guideName": {
+            "type": "string",
+            "example": "Arun Kumar"
+          }
+        }
+      },
+      "AssignVendorDto": {
+        "type": "object",
+        "properties": {
+          "vendorId": {
+            "type": "string",
+            "example": "VENDOR-1"
+          },
+          "vendorName": {
+            "type": "string",
+            "example": "ABC Travels"
+          },
+          "serviceType": {
+            "type": "string",
+            "example": "Transport"
+          }
+        }
+      },
+      "ScheduleProgressDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "completed",
+            "enum": [
+              "in-progress",
+              "completed",
+              "delay"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "example": "Pickup completed successfully."
+          },
+          "location": {
+            "type": "string",
+            "example": "Goa Airport"
+          },
+          "updatedBy": {
+            "type": "string",
+            "example": "ABC Travels"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "GuideUpdateDto": {
+        "type": "object",
+        "properties": {
+          "scheduleItemId": {
+            "type": "string",
+            "example": "SCH-TRIP-101-2"
+          },
+          "status": {
+            "type": "string",
+            "example": "completed",
+            "enum": [
+              "location",
+              "started",
+              "delay",
+              "completed"
+            ]
+          },
+          "statusText": {
+            "type": "string",
+            "example": "Tour Completed"
+          },
+          "location": {
+            "type": "string",
+            "example": "Calangute"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Traveler reached the current activity."
+          }
+        },
+        "required": [
+          "scheduleItemId",
+          "status"
+        ]
+      },
+      "VendorUpdateDto": {
+        "type": "object",
+        "properties": {
+          "scheduleItemId": {
+            "type": "string",
+            "example": "SCH-TRIP-101-1"
+          },
+          "status": {
+            "type": "string",
+            "example": "completed",
+            "enum": [
+              "progress",
+              "enroute",
+              "completed"
+            ]
+          },
+          "statusText": {
+            "type": "string",
+            "example": "Completed"
+          },
+          "serviceType": {
+            "type": "string",
+            "example": "Transport"
+          },
+          "message": {
+            "type": "string",
+            "example": "Transport pickup completed."
+          },
+          "location": {
+            "type": "string",
+            "example": "Goa Airport"
+          }
+        },
+        "required": [
+          "scheduleItemId",
+          "status",
+          "message"
+        ]
+      },
+      "CreateTripRequestDto": {
+        "type": "object",
+        "properties": {
+          "travelerName": {
+            "type": "string",
+            "example": "Sarah Johnson"
+          },
+          "travelerEmail": {
+            "type": "string",
+            "example": "traveler@gmail.com"
+          },
+          "packageName": {
+            "type": "string",
+            "example": "Maldives Escape"
+          },
+          "destination": {
+            "type": "string",
+            "example": "Male, Maldives"
+          },
+          "startDate": {
+            "type": "string",
+            "example": "2026-06-10"
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2026-06-16"
+          },
+          "adults": {
+            "type": "number",
+            "example": 2
+          },
+          "children": {
+            "type": "number",
+            "example": 0
+          },
+          "budget": {
+            "type": "number",
+            "example": 5200
+          },
+          "interests": {
+            "example": [
+              "beach",
+              "snorkeling"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string",
+            "example": "Ocean-view resort preferred."
+          }
+        },
+        "required": [
+          "travelerName",
+          "packageName",
+          "destination"
+        ]
+      },
+      "CreateIssueDto": {
+        "type": "object",
+        "properties": {
+          "tripId": {
+            "type": "string",
+            "example": "TRIP-101"
+          },
+          "title": {
+            "type": "string",
+            "example": "Hotel reservation issue"
+          },
+          "description": {
+            "type": "string",
+            "example": "Hotel could not find the booking."
+          },
+          "type": {
+            "type": "string",
+            "example": "Accommodation"
+          },
+          "priority": {
+            "type": "string",
+            "example": "High"
+          },
+          "reportedBy": {
+            "type": "string",
+            "example": "Sarah Johnson"
+          },
+          "reporterRole": {
+            "type": "string",
+            "example": "Traveler"
+          }
+        },
+        "required": [
+          "tripId",
+          "title",
+          "description"
+        ]
+      },
+      "UpdateIssueDto": {
+        "type": "object",
+        "properties": {
+          "tripId": {
+            "type": "string",
+            "example": "TRIP-101"
+          },
+          "title": {
+            "type": "string",
+            "example": "Hotel reservation issue"
+          },
+          "description": {
+            "type": "string",
+            "example": "Hotel could not find the booking."
+          },
+          "type": {
+            "type": "string",
+            "example": "Accommodation"
+          },
+          "priority": {
+            "type": "string",
+            "example": "High"
+          },
+          "reportedBy": {
+            "type": "string",
+            "example": "Sarah Johnson"
+          },
+          "reporterRole": {
+            "type": "string",
+            "example": "Traveler"
+          }
+        }
+      },
+      "ResolveIssueDto": {
+        "type": "object",
+        "properties": {
+          "resolution": {
+            "type": "string",
+            "example": "Support contacted hotel and confirmed reservation."
+          }
+        },
+        "required": [
+          "resolution"
+        ]
+      },
+      "CreateMessageDto": {
+        "type": "object",
+        "properties": {
+          "tripId": {
+            "type": "string",
+            "example": "TRIP-101"
+          },
+          "fromRole": {
+            "type": "string",
+            "example": "traveler"
+          },
+          "fromName": {
+            "type": "string",
+            "example": "Rahul Sharma"
+          },
+          "toRoles": {
+            "example": [
+              "guide",
+              "vendor"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "body": {
+            "type": "string",
+            "example": "What time is the pickup?"
+          }
+        },
+        "required": [
+          "tripId",
+          "fromRole",
+          "fromName",
+          "body"
+        ]
+      },
+      "UpdateMessageDto": {
+        "type": "object",
+        "properties": {
+          "tripId": {
+            "type": "string",
+            "example": "TRIP-101"
+          },
+          "fromRole": {
+            "type": "string",
+            "example": "traveler"
+          },
+          "fromName": {
+            "type": "string",
+            "example": "Rahul Sharma"
+          },
+          "toRoles": {
+            "example": [
+              "guide",
+              "vendor"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "body": {
+            "type": "string",
+            "example": "What time is the pickup?"
+          }
+        }
+      },
+      "ReadNotificationDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "example": "traveler"
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
+      "WorkflowStateDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number",
+            "example": 4
+          },
+          "nextTripNumber": {
+            "type": "number",
+            "example": 107
+          },
+          "nextIssueNumber": {
+            "type": "number",
+            "example": 5425
+          },
+          "trips": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notifications": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "guides": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vendors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "packages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deletedNotifIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "partnerReadItems": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "version",
+          "nextTripNumber",
+          "nextIssueNumber",
+          "trips",
+          "notifications",
+          "issues",
+          "messages"
+        ]
+      }
+    }
+  }
+}

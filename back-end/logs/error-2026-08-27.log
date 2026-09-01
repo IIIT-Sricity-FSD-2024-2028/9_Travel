@@ -1,0 +1,228 @@
+[2026-08-27T16:49:38.427Z] [ERROR] [NestApplication] Error: listen EADDRINUSE: address already in use 0.0.0.0:3000
+[2026-08-27T16:55:20.908Z] [ERROR] [NestApplication] Error: listen EADDRINUSE: address already in use 0.0.0.0:3000
+[2026-08-27T16:55:40.793Z] [ERROR] [NestApplication] Error: listen EADDRINUSE: address already in use 0.0.0.0:3000
+[2026-08-27T16:55:42.936Z] [ERROR] [NestApplication] Error: listen EADDRINUSE: address already in use 0.0.0.0:3000
+[2026-08-27T16:57:00.563Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on GET /trips - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T16:57:23.752Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [403] on GET /users - "Role \"Traveler\" is not allowed for this API."
+Trace: ForbiddenException: Role "Traveler" is not allowed for this API.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:67:11)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T16:57:40.132Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /trips/99999 - "Trip 99999 was not found."
+Trace: NotFoundException: Trip 99999 was not found.
+    at DataService.findTrip (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\data\data.service.ts:254:22)
+    at TripsService.findOne (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\trips\trips.service.ts:59:22)
+    at TripsController.findOne (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\trips\trips.controller.ts:43:46)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:38:29
+    at async C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:46:28
+    at async C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:17
+[2026-08-27T16:58:45.483Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [400] on POST /upload - "Only image, PDF, and document files are allowed!"
+Trace: BadRequestException: Only image, PDF, and document files are allowed!
+    at fileFilter (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\upload\upload.controller.ts:56:21)
+    at wrappedFileFilter (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\multer\index.js:45:7)
+    at Multipart.<anonymous> (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\multer\lib\make-middleware.js:183:7)
+    at Multipart.emit (node:events:509:28)
+    at HeaderParser.cb (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\busboy\lib\types\multipart.js:358:14)
+    at HeaderParser.push (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\busboy\lib\types\multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\busboy\lib\types\multipart.js:394:37)
+    at feed (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\streamsearch\lib\sbmh.js:219:14)
+    at SBMH.push (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\streamsearch\lib\sbmh.js:104:16)
+    at Multipart._write (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\busboy\lib\types\multipart.js:567:19)
+[2026-08-27T17:22:25.345Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /favicon.ico - "Cannot GET /favicon.ico"
+Trace: NotFoundException: Cannot GET /favicon.ico
+    at callback (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\routes-resolver.js:77:19)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:342:13)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:297:9
+    at processParams (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:582:12)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:291:5)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
+    at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+[2026-08-27T17:23:19.065Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /favicon.ico - "Cannot GET /favicon.ico"
+Trace: NotFoundException: Cannot GET /favicon.ico
+    at callback (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\routes-resolver.js:77:19)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:342:13)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:297:9
+    at processParams (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:582:12)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:291:5)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
+    at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+[2026-08-27T17:34:36.885Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:34:47.501Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:34:59.973Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:35:04.694Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:35:17.606Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:35:43.450Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:38:20.439Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:38:31.633Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:41:00.452Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /favicon.ico - "Cannot GET /favicon.ico"
+Trace: NotFoundException: Cannot GET /favicon.ico
+    at callback (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\routes-resolver.js:77:19)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:342:13)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:297:9
+    at processParams (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:582:12)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:291:5)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
+    at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+[2026-08-27T17:43:43.481Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /favicon.ico - "Cannot GET /favicon.ico"
+Trace: NotFoundException: Cannot GET /favicon.ico
+    at callback (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\routes-resolver.js:77:19)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:342:13)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:297:9
+    at processParams (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:582:12)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:291:5)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
+    at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+[2026-08-27T17:50:35.658Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:53:35.873Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [401] on POST /upload - "Missing or invalid x-role header. Authentication required."
+Trace: UnauthorizedException: Missing or invalid x-role header. Authentication required.
+    at RolesGuard.canActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\roles.guard.ts:30:13)
+    at GuardsConsumer.tryActivate (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\guards\guards-consumer.js:15:34)
+    at canActivateFn (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:135:59)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-execution-context.js:42:37
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+[2026-08-27T17:54:30.899Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /favicon.ico - "Cannot GET /favicon.ico"
+Trace: NotFoundException: Cannot GET /favicon.ico
+    at callback (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\routes-resolver.js:77:19)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:342:13)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:297:9
+    at processParams (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:582:12)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:291:5)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
+    at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23

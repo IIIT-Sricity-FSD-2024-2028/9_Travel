@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings - Super User</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/superuser.css" />
+    <link rel="stylesheet" href="../../css/superadmin.css" />
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="brand-icon">
+                    <i data-icon="plane"></i>
+                </div>
+                <div class="sidebar-logo-text">
+                    <div>Dream</div>
+                    <div>Destination</div>
+                </div>
+            </div>
+                        <nav class="sidebar-nav">
+                <a href="superuser_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="superuser_users.html" class="nav-item">
+                    <i data-icon="users"></i> Users
+                </a>
+                <a href="superuser_trips.html" class="nav-item">
+                    <i data-icon="plane"></i> Trips
+                </a>
+                <a href="superuser_vendors.html" class="nav-item">
+                    <i data-icon="briefcase"></i> Vendors
+                </a>
+                <a href="superuser_guides.html" class="nav-item">
+                    <i data-icon="map"></i> Guides
+                </a>
+                <a href="superuser_alerts.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="superuser_support.html" class="nav-item">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="superuser_reports.html" class="nav-item">
+                    <i data-icon="filetext"></i> Reports
+                </a>
+                <a href="superuser_settings.html" class="nav-item active">
+                    <i data-icon="settings"></i> Settings
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="superuser_alerts.html" data-dd-action="route" data-dd-target="superuser_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">SA</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Super Admin</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">System Administrator</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="sa-dashboard-container sa-dashboard">
+        <div>
+            <h1>Settings</h1>
+            <p>Manage your account and platform preferences.</p>
+        </div>
+
+        <div class="settings-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- Profile Settings -->
+                <div class="settings-section sa-profile-section">
+                    <div class="settings-header">
+                        <div class="sh-icon bg-blue"><i data-icon="user"></i></div>
+                        <div>
+                            <div class="sh-title">Profile Settings</div>
+                            <div class="sh-desc">Update your personal information</div>
+                        </div>
+                    </div>
+                    <div class="settings-body">
+                        <div>
+                            <div class="profile-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: #3b82f6; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700;">SA</div>
+                            <div>
+                                <div>Profile Picture</div>
+                                <div style="font-size:12px; color:#64748b;">JPEG or PNG. Max size 5MB</div>
+                                <button class="btn btn-outline" data-action="upload-avatar" type="button" style="margin-top: 4px;">Upload Avatar</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" value="Super Admin" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" value="admin@travelhub.com" />
+                        </div>
+                        <button class="btn btn-primary" type="button">Save Changes</button>
+                    </div>
+                </div>
+
+                <!-- Account Settings -->
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="sh-icon bg-green"><i data-icon="lock"></i></div>
+                        <div>
+                            <div class="sh-title">Account Settings</div>
+                            <div class="sh-desc">Change your password</div>
+                        </div>
+                    </div>
+                    <div class="settings-body">
+                        <div class="form-group">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" class="form-input" placeholder="Enter current password" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-input" placeholder="Enter new password" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-input" placeholder="Re-enter new password" />
+                        </div>
+                        <button class="btn btn-green">Update Password</button>
+                    </div>
+                </div>
+
+                <!-- Appearance Settings -->
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="sh-icon bg-purple"><i data-icon="sun"></i></div>
+                        <div>
+                            <div class="sh-title">Appearance Settings</div>
+                            <div class="sh-desc">Custom to your interface theme</div>
+                        </div>
+                    </div>
+                    <div class="settings-body">
+                        <div class="theme-grid">
+                            <div class="theme-btn theme-light active">
+                                <div class="theme-card-top">
+                                    <div></div>
+                                </div>
+                                <div class="theme-card-bottom">Light Theme <i data-icon="check" class="theme-active-icon"></i></div>
+                                    </div>
+                                    <div class="theme-btn theme-dark">
+                                        <div class="theme-card-top">
+                                            <div></div>
+                                        </div>
+                                        <div class="theme-card-bottom">Dark Theme</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                <!-- Currency & Regional Settings -->
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="sh-icon bg-green" style="background:#dcfce7;color:#15803d;"><i data-icon="dollar"></i></div>
+                        <div>
+                            <div class="sh-title">Currency & Regional Settings</div>
+                            <div class="sh-desc">Select default display currency for pricing and budgets</div>
+                        </div>
+                    </div>
+                    <div class="settings-body">
+                        <div class="form-group" style="max-width:320px;">
+                            <label class="form-label" style="font-weight:700;">Default Display Currency</label>
+                            <select id="currency-select" class="form-input" style="padding:10px 14px;border-radius:10px;width:100%;" onchange="if(window.setSelectedCurrency){window.setSelectedCurrency(this.value);if(window.renderAll){window.renderAll();}}">
+                                <option value="INR" selected>Indian Rupee (₹ / INR)</option>
+                                <option value="USD">US Dollar ($ / USD)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                        <div class="settings-section sa-danger-zone">
+                            <div class="settings-header">
+                                <div class="sh-icon bg-red"><i data-icon="alertcircle"></i></div>
+                                <div>
+                                    <div class="sh-title">Danger Zone</div>
+                                    <div class="sh-desc">Irreversible and destructive actions</div>
+                                </div>
+                            </div>
+                            <div class="settings-body">
+                                <div>
+                                    <div>
+                                        <div>Delete Account</div>
+                                        <div>Permanently delete your account and all associated data. This action cannot be undone.</div>
+                                    </div>
+                                    <button class="btn btn-outline-red">Delete Account</button>
+                                </div>
+                                <div>
+                                    <div>
+                                        <div>Logout</div>
+                                        <div>Sign out of your account on this device.</div>
+                                    </div>
+                                    <button class="btn btn-outline logout"><i data-icon="logout"></i> Logout</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Role & Access -->
+                    <div>
+                        <div class="settings-section">
+                            <div class="settings-header">
+                                <div class="sh-icon bg-blue"><i data-icon="shield"></i></div>
+                                <div>
+                                    <div class="sh-title">Role & Access</div>
+                                    <div class="sh-desc">User roles and permissions</div>
+                                </div>
+                            </div>
+                            <div class="settings-body">
+                                <!-- Super User -->
+                                <div class="role-item">
+                                    <div>
+                                        <div>SU</div>
+                                        <div>Super User</div>
+                                    </div>
+                                    <div>Full system access and control</div>
+                                    <div class="role-badges">
+                                        <div class="role-badge"><i data-icon="check"></i> Users</div>
+                                        <div class="role-badge"><i data-icon="check"></i> Settings</div>
+                                        <div class="role-badge"><i data-icon="check"></i> Finance</div>
+                                    </div>
+                                </div>
+
+                                <!-- Travel Partner -->
+                                <div class="role-item">
+                                    <div>
+                                        <div>TP</div>
+                                        <div>Travel Partner</div>
+                                    </div>
+                                    <div>Manage settings, agents and guides</div>
+                                    <div class="role-badges">
+                                        <div class="role-badge"><i data-icon="check"></i> Staff</div>
+                                        <div class="role-badge"><i data-icon="check"></i> Build</div>
+                                        <div class="role-badge"><i data-icon="x"></i> Finance</div>
+                                    </div>
+                                </div>
+
+                                <!-- Vendor -->
+                                <div class="role-item">
+                                    <div>
+                                        <div>V</div>
+                                        <div>Vendor</div>
+                                    </div>
+                                    <div>Manage services and bookings</div>
+                                    <div class="role-badges">
+                                        <div class="role-badge"><i data-icon="check"></i> Build</div>
+                                        <div class="role-badge"><i data-icon="x"></i> Finance</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tour Guide -->
+                                <div class="role-item">
+                                    <div>
+                                        <div>TG</div>
+                                        <div>Tour Guide</div>
+                                    </div>
+                                    <div>Manage assigned trips</div>
+                                    <div class="role-badges">
+                                        <div class="role-badge"><i data-icon="check"></i> Build</div>
+                                        <div class="role-badge"><i data-icon="x"></i> Finance</div>
+                                    </div>
+                                </div>
+
+                                <!-- Support -->
+                                <div class="role-item">
+                                    <div>
+                                        <div>SE</div>
+                                        <div>Support Executive</div>
+                                    </div>
+                                    <div>Resolve support requests</div>
+                                    <div class="role-badges">
+                                        <div class="role-badge"><i data-icon="check"></i> Build</div>
+                                        <div class="role-badge"><i data-icon="x"></i> Finance</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+
+    </div>
+
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    <script src="../../js/superuser.js"></script>
+</body>
+</html>
+
+
+
+
+
+

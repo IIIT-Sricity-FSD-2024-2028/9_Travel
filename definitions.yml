@@ -1,0 +1,89 @@
+name: Travel and Hospitality Coordination Platform
+
+domainVisionStatement: >
+  To enable smooth coordination among travelers, travel partners,
+  vendors, tour guides, and support executives for handling
+  travel execution and issue resolution beyond booking.
+
+terms:
+
+  - name: Traveler
+    definition: >
+      A person who undertakes a journey and receives travel services
+      coordinated through the platform.
+    aliases:
+      - Guest
+    examples:
+      - "The traveler reports an issue during the trip."
+
+  - name: Travel Partner
+    definition: >
+      An individual or organization responsible for coordinating
+      vendors and tour guides for trip execution.
+    aliases:
+      - Partner
+    examples:
+      - "The travel partner assigns a vendor."
+
+  - name: Vendor
+    definition: >
+      A service provider responsible for delivering assigned
+      travel services during a trip.
+    aliases:
+      - Service Provider
+    examples:
+      - "The vendor confirms service readiness."
+
+  - name: Tour Guide
+    definition: >
+      A person who leads travel activities and provides on-ground
+      guidance and assistance to travelers.
+    aliases:
+      - Guide
+    examples:
+      - "The tour guide updates the activity schedule."
+
+  - name: Support Executive
+    definition: >
+      A person responsible for handling coordination issues,
+      service delays, and complaints during trip execution.
+    aliases:
+      - Customer Support
+    examples:
+      - "The support executive resolves a service delay."
+
+  - name: Trip Planning
+    definition: >
+      The initial phase where the travel partner organizes the trip
+      by requesting services, assigning roles, and preparing the itinerary.
+    examples:
+      - "Trip planning begins with service requests."
+
+  - name: Trip Execution
+    definition: >
+      The active phase where vendors deliver services and tour guides
+      conduct activities while updates are shared in real time.
+    examples:
+      - "Trip execution begins after confirmation."      
+
+  - name: Issue Reporting
+    definition: >
+      The process of notifying problems or disruptions that occur
+      during trip execution.
+    examples:
+      - "Issue reporting triggers support action."  
+
+  - name: Issue Resolution
+    definition: >
+      Actions taken by support executives and stakeholders to solve
+      coordination or service problems during the trip.
+    examples:
+      - "Issue resolution ensures smooth continuation."       
+
+  - name: Trip Completion
+    definition: >
+      The final phase where all services are completed and the trip
+      workflow is officially closed.
+    examples:
+      - "Trip completion message is sent."
+

@@ -1,0 +1,753 @@
+/* Shared styles for Login and Register screens with Full-Page 4K Bright Background Slideshow */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Ensure HTML & Body NEVER paint solid background colors over 4K slideshow */
+html,
+body,
+body.auth-body,
+html[data-theme="dark"] body.auth-body,
+html[data-theme="light"] body.auth-body,
+body.light-theme,
+body.dark-theme {
+    background: transparent !important;
+    background-color: transparent !important;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+    overflow-x: hidden;
+}
+
+body.auth-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 6% 40px 6%;
+}
+
+/* Full-Page Background Slideshow with 4K Crystal Clarity */
+.auth-page-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.login-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1.2s ease-in-out, transform 6s cubic-bezier(0.25, 1, 0.5, 1);
+    filter: none !important;
+}
+
+.login-slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Light & Bright Overlay like Landing Page - Pure transparent vignette */
+.login-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 65% 50%, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.35) 100%),
+                linear-gradient(180deg, rgba(15, 23, 42, 0.12) 0%, rgba(15, 23, 42, 0.42) 100%);
+    z-index: 2;
+    transition: background 0.3s ease;
+}
+
+[data-theme="dark"] .login-overlay,
+body.dark-theme .login-overlay {
+    background: radial-gradient(circle at 65% 50%, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.45) 100%),
+                linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.48) 100%);
+}
+
+/* Top Transparent Bar with Logo, Theme Toggle, and Home Button */
+.auth-top-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.auth-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.auth-brand-logo .logo-sq {
+    background: linear-gradient(135deg, #0ea5e9, #10b981);
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 800;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+}
+
+.auth-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.back-home-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+/* Main Content Area */
+.auth-content-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex: 1;
+    margin-top: 10px;
+}
+
+.left-panel {
+    flex: 1.1;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+    padding-right: 50px;
+    background: transparent !important;
+}
+
+.left-panel h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 18px;
+    font-weight: 800;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+}
+
+.hero-desc {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 35px;
+    max-width: 480px;
+    line-height: 1.6;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.login-slide-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.location-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 460px;
+    color: #ffffff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+.check-icon {
+    background: linear-gradient(135deg, #10b981, #0ea5e9);
+    color: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.login-slide-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 24px;
+    align-items: center;
+}
+
+.login-slide-dot {
+    width: 28px;
+    height: 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-slide-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.login-slide-dot.active {
+    width: 44px;
+    background: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+}
+
+/* Floating Ultra-Transparent Glass Login/Register Card on Right */
+.right-panel {
+    flex: 0.95;
+    max-width: 490px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+    background: transparent !important;
+    padding: 0;
+}
+
+.login-wrapper {
+    width: 100%;
+}
+
+.login-wrapper.register-view {
+    max-width: 520px;
+}
+
+/* Light Theme Ultra-Transparent Glass Card */
+.login-box {
+    width: 100%;
+    padding: 36px 34px;
+    background: rgba(255, 255, 255, 0.10) !important;
+    backdrop-filter: blur(32px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+    border-radius: 24px;
+    box-shadow:
+        0 25px 60px -12px rgba(0, 0, 0, 0.20),
+        0 0 0 1px rgba(255, 255, 255, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.70) !important;
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    color: #0f172a !important;
+    transition: all 0.3s ease;
+}
+
+.login-box h2 {
+    font-size: 2rem;
+    color: #0f172a !important;
+    margin-bottom: 5px;
+    font-weight: 800;
+}
+
+.sub-text {
+    color: #1e293b !important;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.label-style {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #0f172a !important;
+    margin-bottom: 10px;
+}
+
+.role-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.role-btn {
+    padding: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #0f172a !important;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.role-btn:hover {
+    background: rgba(255, 255, 255, 0.38) !important;
+    color: #0f172a !important;
+    border-color: #0ea5e9 !important;
+}
+
+.role-btn.active {
+    background: linear-gradient(135deg, #0ea5e9, #10b981) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+    font-weight: 700;
+    border: none !important;
+}
+
+.role-btn.full-width {
+    grid-column: span 2;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0f172a !important;
+    width: 18px;
+    height: 18px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 14px 15px 14px 42px;
+    background: rgba(255, 255, 255, 0.18) !important;
+    border: 1px solid rgba(255, 255, 255, 0.50) !important;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    color: #0f172a !important;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.input-field:focus {
+    border-color: #0ea5e9 !important;
+    background: rgba(255, 255, 255, 0.45) !important;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25) !important;
+}
+
+.input-field::placeholder {
+    color: #334155 !important;
+}
+
+.form-utils {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 22px;
+    align-items: center;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #0f172a !important;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.remember input {
+    accent-color: #0ea5e9;
+    width: 16px;
+    height: 16px;
+}
+
+.forgot {
+    color: #0284c7 !important;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0ea5e9, #10b981);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+}
+
+.btn-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.45);
+}
+
+.create-acc {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #0f172a !important;
+    font-weight: 600;
+}
+
+.create-acc a {
+    color: #0284c7 !important;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.create-acc a:hover {
+    text-decoration: underline;
+}
+
+.support {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #0f172a !important;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.support:hover {
+    color: #0284c7 !important;
+}
+
+.policy {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.95);
+    padding: 0 10px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Demo Quick Fill Bar */
+.demo-accounts-bar {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.10) !important;
+    border: 1px dashed rgba(14, 165, 233, 0.50) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.demo-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #0284c7 !important;
+}
+
+.demo-bar-hint {
+    font-size: 0.72rem;
+    color: #1e293b !important;
+    font-weight: 600;
+}
+
+.demo-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.demo-pill {
+    background: rgba(255, 255, 255, 0.20) !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    color: #0f172a !important;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.demo-pill:hover {
+    background: #0ea5e9 !important;
+    color: #ffffff !important;
+    border-color: #0ea5e9 !important;
+}
+
+/* Dark Theme Ultra-Transparent Glass Card */
+[data-theme="dark"] .login-box,
+body.dark-theme .login-box {
+    background: rgba(10, 15, 30, 0.12) !important;
+    backdrop-filter: blur(32px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(32px) saturate(160%) !important;
+    box-shadow:
+        0 25px 60px -12px rgba(0, 0, 0, 0.40),
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] .login-box h2,
+body.dark-theme .login-box h2 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .sub-text,
+body.dark-theme .sub-text {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .label-style,
+body.dark-theme .label-style {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .role-btn,
+body.dark-theme .role-btn {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+[data-theme="dark"] .role-btn:hover,
+body.dark-theme .role-btn:hover {
+    background: rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+[data-theme="dark"] .role-btn.active,
+body.dark-theme .role-btn.active {
+    background: linear-gradient(135deg, #0ea5e9, #10b981) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+[data-theme="dark"] .input-field,
+body.dark-theme .input-field {
+    background: rgba(15, 23, 42, 0.18) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .input-field:focus,
+body.dark-theme .input-field:focus {
+    border-color: #38bdf8 !important;
+    background: rgba(15, 23, 42, 0.40) !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.20) !important;
+}
+
+[data-theme="dark"] .input-field::placeholder,
+body.dark-theme .input-field::placeholder {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .input-icon,
+body.dark-theme .input-icon {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .remember,
+body.dark-theme .remember {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .forgot,
+body.dark-theme .forgot {
+    color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .create-acc,
+body.dark-theme .create-acc {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .create-acc a,
+body.dark-theme .create-acc a {
+    color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .support,
+body.dark-theme .support {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .support:hover,
+body.dark-theme .support:hover {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .demo-accounts-bar,
+body.dark-theme .demo-accounts-bar {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.16) !important;
+}
+
+[data-theme="dark"] .demo-bar-header,
+body.dark-theme .demo-bar-header {
+    color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .demo-bar-hint,
+body.dark-theme .demo-bar-hint {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .demo-pill,
+body.dark-theme .demo-pill {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .demo-pill:hover,
+body.dark-theme .demo-pill:hover {
+    background: #0ea5e9 !important;
+    color: #ffffff !important;
+}
+
+/* Feedback Banners */
+.auth-alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.4;
+    display: none;
+    animation: authFadeIn 0.25s ease;
+}
+
+.auth-alert.error-banner {
+    background: rgba(239, 68, 68, 0.2);
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.auth-alert.success-banner {
+    background: rgba(16, 185, 129, 0.2);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+@keyframes authFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 960px) {
+    .auth-top-bar {
+        padding: 18px 0;
+    }
+    .auth-content-container {
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .left-panel {
+        display: none;
+    }
+    .right-panel {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .role-selector {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+    .role-btn {
+        padding: 10px 6px;
+        font-size: 0.78rem;
+        text-align: center;
+    }
+    .demo-pills {
+        gap: 4px;
+    }
+    .demo-pill {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+}

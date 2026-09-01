@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip Details - Support Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Support<br>Portal</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="reported_issues.html" class="nav-item">
+                    <i data-icon="alert"></i> Reported Issues
+                </a>
+                <a href="issue_log.html" class="nav-item">
+                    <i data-icon="file"></i> Issue Log
+                </a>
+                <a href="coordination_panel.html" class="nav-item">
+                    <i data-icon="users"></i> Coordination Panel
+                </a>
+                <a href="emergency_support.html" class="nav-item">
+                    <i data-icon="phone"></i> Emergency Support
+                </a>
+                <a href="resolution_updates.html" class="nav-item">
+                    <i data-icon="checkcircle"></i> Resolution Updates
+                </a>
+                <a href="trip_status.html" class="nav-item active">
+                    <i data-icon="activity"></i> Trip Status Monitor
+                </a>
+                <a href="messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="notifications.html" data-dd-action="route" data-dd-target="notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">M</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Mahendra</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Support Executive</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="dashboard-container">
+        <div class="page-title-area">
+          <div>
+            <button class="back-btn" data-navigate="trip_status.html"><i data-icon="chevronleft"></i> Back to Monitor</button>
+            <div class="title-with-badge">
+              <h1>Paris Adventure</h1>
+              <span class="badge-ip">In Progress</span>
+            </div>
+          </div>
+          <div>
+            <button class="ab-btn bg-teal" data-navigate="coordination_panel.html"><i data-icon="users"></i> Coordinate Trip</button>
+          </div>
+        </div>
+
+        <div class="trip-details-grid">
+          <!-- Left Column -->
+          <div class="details-left">
+            <div class="detail-card">
+              <div class="detail-card-title">Trip Information</div>
+              <div class="info-row">
+                <div class="info-label">Trip ID</div>
+                <div class="info-value">TRIP-101</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Destination</div>
+                <div class="info-value">Paris, France</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Duration</div>
+                <div class="info-value">7 Days (Oct 12 - Oct 18, 2023)</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Traveler</div>
+                <div class="info-value">John Doe (+1 555-0123)</div>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <div class="detail-card-title">Current Status</div>
+              <div class="v-list">
+                <div class="v-item active">
+                  <div class="v-icon"><i data-icon="check"></i></div>
+                  <div class="v-content">
+                    <div class="v-title">Arrival & Hotel Check-in</div>
+                    <div class="v-desc">Completed at Hotel de Paris</div>
+                  </div>
+                </div>
+                <div class="v-item active">
+                  <div class="v-icon"><i data-icon="activity"></i></div>
+                  <div class="v-content">
+                    <div class="v-title">Eiffel Tower Tour</div>
+                    <div class="v-desc">In Progress • Guide: Marie L.</div>
+                  </div>
+                </div>
+                <div class="v-item">
+                  <div class="v-icon"><i data-icon="clock"></i></div>
+                  <div class="v-content">
+                    <div class="v-title">Dinner Cruise</div>
+                    <div class="v-desc">Scheduled for 19:00 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <div class="detail-card-title">Active Support Items</div>
+              <div class="issue-pill-row">
+                <div class="issue-pill">
+                  <div>
+                    <div class="ip-title">ISS-5421 - Transport Delay</div>
+                    <div class="ip-desc">Alternative transport arranged</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="details-right">
+            <div class="widget-grad w-gradient-pink">
+              <div class="detail-card-title">Travel Partner</div>
+              <div class="w-contact">
+                <div class="w-avatar">GT</div>
+                <div class="w-details">
+                  <h4>Global Travels Co.</h4>
+                  <p>Trip Organizer</p>
+                </div>
+              </div>
+              <div class="w-info-row"><i data-icon="phone"></i> +1 800-2023</div>
+              <div class="w-info-row"><i data-icon="mail"></i> support@globaltravels.com</div>
+              <button class="w-btn" data-navigate="messages.html"><i data-icon="message"></i> Contact Partner</button>
+            </div>
+
+            <div class="detail-card">
+              <div class="detail-card-title">Tour Guide</div>
+              <div class="w-contact">
+                <div class="w-avatar">TM</div>
+                <div class="w-details">
+                  <h4>Tour Guide Mike</h4>
+                  <p>Assigned Guide</p>
+                </div>
+              </div>
+              <div class="w-info-row"><i data-icon="phone"></i> +33 1 23 45 67 89</div>
+              <button class="w-btn" data-navigate="messages.html"><i data-icon="message"></i> Send Message</button>
+            </div>
+
+            <div class="detail-card">
+              <div class="detail-card-title">Vendor Services</div>
+              <div class="vendor-row">
+                <div class="v-left">
+                  <div class="v-icon"><i data-icon="home"></i></div>
+                  <div>
+                    <div class="v-name">Hotel Paradise</div>
+                    <div class="v-desc">Accommodation • Deluxe Suite</div>
+                  </div>
+                </div>
+                <span class="v-status">Active</span>
+              </div>
+              <div class="vendor-row">
+                <div class="v-left">
+                  <div class="v-icon"><i data-icon="truck"></i></div>
+                  <div>
+                    <div class="v-name">Swift Transport</div>
+                    <div class="v-desc">Transportation • Airport transfers</div>
+                  </div>
+                </div>
+                <span class="v-status">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+</body>
+</html>
+
+
+
+

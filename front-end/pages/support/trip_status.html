@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip Status Monitor - Support Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Support<br>Portal</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="reported_issues.html" class="nav-item">
+                    <i data-icon="alert"></i> Reported Issues
+                </a>
+                <a href="issue_log.html" class="nav-item">
+                    <i data-icon="file"></i> Issue Log
+                </a>
+                <a href="coordination_panel.html" class="nav-item">
+                    <i data-icon="users"></i> Coordination Panel
+                </a>
+                <a href="emergency_support.html" class="nav-item">
+                    <i data-icon="phone"></i> Emergency Support
+                </a>
+                <a href="resolution_updates.html" class="nav-item">
+                    <i data-icon="checkcircle"></i> Resolution Updates
+                </a>
+                <a href="trip_status.html" class="nav-item active">
+                    <i data-icon="activity"></i> Trip Status Monitor
+                </a>
+                <a href="messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="notifications.html" data-dd-action="route" data-dd-target="notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">M</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Mahendra</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Support Executive</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="dashboard-container">
+        
+        <div>
+            <h1>Trip Status Monitor</h1>
+            <p>Real-time monitoring of all active trips and their status</p>
+        </div>
+
+        <div>
+            <div class="info-card">
+                <div>
+                    <div><i data-icon="activity"></i></div>
+                    <div>Active Trips</div>
+                    <div>Currently in progress</div>
+                </div>
+                <div class="stat-val">4</div>
+            </div>
+
+            <div class="info-card">
+                <div>
+                    <div><i data-icon="users"></i></div>
+                    <div>Active Travelers</div>
+                    <div>On active trips</div>
+                </div>
+                <div class="stat-val">4</div>
+            </div>
+
+            <div class="info-card">
+                <div>
+                    <div><i data-icon="alertcircle"></i></div>
+                    <div>Active Issues</div>
+                    <div>Requiring attention</div>
+                </div>
+                <div class="stat-val">1</div>
+            </div>
+
+            <div class="info-card">
+                <div>
+                    <div><i data-icon="mappin"></i></div>
+                    <div>Destinations</div>
+                    <div>Currently active</div>
+                </div>
+                <div class="stat-val">12</div>
+            </div>
+        </div>
+
+        <h2>Real-Time Trip Status</h2>
+
+        <!-- Card 1 (Issue) -->
+        <div class="trip-row trip-row-issue">
+            <div>
+                <div>
+                    <div>101</div>
+                    <div>
+                        <div>
+                            <h3>Paris Adventure</h3>
+                            <span class="badge-ip">In Progress</span>
+                            <span class="text-issue"><i data-icon="alertcircle"></i> Issue</span>
+                        </div>
+                        <div>TRIP-101</div>
+                    </div>
+                </div>
+                <div><i data-icon="clock"></i> 10 min ago</div>
+            </div>
+
+            <div>
+                <div>
+                    <div>Traveler</div>
+                    <div>Sarah Johnson</div>
+                </div>
+                <div>
+                    <div>Tour Guide</div>
+                    <div>Tour Guide Mike</div>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <span>Trip Progress</span>
+                    <span>45%</span>
+                </div>
+                <div class="trip-progress-bg"><div class="trip-progress-fill trip-progress-issue"></div></div>
+            </div>
+
+            <div>
+                <button class="btn-outline" data-navigate="trip_details.html">View Details</button>
+                <button class="btn-outline" data-navigate="messages.html">Contact Guide</button>
+                <button class="btn-outline-red" data-navigate="reported_issues.html"><i data-icon="alertcircle"></i> View Issues</button>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="trip-row trip-row-normal">
+            <div>
+                <div>
+                    <div>102</div>
+                    <div>
+                        <div>
+                            <h3>Tokyo Experience</h3>
+                            <span class="badge-ip">In Progress</span>
+                        </div>
+                        <div>TRIP-102</div>
+                    </div>
+                </div>
+                <div><i data-icon="clock"></i> 30 min ago</div>
+            </div>
+
+            <div>
+                <div>
+                    <div>Traveler</div>
+                    <div>Michael Chen</div>
+                </div>
+                <div>
+                    <div>Tour Guide</div>
+                    <div>Guide Sarah</div>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <span>Trip Progress</span>
+                    <span>40%</span>
+                </div>
+                <div class="trip-progress-bg"><div class="trip-progress-fill"></div></div>
+            </div>
+
+            <div>
+                <button class="btn-outline" data-navigate="trip_details.html">View Details</button>
+                <button class="btn-outline" data-navigate="messages.html">Contact Guide</button>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="trip-row trip-row-normal">
+            <div>
+                <div>
+                    <div>103</div>
+                    <div>
+                        <div>
+                            <h3>Rome Exploration</h3>
+                            <span class="badge-ip">In Progress</span>
+                        </div>
+                        <div>TRIP-103</div>
+                    </div>
+                </div>
+                <div><i data-icon="clock"></i> 1 hour ago</div>
+            </div>
+
+            <div>
+                <div>
+                    <div>Traveler</div>
+                    <div>Emma Davis</div>
+                </div>
+                <div>
+                    <div>Tour Guide</div>
+                    <div>Guide David</div>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <span>Trip Progress</span>
+                    <span>80%</span>
+                </div>
+                <div class="trip-progress-bg"><div class="trip-progress-fill"></div></div>
+            </div>
+
+            <div>
+                <button class="btn-outline" data-navigate="trip_details.html">View Details</button>
+                <button class="btn-outline" data-navigate="messages.html">Contact Guide</button>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="trip-row trip-row-normal">
+            <div>
+                <div>
+                    <div>104</div>
+                    <div>
+                        <div>
+                            <h3>Dubai Safari</h3>
+                            <span class="badge-ss">Starting Soon</span>
+                        </div>
+                        <div>TRIP-104</div>
+                    </div>
+                </div>
+                <div><i data-icon="clock"></i> 2 hours ago</div>
+            </div>
+
+            <div>
+                <div>
+                    <div>Traveler</div>
+                    <div>Robert Wilson</div>
+                </div>
+                <div>
+                    <div>Tour Guide</div>
+                    <div>Guide Ahmed</div>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <span>Trip Progress</span>
+                    <span>0%</span>
+                </div>
+                <div class="trip-progress-bg"><div class="trip-progress-fill"></div></div>
+            </div>
+
+            <div>
+                <button class="btn-outline" data-navigate="trip_details.html">View Details</button>
+                <button class="btn-outline" data-navigate="messages.html">Contact Guide</button>
+            </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+  
+</body>
+</html>
+
+
+
+
+
+

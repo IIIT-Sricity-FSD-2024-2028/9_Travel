@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Destination - Report Issue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Dream<br>Destination</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="traveler_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="traveler_mytrips.html" class="nav-item">
+                    <i data-icon="plane"></i> My Trips
+                </a>
+                <a href="traveler_schedule.html" class="nav-item">
+                    <i data-icon="calendar"></i> Schedule
+                </a>
+                <a href="traveler_progress.html" class="nav-item">
+                    <i data-icon="activity"></i> Progress
+                </a>
+                <a href="traveler_alerts.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications & Alerts
+                </a>
+                <a href="traveler_messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="traveler_report_issue.html" class="nav-item active">
+                    <i data-icon="alert"></i> Report Issue
+                </a>
+                <a href="traveler_support.html" class="nav-item">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="traveler_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="traveler_alerts.html" data-dd-action="route" data-dd-target="traveler_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="traveler_profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">JT</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">John Traveler</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Explorer</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="page-content">
+        <div>
+            <div>
+                <i data-icon="arrowleft"></i> Back to Trip Details
+            </div>
+            <h1>Report an Issue</h1>
+            <p>Tell us more if you're facing any problems.</p>
+        </div>
+
+        <div class="issue-layout">
+            <!-- Left Form Area -->
+            <div class="form-panel">
+                <div class="form-alert">
+                    <i data-icon="info"></i>
+                    Your local guide will be notified immediately to assist you.
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Issue Type <span>*</span></label>
+                        <select class="form-control">
+                            <option>Select issue type</option>
+                            <option>Transportation</option>
+                            <option>Accommodation</option>
+                            <option>Health/Safety</option>
+                            <option>Itinerary/Schedule</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Severity/Urgency Level</label>
+                            <select class="form-control">
+                                <option>Select severity</option>
+                                <option>Low</option>
+                                <option>Medium</option>
+                                <option>High</option>
+                                <option>Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Related Trip <span>*</span></label>
+                            <select class="form-control">
+                                <option>Paris Adventure (TR-2845)</option>
+                                <option>Tokyo Express (TR-3102)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Issue Title <span>*</span></label>
+                        <input type="text" class="form-control" placeholder="Brief statement of the issue" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detailed Description <span>*</span></label>
+                        <textarea class="form-control" rows="5" placeholder="Please describe the issue in detail. What happened? Who is involved? How has this impacted your stay?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Include relevant details like times, locations, names, and any steps you've already taken.</label>
+                        <div>
+                            <label>Upload Photos/Screenshots (Optional)</label>
+                            <div class="upload-zone">
+                                <div class="upload-icon"><i data-icon="uploadcloud"></i></div>
+                                <div class="upload-text">Click to upload or drag and drop</div>
+                                <div class="upload-sub">SVG, PNG, JPG or GIF (max. 5MB)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-wrap">
+                        <input type="checkbox" id="sendupdates" checked />
+                        <label for="sendupdates">Send me updates about this issue via email and SMS</label>
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn-submit" onclick="submitIssue(this); return false;">Submit Issue Report</button>
+                        <button type="button" class="btn-cancel" onclick="window.history.back(); return false;">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar Area -->
+            <div class="right-panels">
+                <div class="panel-card panel-emergency">
+                    <div class="em-title"><i data-icon="alerttriangle"></i> Emergency?</div>
+                    <div class="em-desc">For critical or safety-related issues, contact our emergency support immediately.</div>
+                    <button class="btn-em" onclick="window.location.href='traveler_messages.html'"><i data-icon="phone"></i> Emergency Support</button>
+                </div>
+
+                <div class="panel-card">
+                    <div class="pt-title">Reporting Tips</div>
+                    <ul class="tips-list">
+                        <li><i data-icon="info"></i> Be as specific as possible about the issue</li>
+                        <li><i data-icon="info"></i> Include relevant times and locations</li>
+                        <li><i data-icon="info"></i> Attach photos or screenshots if available</li>
+                        <li><i data-icon="info"></i> Mention any immediate actions you've taken</li>
+                    </ul>
+                </div>
+
+                <div class="panel-card">
+                    <div class="pt-title">Response Times</div>
+                    <div class="rt-row"><span class="rt-label">Critical</span><span class="rt-time rt-critical">15 Min</span></div>
+                    <div class="rt-row"><span class="rt-label">High</span><span class="rt-time rt-high">1 Hour</span></div>
+                    <div class="rt-row"><span class="rt-label">Medium</span><span class="rt-time rt-medium">4 Hours</span></div>
+                    <div class="rt-row"><span class="rt-label">Low</span><span class="rt-time rt-low">24 Hours</span></div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+  <script src="../../js/workflow.js?v=live-20260811-02"></script>
+  <script>
+    function submitIssue(btn) {
+        if (typeof window.submitReportedIssue === 'function') {
+            window.submitReportedIssue(btn);
+        } else {
+            btn.innerHTML = 'Issue reported!';
+        }
+    }
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - Travel Partner</title>
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/cardcomponent.css" />
+    
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="../../landing_page.html">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon gradient-primary">
+                        <span>DD</span>
+                    </div>
+                    <div>
+                        <div class="sidebar-logo-text">Dream Destination</div>
+                    </div>
+                </div>
+            </a>
+                        <nav class="sidebar-nav">
+                <a href="travelPartner_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="travelPartner_trips.html" class="nav-item">
+                    <i data-icon="plane"></i> Trips
+                </a>
+                <a href="travelPartner_travelerSchedules.html" class="nav-item">
+                    <i data-icon="calendar"></i> Traveler Schedules
+                </a>
+                <a href="travelPartner_vendorAssignment.html" class="nav-item">
+                    <i data-icon="users"></i> Vendor Assignment
+                </a>
+                <a href="travelPartner_guideAssignment.html" class="nav-item">
+                    <i data-icon="mappin"></i> Guide Assignment
+                </a>
+                <a href="travelPartner_notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="travelPartner_execution.html" class="nav-item">
+                    <i data-icon="trendingup"></i> Execution
+                </a>
+                <a href="travelPartner_quickActions.html" class="nav-item">
+                    <i data-icon="zap"></i> Quick Actions
+                </a>
+                <a href="travelPartner_profile.html" class="nav-item active">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../../login.html" class="nav-item logout">
+                    <i data-icon="logout"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="travelPartner_notifications.html" data-dd-action="route" data-dd-target="travelPartner_notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">D</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Dileep</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Travel Partner Admin</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1 class="text-2xl font-bold text-gray-900">Travel Partner Profile</h1>
+                    <p class="text-sm text-gray-500 mt-1">Manage your partner information and settings</p>
+                </div>
+
+                <div class="split-layout">
+                    <!-- Profile Summary Card -->
+                    <div class="profile-summary-card">
+                        <div class="profile-avatar-large" data-session-initials>D</div>
+                        <div class="profile-name" data-session-name>Dileep</div>
+                        <div class="profile-role">Elite Travel Partner</div>
+                        
+                        <div class="profile-badges">
+                            <span class="badge badge-green">Active</span>
+                            <span class="badge badge-blue">Verified</span>
+                        </div>
+
+                        <div class="profile-stats">
+                            <div class="stat-row">
+                                <span class="stat-label">Member Since</span>
+                                <span class="stat-value">Jan 2024</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Total Managed Trips</span>
+                                <span class="stat-value">142</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Partner Rating</span>
+                                <span class="stat-value text-amber-500">
+                                    4.9
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Form Card -->
+                    <div class="profile-form-card">
+                        <div class="form-section-title">Profile Information</div>
+                        
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label class="form-label">Partner Name</label>
+                                <input type="text" class="form-input" value="" placeholder="Your name" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Agency Name</label>
+                                <input type="text" class="form-input" value="" placeholder="Your agency" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-input" value="New Delhi, India" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Contact Number</label>
+                                <input type="text" class="form-input" value="" placeholder="Your phone" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-input" value="" placeholder="Your email" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Availability Status</label>
+                                <select class="form-select">
+                                    <option value="available" selected>Available for new trips</option>
+                                    <option value="busy">Busy (Limited capacity)</option>
+                                    <option value="unavailable">Not accepting new trips</option>
+                                </select>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline">Discard</button>
+                                <button type="button" class="btn-save">
+                                    <i data-icon="save"></i> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    
+</body>
+</html>
+
+
+
+
+
+
+

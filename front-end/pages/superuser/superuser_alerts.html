@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Platform Alerts - Super User</title>
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/superuser.css" />
+    <link rel="stylesheet" href="../../css/superadmin.css" />
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="../../landing_page.html">
+                <div class="sidebar-logo">
+                    <div class="brand-icon"><i data-icon="plane"></i></div>
+                    <div class="sidebar-logo-text"><div>Dream</div><div>Destination</div></div>
+                </div>
+            </a>
+                        <nav class="sidebar-nav">
+                <a href="superuser_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="superuser_users.html" class="nav-item">
+                    <i data-icon="users"></i> Users
+                </a>
+                <a href="superuser_trips.html" class="nav-item">
+                    <i data-icon="plane"></i> Trips
+                </a>
+                <a href="superuser_vendors.html" class="nav-item">
+                    <i data-icon="briefcase"></i> Vendors
+                </a>
+                <a href="superuser_guides.html" class="nav-item">
+                    <i data-icon="map"></i> Guides
+                </a>
+                <a href="superuser_alerts.html" class="nav-item active">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="superuser_support.html" class="nav-item">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="superuser_reports.html" class="nav-item">
+                    <i data-icon="filetext"></i> Reports
+                </a>
+                <a href="superuser_settings.html" class="nav-item">
+                    <i data-icon="settings"></i> Settings
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button class="mark-read" data-dd-action="mark-all-read" onclick="if(window.markAllNotifsAsRead) window.markAllNotifsAsRead('superuser');" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                            <button class="delete-all" data-dd-action="delete-all-notifs" onclick="if(window.deleteAllNotifs) window.deleteAllNotifs('superuser');" style="font-size: 12px; color: #ef4444; background: none; border: none; cursor: pointer; font-weight: 600;">Delete all</button>
+                        </div>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="superuser_alerts.html" data-dd-action="route" data-dd-target="superuser_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">SA</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Super Admin</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">System Administrator</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <!-- Page Content -->
+            <div class="sa-dashboard-container sa-dashboard page-content">
+                <div class="welcome-banner" style="background: linear-gradient(135deg, #6366f1, #c084fc) !important; padding: 24px 28px !important; border-radius: 14px !important; margin-bottom: 20px !important; color: #fff;">
+                    <h1 style="color: #fff !important; font-size: 22px !important; margin: 0 0 6px;">Platform Alerts & Notifications 🔔</h1>
+                    <p style="color: rgba(255,255,255,0.9) !important; margin: 0; font-size: 13px !important;">Realtime platform events, system alerts, and unresolved issues</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px;">
+                    <div class="filter-tabs-full" style="display: flex; gap: 0.75rem; background: var(--bg-card-alt, #f1f5f9); padding: 0.375rem; border-radius: 999px; width: fit-content; margin-bottom: 0;">
+                        <button class="filter-tab-pill active" data-filter="all">All Alerts</button>
+                        <button class="filter-tab-pill" data-filter="unread">Unread</button>
+                        <button class="filter-tab-pill" data-filter="high">High Priority</button>
+                        <button class="filter-tab-pill" data-filter="system">System Alerts</button>
+                    </div>
+                    <div class="notif-bulk-bar" style="display: flex; gap: 10px; align-items: center;">
+                        <button class="notif-bulk-btn" data-dd-action="mark-all-read" onclick="window.markAllNotifsAsRead('superuser')" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; background: #0ea5e9; color: #ffffff; border: none; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.3);">
+                            <i data-icon="check"></i> Mark all as read
+                        </button>
+                        <button class="notif-bulk-btn delete-all-btn" data-dd-action="delete-all-notifs" onclick="window.deleteAllNotifs('superuser')" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 600; font-size: 13px; cursor: pointer;">
+                            <i data-icon="trash"></i> Delete all
+                        </button>
+                    </div>
+                </div>
+                <div class="sa-alerts-container sa-section-card" style="padding: 20px; border-radius: 12px;"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    <script src="../../js/superuser.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

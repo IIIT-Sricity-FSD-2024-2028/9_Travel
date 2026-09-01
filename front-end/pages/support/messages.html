@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages - Support Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  <link rel="stylesheet" href="../../css/cardcomponent.css" />
+  <link rel="stylesheet" href="../../css/formelements.css" />
+  <link rel="stylesheet" href="../../css/support.css" />
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Support<br>Portal</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <i data-icon="dashboard"></i> Dashboard
+        </a>
+        <a href="notifications.html" class="nav-item">
+          <i data-icon="bell"></i> Notifications
+        </a>
+        <a href="reported_issues.html" class="nav-item">
+          <i data-icon="alert"></i> Reported Issues
+        </a>
+        <a href="issue_log.html" class="nav-item">
+          <i data-icon="file"></i> Issue Log
+        </a>
+        <a href="coordination_panel.html" class="nav-item">
+          <i data-icon="users"></i> Coordination Panel
+        </a>
+        <a href="emergency_support.html" class="nav-item">
+          <i data-icon="phone"></i> Emergency Support
+        </a>
+        <a href="resolution_updates.html" class="nav-item">
+          <i data-icon="checkcircle"></i> Resolution Updates
+        </a>
+        <a href="trip_status.html" class="nav-item">
+          <i data-icon="activity"></i> Trip Status Monitor
+        </a>
+        <a href="messages.html" class="nav-item active">
+          <i data-icon="message"></i> Messages
+        </a>
+        <a href="profile.html" class="nav-item">
+          <i data-icon="user"></i> Profile
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="search-bar">
+          <i data-icon="search"></i>
+          <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+          <div class="notif-wrapper" style="position: relative;">
+            <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+              <i data-icon="bell"></i>
+              <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+            </button>
+            <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+              <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+              </div>
+              <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                <!-- Dynamic notification items rendered by workflow.js -->
+              </div>
+              <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                <a href="notifications.html" data-dd-action="route" data-dd-target="notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+              </div>
+            </div>
+          </div>
+          <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+            <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">M</div>
+            <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+              <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Mahendra</div>
+              <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Support Executive</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-container">
+        <!-- Page Title -->
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 24px; font-weight: 800; color: var(--text-primary, #0f172a); margin-bottom: 4px;">Support Messages</h1>
+          <p style="font-size: 14px; color: var(--text-secondary, #64748b);">Direct multi-party communication with travelers, guides, partners, and vendors</p>
+        </div>
+
+        <!-- Chat Layout (Hydrated by workflow.js or static fallback) -->
+        <div class="chat-layout">
+          <!-- Left Pane / Conversations -->
+          <div class="chat-sidebar">
+            <div class="chat-header">
+              <h2>Conversations</h2>
+            </div>
+            <div class="contact-list">
+              <!-- Contact 1 -->
+              <div class="contact-item active">
+                <div class="c-header">
+                  <span class="c-name">Sarah Johnson</span>
+                  <span class="c-time">10:32 AM</span>
+                </div>
+                <div class="c-role">Traveler</div>
+                <div class="c-msg">The hotel says they don't have...</div>
+                <div class="unread-badge">2</div>
+              </div>
+              <!-- Contact 2 -->
+              <div class="contact-item">
+                <div class="c-header">
+                  <span class="c-name">ABC Travels</span>
+                  <span class="c-time">10:30 AM</span>
+                </div>
+                <div class="c-role">Partner</div>
+                <div class="c-msg">Can you update on TRIP-101?</div>
+                <div class="unread-badge">1</div>
+              </div>
+              <!-- Contact 3 -->
+              <div class="contact-item">
+                <div class="c-header">
+                  <span class="c-name">Hotel Deluxe</span>
+                  <span class="c-time">10:20 AM</span>
+                </div>
+                <div class="c-role">Vendor</div>
+                <div class="c-msg">Service completed successfully</div>
+              </div>
+              <!-- Contact 4 -->
+              <div class="contact-item">
+                <div class="c-header">
+                  <span class="c-name">Tour Guide Mike</span>
+                  <span class="c-time">9:50 AM</span>
+                </div>
+                <div class="c-role">Guide</div>
+                <div class="c-msg">Tour is going smoothly</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Pane / Chat Window -->
+          <div class="chat-main" data-dd-message-center>
+            <div class="chat-top">
+              <div class="chat-avatar">S</div>
+              <div>
+                <div>Sarah Johnson</div>
+                <div>Traveler • TRIP-101 (Paris Adventure)</div>
+              </div>
+            </div>
+
+            <div class="chat-messages">
+              <div class="msg-bubble msg-left">
+                <div>I need help with my hotel check-in at Hotel Deluxe.</div>
+                <div class="msg-time">10:30 AM</div>
+              </div>
+              <div class="msg-bubble msg-right">
+                <div>I'm here to help! What seems to be the problem?</div>
+                <div class="msg-time">10:31 AM</div>
+              </div>
+              <div class="msg-bubble msg-left">
+                <div>The hotel front desk says they don't have my reservation under this booking code.</div>
+                <div class="msg-time">10:32 AM</div>
+              </div>
+              <div class="msg-bubble msg-right">
+                <div>Let me contact the hotel and travel partner to resolve this immediately for you.</div>
+                <div class="msg-time">10:33 AM</div>
+              </div>
+            </div>
+
+            <div class="chat-input-area">
+              <select class="chat-input" data-dd-message-recipient style="max-width: 170px;">
+                <option value="all">All Members</option>
+                <option value="traveler">Traveler</option>
+                <option value="partner">Travel Partner</option>
+                <option value="vendor">Vendor</option>
+                <option value="guide">Tour Guide</option>
+              </select>
+              <input type="text" class="chat-input" data-dd-message-input placeholder="Type your response message..." />
+              <button class="btn-send" data-dd-action="member-message-submit"><i data-icon="send"></i> Send</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Message Templates -->
+        <div class="templates-section">
+          <h2><i data-icon="message"></i> Quick Response Templates</h2>
+          <div class="templates-grid">
+            <div class="template-card" onclick="applyTemplate('We have received your issue report for this trip and our support executive team is actively investigating it.')">
+              <div class="template-card-title">
+                <i data-icon="alert" style="color: #06b6d4;"></i> Issue Acknowledgment
+              </div>
+              <div class="template-card-text">"We have received your issue report for this trip and our support executive team is actively investigating it."</div>
+            </div>
+
+            <div class="template-card" onclick="applyTemplate('We have coordinated with your assigned tour guide and vendor. They are aware and assisting now.')">
+              <div class="template-card-title">
+                <i data-icon="users" style="color: #0ea5e9;"></i> Guide & Vendor Coordination
+              </div>
+              <div class="template-card-text">"We have coordinated with your assigned tour guide and vendor. They are aware and assisting now."</div>
+            </div>
+
+            <div class="template-card" onclick="applyTemplate('The reported issue has been addressed and marked resolved. Please verify if everything is to your satisfaction.')">
+              <div class="template-card-title">
+                <i data-icon="checkcircle" style="color: #10b981;"></i> Resolution Confirmation
+              </div>
+              <div class="template-card-text">"The reported issue has been addressed and marked resolved. Please verify if everything is to your satisfaction."</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+  <script src="../../js/workflow.js?v=live-20260811-02"></script>
+  
+  <script>
+    function applyTemplate(text) {
+      const input = document.querySelector('[data-dd-message-input]') || document.querySelector('.chat-input[type="text"]');
+      if (input) {
+        input.value = text;
+        input.focus();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const contacts = document.querySelectorAll('.contact-item');
+      const chatAvatar = document.querySelector('.chat-avatar');
+      const chatHeaderName = document.querySelector('.chat-top > div > div:first-child');
+      const chatHeaderRole = document.querySelector('.chat-top > div > div:last-child');
+      const chatMessages = document.querySelector('.chat-messages');
+      const sendBtn = document.querySelector('.btn-send');
+      const chatInput = document.querySelector('.chat-input[type="text"]');
+
+      // Static fallback contact switcher
+      contacts.forEach(contact => {
+        contact.addEventListener('click', () => {
+          contacts.forEach(c => c.classList.remove('active'));
+          contact.classList.add('active');
+
+          const nameEl = contact.querySelector('.c-name');
+          const roleEl = contact.querySelector('.c-role');
+          if (nameEl && chatHeaderName) {
+            const name = nameEl.innerText;
+            const role = roleEl ? roleEl.innerText : 'User';
+            chatHeaderName.innerText = name;
+            if (chatHeaderRole) chatHeaderRole.innerText = `${role} • Active Inquiry`;
+            if (chatAvatar) chatAvatar.innerText = name.charAt(0).toUpperCase();
+
+            if (chatMessages) {
+              chatMessages.innerHTML = `
+                <div class="msg-bubble msg-left">
+                  <div>Hello! Support executive Mahendra here. How can we assist ${name} today?</div>
+                  <div class="msg-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                </div>
+              `;
+            }
+          }
+          const badge = contact.querySelector('.unread-badge');
+          if (badge) badge.remove();
+        });
+      });
+
+      // Static fallback send handler
+      function handleStaticSendMessage() {
+        if (!chatInput) return;
+        const text = chatInput.value.trim();
+        if (text && chatMessages) {
+          const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const msgDiv = document.createElement('div');
+          msgDiv.className = 'msg-bubble msg-right';
+          msgDiv.innerHTML = `
+            <div>${text}</div>
+            <div class="msg-time">${now}</div>
+          `;
+          chatMessages.appendChild(msgDiv);
+          chatInput.value = '';
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      }
+
+      if (sendBtn && !sendBtn.hasAttribute('data-dd-action')) {
+        sendBtn.addEventListener('click', handleStaticSendMessage);
+      }
+    });
+  </script>
+</body>
+</html>

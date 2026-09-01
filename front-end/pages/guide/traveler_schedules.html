@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traveler Schedules - Guide Portal</title>
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/cardcomponent.css" />
+    
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="../../landing_page.html">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon gradient-primary">
+                        <span>DD</span>
+                    </div>
+                    <div>
+                        <div class="sidebar-logo-text">Guide Portal</div>
+                    </div>
+                </div>
+            </a>
+                        <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="assignments.html" class="nav-item">
+                    <i data-icon="clipboard"></i> Assignments
+                </a>
+                <a href="traveler_schedules.html" class="nav-item active">
+                    <i data-icon="calendar"></i> Traveler Schedules
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="tour_updates.html" class="nav-item">
+                    <i data-icon="message"></i> Tour Updates
+                </a>
+                <a href="issue_reporting.html" class="nav-item">
+                    <i data-icon="alert"></i> Issue Reporting
+                </a>
+                <a href="activity_log.html" class="nav-item">
+                    <i data-icon="activity"></i> Activity Log
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../../login.html" class="nav-item logout">
+                    <i data-icon="logout"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="traveler_alerts.html" data-dd-action="route" data-dd-target="traveler_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">K</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Koushik</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Tour Guide</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <!-- Page Content -->
+            <div class="page-content" id="guide-schedules">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <h1 class="text-2xl font-bold text-white mb-2">My Traveler Schedules 📅</h1>
+                    <p class="text-white opacity-90">View schedules for your assigned travelers</p>
+                </div>
+ 
+                <!-- Stats Grid -->
+                <div class="stats-grid-4">
+                    <!-- Assigned Travelers -->
+                    <div class="stat-card-premium">
+                        <div class="stat-number-premium text-purple-premium">3</div>
+                        <div class="stat-label-premium">Assigned Travelers</div>
+                    </div>
+                    <!-- Active Tours -->
+                    <div class="stat-card-premium">
+                        <div class="stat-number-premium text-green-premium">1</div>
+                        <div class="stat-label-premium">Active Tours</div>
+                    </div>
+                    <!-- Upcoming Tours -->
+                    <div class="stat-card-premium">
+                        <div class="stat-number-premium text-blue-premium">2</div>
+                        <div class="stat-label-premium">Upcoming Tours</div>
+                    </div>
+                    <!-- Tours Completed -->
+                    <div class="stat-card-premium">
+                        <div class="stat-number-premium text-purple-premium">2</div>
+                        <div class="stat-label-premium">Tours Completed</div>
+                    </div>
+                </div>
+                <!-- Filter Bar -->
+                <div class="filter-bar-high">
+                    <div class="f-search">
+                        <i data-icon="search"></i>
+                        <input type="text" placeholder="Search by traveler name, trip name, or ID..." />
+                    </div>
+                    <div class="f-actions">
+                        <i data-icon="filter" class="f-icon"></i>
+                        <select class="f-select">
+                            <option value="all">All Status</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+ 
+                <!-- Schedule List -->
+                <div class="schedule-list-high">
+                    <!-- Item 1 -->
+                    <div class="schedule-card-high">
+                        <div class="sc-main-row">
+                            <div class="sc-content-left">
+                                <div class="sc-badges">
+                                    <span class="badge badge-green">ONGOING</span>
+                                    <span class="badge text-gray-500 bg-gray-50">TR-5012</span>
+                                    <span class="badge text-gray-500 bg-gray-50">2 Travelers</span>
+                                </div>
+                                <h3 class="sc-title">Paris Adventure</h3>
+                                <p class="sc-traveler">Emily Rodriguez</p>
+                                <div class="sc-meta-row">
+                                    <span class="meta-item"><i data-icon="mappin"></i> Paris, France</span>
+                                    <span class="meta-item"><i data-icon="calendar"></i> Mar 20, 2026 - Mar 27, 2026</span>
+                                </div>
+                            </div>
+                            
+                            <div class="sc-actions-right">
+                                <button class="btn-view-schedule" data-navigate="traveler_schedule_ongoing.html">
+                                    <i data-icon="eye"></i>
+                                    <span>View Schedule</span>
+                                </button>
+                                <button class="btn-message" data-navigate="tour_updates.html">
+                                    <i data-icon="message"></i>
+                                    <span>Message</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="sc-ribbons-section">
+                            <div class="sc-ribbon-teal">
+                                Your Tours: 5 total • 2 completed
+                            </div>
+                            <div class="progress-container-full">
+                                <div class="p-label-row">
+                                    <span class="p-label">Tour Progress</span>
+                                    <span class="p-value">2/5</span>
+                                </div>
+                                <div class="p-bar-full">
+                                    <div class="p-fill-blue" style="width: 40%;"></div>
+                                </div>
+                            </div>
+                            <div class="sc-ribbon-green">
+                                Current Activity: Louvre Museum Visit
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Item 2 -->
+                    <div class="schedule-card-high">
+                        <div class="sc-main-row">
+                            <div class="sc-content-left">
+                                <div class="sc-badges">
+                                    <span class="badge badge-blue">UPCOMING</span>
+                                    <span class="badge text-gray-500 bg-gray-50">TR-3491</span>
+                                    <span class="badge text-gray-500 bg-gray-50">4 Travelers</span>
+                                </div>
+                                <h3 class="sc-title">Italian Heritage Tour</h3>
+                                <p class="sc-traveler">Robert & Lisa Taylor</p>
+                                <div class="sc-meta-row">
+                                    <span class="meta-item"><i data-icon="mappin"></i> Rome, Italy</span>
+                                    <span class="meta-item"><i data-icon="calendar"></i> Apr 1, 2026 - Apr 15, 2026</span>
+                                </div>
+                            </div>
+                            
+                            <div class="sc-actions-right">
+                                <button class="btn-view-schedule" data-navigate="traveler_schedule_upcoming.html">
+                                    <i data-icon="eye"></i>
+                                    <span>View Schedule</span>
+                                </button>
+                                <button class="btn-message" data-navigate="tour_updates.html">
+                                    <i data-icon="message"></i>
+                                    <span>Message</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="sc-ribbons-section">
+                            <div class="sc-ribbon-teal">
+                                Your Tours: 8 total • 0 completed
+                            </div>
+                            <div class="progress-container-full">
+                                <div class="p-label-row">
+                                    <span class="p-label">Tour Progress</span>
+                                    <span class="p-value">0/8</span>
+                                </div>
+                                <div class="p-bar-full">
+                                    <div class="p-fill-blue" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Item 3 -->
+                    <div class="schedule-card-high">
+                        <div class="sc-main-row">
+                            <div class="sc-content-left">
+                                <div class="sc-badges">
+                                    <span class="badge badge-blue">UPCOMING</span>
+                                    <span class="badge text-gray-500 bg-gray-50">TR-5022</span>
+                                    <span class="badge text-gray-500 bg-gray-50">3 Travelers</span>
+                                </div>
+                                <h3 class="sc-title">Dubai Luxury Experience</h3>
+                                <p class="sc-traveler">James Wilson Family</p>
+                                <div class="sc-meta-row">
+                                    <span class="meta-item"><i data-icon="mappin"></i> Dubai, UAE</span>
+                                    <span class="meta-item"><i data-icon="calendar"></i> May 20, 2026 - May 27, 2026</span>
+                                </div>
+                            </div>
+                            
+                            <div class="sc-actions-right">
+                                <button class="btn-view-schedule" data-navigate="traveler_schedule_upcoming.html">
+                                    <i data-icon="eye"></i>
+                                    <span>View Schedule</span>
+                                </button>
+                                <button class="btn-message" data-navigate="tour_updates.html">
+                                    <i data-icon="message"></i>
+                                    <span>Message</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="sc-ribbons-section">
+                            <div class="sc-ribbon-teal">
+                                Your Tours: 4 total • 0 completed
+                            </div>
+                            <div class="progress-container-full">
+                                <div class="p-label-row">
+                                    <span class="p-label">Tour Progress</span>
+                                    <span class="p-value">0/4</span>
+                                </div>
+                                <div class="p-bar-full">
+                                    <div class="p-fill-blue" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    
+</body>
+</html>
+
+
+
+
+
+

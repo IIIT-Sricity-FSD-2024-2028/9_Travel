@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resolution Updates - Support Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-card {
+            background: white;
+            width: 90%;
+            max-width: 440px;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: #f8fafc;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .modal-body p {
+            color: #475569;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin: 0 0 32px 0;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-modal-cancel {
+            flex: 1;
+            padding: 12px 24px;
+            border-radius: 99px;
+            border: none;
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-modal-confirm {
+            flex: 1;
+            padding: 12px 24px;
+            border-radius: 99px;
+            border: none;
+            background: #10b981;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-modal-confirm:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-modal-cancel:hover {
+            background: #f1f5f9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+  </style>
+  
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Support<br>Portal</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="reported_issues.html" class="nav-item">
+                    <i data-icon="alert"></i> Reported Issues
+                </a>
+                <a href="issue_log.html" class="nav-item">
+                    <i data-icon="file"></i> Issue Log
+                </a>
+                <a href="coordination_panel.html" class="nav-item">
+                    <i data-icon="users"></i> Coordination Panel
+                </a>
+                <a href="emergency_support.html" class="nav-item">
+                    <i data-icon="phone"></i> Emergency Support
+                </a>
+                <a href="resolution_updates.html" class="nav-item active">
+                    <i data-icon="checkcircle"></i> Resolution Updates
+                </a>
+                <a href="trip_status.html" class="nav-item">
+                    <i data-icon="activity"></i> Trip Status Monitor
+                </a>
+                <a href="messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="notifications.html" data-dd-action="route" data-dd-target="notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">M</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Mahendra</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Support Executive</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="dashboard-container">
+        
+        <div>
+            <h1>Resolution Updates</h1>
+            <p>Confirm issue resolutions and notify stakeholders</p>
+        </div>
+
+        <div class="success-banner">
+            <i data-icon="check"></i> Resolved issues notify all stakeholders automatically
+        </div>
+
+        <div>
+            
+            <!-- Confirm Issue Resolution Form -->
+            <div>
+                <h2>Confirm Issue Resolution</h2>
+                
+                <form action="#">
+                    <div class="form-group">
+                        <label class="form-label">Select Issue</label>
+                        <select class="form-select" required>
+                            <option value="" disabled selected>Choose an issue to confirm resolution</option>
+                            <option>ISS-5421 - Transportation Delay</option>
+                            <option>ISS-5422 - Hotel Check-In Problem</option>
+                            <option>ISS-5423 - Activity Cancellation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Resolution Details</label>
+                        <textarea class="form-textarea" rows="4" placeholder="Describe how the issue was resolved..." required></textarea>
+                    </div>
+
+                    <label class="checkbox-box">
+                        <input type="checkbox" checked>
+                        <span>Notify traveler, vendor, guide, and travel partner of resolution</span>
+                    </label>
+
+                    <button type="submit">
+                        <i data-icon="check"></i> Confirm Resolution
+                    </button>
+                </form>
+            </div>
+
+            <!-- Pending Resolution Confirmations -->
+            <div>
+                <div>
+                    <h2>Pending Resolution Confirmations</h2>
+                </div>
+                
+                <div class="pending-item">
+                    <div>
+                        <div>
+                            <div>
+                                ISS-5421 <span class="badge-yellow">Pending Confirmation</span>
+                            </div>
+                            <div>
+                                Assigned To: <span>Vendor - City Transport</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="res-notes">
+                        <div class="res-notes-label">Resolution Notes</div>
+                        Alternative transport arranged, traveler reached destination
+                    </div>
+                    
+                    <button class="btn-teal-full"><i data-icon="checkcircle"></i> Confirm Resolution</button>
+                </div>
+
+                <div class="pending-item">
+                    <div>
+                        <div>
+                            <div>
+                                ISS-5422 <span class="badge-yellow">Pending Confirmation</span>
+                            </div>
+                            <div>
+                                Assigned To: <span>Travel Partner - ABC Travels</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="res-notes">
+                        <div class="res-notes-label">Resolution Notes</div>
+                        Hotel check-in completed, room upgraded as compensation
+                    </div>
+                    
+                    <button class="btn-teal-full"><i data-icon="checkcircle"></i> Confirm Resolution</button>
+                </div>
+
+                <div class="pending-item">
+                    <div>
+                        <div>
+                            <div>
+                                ISS-5423 <span class="badge-yellow">Pending Confirmation</span>
+                            </div>
+                            <div>
+                                Assigned To: <span>Tour Guide - Mike</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="res-notes">
+                        <div class="res-notes-label">Resolution Notes</div>
+                        Alternative activity scheduled for tomorrow
+                    </div>
+                    
+                    <button class="btn-teal-full"><i data-icon="checkcircle"></i> Confirm Resolution</button>
+                </div>
+
+            </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+  <div id="confirmModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2>Confirm Resolution</h2>
+            <button class="modal-close" onclick="closeModal('confirmModal')">
+                <i data-icon="x"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to confirm this issue's resolution?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-cancel" onclick="closeModal('confirmModal')">Cancel</button>
+            <button class="btn-modal-confirm" onclick="showSuccess()">Confirm</button>
+        </div>
+    </div>
+  </div>
+
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2>Success</h2>
+            <button class="modal-close" onclick="closeModal('successModal')">
+                <i data-icon="x"></i>
+            </button>
+        </div>
+        <div class="modal-body text-center">
+            <div style="background: #ecfdf5; color: #10b981; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i data-icon="check" style="width: 32px; height: 32px;"></i>
+            </div>
+            <p>The issue resolution has been confirmed successfully. Handlers and travelers have been notified.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-confirm" style="flex: 1;" onclick="closeModal('successModal')">Great!</button>
+        </div>
+    </div>
+  </div>
+
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+  <script>
+    let activeResolutionTarget = null;
+    function openModal(id, target) {
+        activeResolutionTarget = target || activeResolutionTarget;
+        const modal = document.getElementById(id);
+        if (modal) modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function showSuccess() {
+        closeModal('confirmModal');
+        if (typeof window.submitResolution === 'function') {
+            window.submitResolution(activeResolutionTarget);
+        } else {
+            setTimeout(() => {
+                openModal('successModal');
+            }, 300);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                openModal('confirmModal', form);
+            });
+        }
+
+        const listButtons = document.querySelectorAll('.btn-teal-full');
+        listButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal('confirmModal', btn);
+            });
+        });
+    });
+
+    // Close on overlay click
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            closeModal(event.target.id);
+        }
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+

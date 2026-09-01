@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schedule Detail - Completed</title>
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/cardcomponent.css" />
+    
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="../../landing_page.html">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon gradient-primary">
+                        <span>DD</span>
+                    </div>
+                    <div>
+                        <div class="sidebar-logo-text">Dream Destination</div>
+                    </div>
+                </div>
+            </a>
+                        <nav class="sidebar-nav">
+                <a href="travelPartner_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="travelPartner_trips.html" class="nav-item">
+                    <i data-icon="plane"></i> Trips
+                </a>
+                <a href="travelPartner_travelerSchedules.html" class="nav-item active">
+                    <i data-icon="calendar"></i> Traveler Schedules
+                </a>
+                <a href="travelPartner_vendorAssignment.html" class="nav-item">
+                    <i data-icon="users"></i> Vendor Assignment
+                </a>
+                <a href="travelPartner_guideAssignment.html" class="nav-item">
+                    <i data-icon="mappin"></i> Guide Assignment
+                </a>
+                <a href="travelPartner_notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="travelPartner_execution.html" class="nav-item">
+                    <i data-icon="trendingup"></i> Execution
+                </a>
+                <a href="travelPartner_quickActions.html" class="nav-item">
+                    <i data-icon="zap"></i> Quick Actions
+                </a>
+                <a href="travelPartner_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../../login.html" class="nav-item logout">
+                    <i data-icon="logout"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="travelPartner_notifications.html" data-dd-action="route" data-dd-target="travelPartner_notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">D</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Dileep</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Travel Partner Admin</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <!-- Stats Header -->
+            <div class="detail-stats-header">
+                <div class="detail-stat-item">
+                    <div class="detail-stat-icon"><i data-icon="users"></i></div>
+                    <div class="detail-stat-content">
+                        <div class="detail-stat-label">Total Travelers</div>
+                        <div class="detail-stat-value">4</div>
+                    </div>
+                </div>
+                <div class="detail-stat-divider"></div>
+                <div class="detail-stat-item">
+                    <div class="detail-stat-icon"><i data-icon="activity"></i></div>
+                    <div class="detail-stat-content">
+                        <div class="detail-stat-label">Ongoing Trips</div>
+                        <div class="detail-stat-value green">1</div>
+                    </div>
+                </div>
+                <div class="detail-stat-divider"></div>
+                <div class="detail-stat-item">
+                    <div class="detail-stat-icon"><i data-icon="calendar"></i></div>
+                    <div class="detail-stat-content">
+                        <div class="detail-stat-label">Upcoming Trips</div>
+                        <div class="detail-stat-value blue">2</div>
+                    </div>
+                </div>
+                <div class="detail-stat-divider"></div>
+                <div class="detail-stat-item">
+                    <div class="detail-stat-icon"><i data-icon="checkcircle"></i></div>
+                    <div class="detail-stat-content">
+                        <div class="detail-stat-label">Completed</div>
+                        <div class="detail-stat-value gray">1</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <a href="travelPartner_travelerSchedules.html" class="page-header-nav">
+                    <i data-icon="arrowleft"></i> Back to All Travelers
+                </a>
+                
+                <div class="flex justify-between items-center mt-2">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Tokyo Experience</h1>
+                        <p class="text-sm text-gray-500 mt-1">Traveler: Michael Chen • TRIP-2051</p>
+                    </div>
+                    <span class="badge badge-gray"><i data-icon="checkcircle"></i> Completed</span>
+                </div>
+
+                <div class="split-layout">
+                    <!-- Left: Schedule Timeline List -->
+                    <div class="timeline-container">
+                        
+                        <!-- Day 1 -->
+                        <div class="day-group">
+                            <div class="day-header">
+                                <div class="day-badge">1</div>
+                                <div>
+                                    <div class="day-title">Day 1</div>
+                                    <div class="day-date">Feb 10, 2026</div>
+                                </div>
+                            </div>
+                            <div class="events-list">
+                                <!-- Event 1 -->
+                                <div class="event-card">
+                                    <div class="flex gap-4 items-center">
+                                        <div class="event-icon-box">
+                                            <i data-icon="plane"></i>
+                                        </div>
+                                        <div>
+                                            <div class="event-title">Airport Arrival</div>
+                                            <div class="event-detail"><i data-icon="clock"></i> 08:00 AM</div>
+                                            <div class="event-detail"><i data-icon="mappin"></i> Haneda Airport</div>
+                                            <div class="event-detail"><i data-icon="users"></i> Vendor: Japan Travels</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-gray">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 7 -->
+                        <div class="day-group">
+                            <div class="day-header">
+                                <div class="day-badge">7</div>
+                                <div>
+                                    <div class="day-title">Day 7</div>
+                                    <div class="day-date">Feb 17, 2026</div>
+                                </div>
+                            </div>
+                            <div class="events-list">
+                                <!-- Event 1 -->
+                                <div class="event-card">
+                                    <div class="flex gap-4 items-center">
+                                        <div class="event-icon-box">
+                                            <i data-icon="compass"></i>
+                                        </div>
+                                        <div>
+                                            <div class="event-title">Tokyo Tower Visit</div>
+                                            <div class="event-detail"><i data-icon="clock"></i> 10:00 AM</div>
+                                            <div class="event-detail"><i data-icon="mappin"></i> Minato City</div>
+                                            <div class="event-detail"><i data-icon="users"></i> Guide: Yuki Tanaka</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-gray">Completed</span>
+                                </div>
+                                <!-- Event 2 -->
+                                <div class="event-card">
+                                    <div class="flex gap-4 items-center">
+                                        <div class="event-icon-box">
+                                            <i data-icon="plane"></i>
+                                        </div>
+                                        <div>
+                                            <div class="event-title">Airport Drop-off</div>
+                                            <div class="event-detail"><i data-icon="clock"></i> 05:00 PM</div>
+                                            <div class="event-detail"><i data-icon="mappin"></i> Haneda Airport</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-gray">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Info Panels -->
+                    <div class="sidebar-panels">
+                        <div class="info-card">
+                            <h4>Trip Information</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Destination</span>
+                                    <span class="info-value">Tokyo, Japan</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Traveler</span>
+                                    <span class="info-value">Michael Chen</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Duration</span>
+                                    <span class="info-value">Feb 10, 2026 - Feb 17, 2026</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Assigned Guide</span>
+                                    <span class="info-value">Yuki Tanaka</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Assigned Vendor</span>
+                                    <span class="info-value">Japan Travels</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Progress</span>
+                                    <span class="info-value">Completed (Day 7 of 7)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h4>Activities Progress</h4>
+                            <div class="prog-item">
+                                <div class="prog-label">
+                                    <span>Completed</span><span>15</span>
+                                </div>
+                                <div class="prog-track">
+                                    <div class="prog-fill fill-green"></div>
+                                </div>
+                            </div>
+                            <div class="prog-item">
+                                <div class="prog-label">
+                                    <span>Remaining</span><span>0</span>
+                                </div>
+                                <div class="prog-track">
+                                    <div class="prog-fill fill-gray"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h4>Quick Actions</h4>
+                            <div class="action-btns">
+                                <button class="btn-teal">Edit Schedule</button>
+                                <button class="btn-outline">Contact Vendor</button>
+                                <button class="btn-outline">View Trip Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    
+</body>
+</html>
+
+
+
+
+
+
+

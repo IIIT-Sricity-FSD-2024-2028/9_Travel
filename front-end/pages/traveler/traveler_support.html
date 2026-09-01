@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Destination - Customer Support</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Dream<br>Destination</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="traveler_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="traveler_mytrips.html" class="nav-item">
+                    <i data-icon="plane"></i> My Trips
+                </a>
+                <a href="traveler_schedule.html" class="nav-item">
+                    <i data-icon="calendar"></i> Schedule
+                </a>
+                <a href="traveler_progress.html" class="nav-item">
+                    <i data-icon="activity"></i> Progress
+                </a>
+                <a href="traveler_alerts.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications & Alerts
+                </a>
+                <a href="traveler_messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="traveler_report_issue.html" class="nav-item">
+                    <i data-icon="alert"></i> Report Issue
+                </a>
+                <a href="traveler_support.html" class="nav-item active">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="traveler_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="traveler_alerts.html" data-dd-action="route" data-dd-target="traveler_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="traveler_profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">JT</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">John Traveler</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Explorer</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="page-content">
+        <div>
+            <h1>Customer Support</h1>
+            <p>We're here to help 24/7 during your journey</p>
+        </div>
+
+        <!-- Top Section -->
+        <div class="support-top-grid">
+            <div class="rep-card">
+                <div class="rep-header">
+                    <div class="rep-avatar" data-support-initials>MK</div>
+                    <div>
+                        <div class="rep-name" data-support-name>Mahendra Kumar</div>
+                        <div class="rep-role" data-support-role>Your Support Executive</div>
+                        <div class="rep-status"><div class="status-dot"></div> Available Now</div>
+                    </div>
+                </div>
+                <div class="rep-details">
+                    <div class="rep-detail-item"><i data-icon="phone" class="rep-detail-icon"></i> <span data-support-phone>+91 98765 43210</span></div>
+                    <div class="rep-detail-item"><i data-icon="mail" class="rep-detail-icon"></i> <span data-support-email>mahendra.support@dreamdestination.com</span></div>
+                    <div class="rep-detail-item"><i data-icon="clock" class="rep-detail-icon"></i> Available 24/7 for your trip</div>
+                </div>
+                <div class="rep-actions">
+                    <button class="btn-rep-call" onclick="alert('Calling Support Executive Mahendra Kumar at +91 98765 43210...')"><i data-icon="phone"></i> Call Now</button>
+                    <button class="btn-rep-chat" onclick="window.location.href='traveler_messages.html'"><i data-icon="message"></i> Chat</button>
+                </div>
+            </div>
+
+            <div class="em-card">
+                <div>
+                    <div class="em-header">
+                        <div class="em-icon"><i data-icon="alerttriangle"></i></div>
+                        <div>
+                            Emergency Help
+                            <div>Immediate assistance worldwide</div>
+                        </div>
+                    </div>
+                    <div class="em-info">
+                        <div class="em-info-item"><i data-icon="phone"></i> Hotline: <span data-support-phone>+91 98765 43210</span></div>
+                        <div class="em-info-item"><i data-icon="mail"></i> Email: <span data-support-email>mahendra.support@dreamdestination.com</span></div>
+                    </div>
+                    <div class="em-note">For critical situations including safety concerns, medical emergencies, or severe travel issues.</div>
+                </div>
+                <button class="btn-em-help" onclick="window.location.href='traveler_report_issue.html'"><i data-icon="phone"></i> Emergency Contact</button>
+            </div>
+        </div>
+
+        <!-- Mid Section -->
+        <h2 class="section-headline">How Can We Help You?</h2>
+        <div class="help-cards-grid">
+            <div class="hc-card">
+                <div class="hc-icon blue"><i data-icon="phone"></i></div>
+                <div class="hc-title">Phone Support</div>
+                <div class="hc-desc">Speak directly with our support team for immediate assistance.</div>
+                <button class="btn-hc blue">Call Now</button>
+            </div>
+            <div class="hc-card">
+                <div class="hc-icon teal"><i data-icon="message"></i></div>
+                <div class="hc-title">Live Chat</div>
+                <div class="hc-desc">Get instant help through chat for minor inquiries or guidance.</div>
+                <button class="btn-hc teal" onclick="window.location.href='traveler_messages.html'">Start Chat</button>
+            </div>
+            <div class="hc-card">
+                <div class="hc-icon purple"><i data-icon="mail"></i></div>
+                <div class="hc-title">Email Support</div>
+                <div class="hc-desc">Send us detailed inquiries or documents for review.</div>
+                <button class="btn-hc purple">Send Email</button>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <h2 class="section-headline">Frequently Asked Questions</h2>
+        <div class="faq-grid">
+            <div class="faq-item">How do I change my itinerary? <i data-icon="chevronright"></i></div>
+            <div class="faq-item">What if my guide doesn't show up? <i data-icon="chevronright"></i></div>
+            <div class="faq-item">How do I contact my guide? <i data-icon="chevronright"></i></div>
+            <div class="faq-item">What should I do if I lose my documents? <i data-icon="chevronright"></i></div>
+            <div class="faq-item">How do I cancel a hotel stay? <i data-icon="chevronright"></i></div>
+            <div class="faq-item">Can I add extra activities to my trip? <i data-icon="chevronright"></i></div>
+            <div class="faq-item">What happens in case of bad weather? <i data-icon="chevronright"></i></div>
+            <div class="faq-item">Who do I contact in a crisis? <i data-icon="chevronright"></i></div>
+        </div>
+        <button class="btn-view-all">View All FAQs</button>
+
+        <!-- Bottom Info -->
+        <div class="info-grid">
+            <div class="info-card blue">
+                <i data-icon="headphones" class="ic-icon blue"></i>
+                <div>
+                    <div class="ic-title">24/7 Support</div>
+                    <div class="ic-desc">Round the clock assistance during your entire trip.</div>
+                </div>
+            </div>
+            <div class="info-card green">
+                <i data-icon="clock" class="ic-icon green"></i>
+                <div>
+                    <div class="ic-title">Quick Response</div>
+                    <div class="ic-desc">Average response time under 5 minutes.</div>
+                </div>
+            </div>
+            <div class="info-card purple">
+                <i data-icon="message" class="ic-icon purple"></i>
+                <div>
+                    <div class="ic-title">Multi-Channel</div>
+                    <div class="ic-desc">Reach us via phone, chat, email, or app.</div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/icons.js"></script>
+  <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+  
+</body>
+</html>
+
+
+
+
+
+
+

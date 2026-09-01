@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tour Guide Management - Dream Destination Super Admin</title>
+    <meta name="description" content="Manage all tour guides and their assignments" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/superuser.css" />
+    <link rel="stylesheet" href="../../css/superadmin.css" />
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="brand-icon"><i data-icon="plane"></i></div>
+                <div class="sidebar-logo-text"><div>Dream</div><div>Destination</div></div>
+            </div>
+                        <nav class="sidebar-nav">
+                <a href="superuser_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="superuser_users.html" class="nav-item">
+                    <i data-icon="users"></i> Users
+                </a>
+                <a href="superuser_trips.html" class="nav-item">
+                    <i data-icon="plane"></i> Trips
+                </a>
+                <a href="superuser_vendors.html" class="nav-item">
+                    <i data-icon="briefcase"></i> Vendors
+                </a>
+                <a href="superuser_guides.html" class="nav-item active">
+                    <i data-icon="map"></i> Guides
+                </a>
+                <a href="superuser_alerts.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="superuser_support.html" class="nav-item">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="superuser_reports.html" class="nav-item">
+                    <i data-icon="filetext"></i> Reports
+                </a>
+                <a href="superuser_settings.html" class="nav-item">
+                    <i data-icon="settings"></i> Settings
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="superuser_alerts.html" data-dd-action="route" data-dd-target="superuser_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">SA</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Super Admin</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">System Administrator</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <div class="sa-dashboard-container sa-dashboard">
+                <div class="sa-page-header">
+                    <div>
+                        <h1>Tour Guide Management</h1>
+                        <p>Manage all tour guides and their assignments</p>
+                    </div>
+                    <button class="sa-btn-primary" id="sa-add-guide-btn"><i data-icon="plus"></i> Add Guide</button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="sa-stats-grid-4">
+                    <div class="sa-stat-card-wide sa-stat-blue">
+                        <div class="sa-sw-icon"><i data-icon="compass"></i></div>
+                        <div class="sa-sw-label">Total Guides</div>
+                        <div class="sa-sw-count">0</div>
+                    </div>
+                    <div class="sa-stat-card-wide sa-stat-green">
+                        <div class="sa-sw-icon"><i data-icon="checkcircle"></i></div>
+                        <div class="sa-sw-label">Active</div>
+                        <div class="sa-sw-count">0</div>
+                    </div>
+                    <div class="sa-stat-card-wide sa-stat-orange">
+                        <div class="sa-sw-icon"><i data-icon="plane"></i></div>
+                        <div class="sa-sw-label">On Tour</div>
+                        <div class="sa-sw-count">0</div>
+                    </div>
+                    <div class="sa-stat-card-wide sa-stat-purple">
+                        <div class="sa-sw-icon"><i data-icon="star"></i></div>
+                        <div class="sa-sw-label">Avg Rating</div>
+                        <div class="sa-sw-count">0</div>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="sa-filter-bar">
+                    <div class="sa-filter-left">
+                        <div class="sa-search-inner">
+                            <i data-icon="search"></i>
+                            <input type="text" placeholder="Search by name, email, or specialty..." id="sa-guide-search" />
+                        </div>
+                    </div>
+                    <div class="sa-filter-right">
+                        <select class="sa-select" id="sa-guide-status-filter">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>On Tour</option>
+                            <option>Inactive</option>
+                        </select>
+                        <select class="sa-select" id="sa-guide-specialty-filter">
+                            <option>All Specializations</option>
+                            <option>Cultural Tours</option>
+                            <option>Adventure</option>
+                            <option>Nature</option>
+                            <option>Urban</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="sa-table-toolbar">
+                    <button class="sa-btn-outline-sm" data-dd-action="export-guide-report" id="sa-export-guides-btn"><i data-icon="clouddownload"></i> Export Details</button>
+                    <span class="sa-table-count">Showing 0 of 0 guides</span>
+                </div>
+                <!-- Guide Cards Grid -->
+                <div class="sa-vendor-cards-grid" id="sa-guides-container">
+                    <div style="padding:24px;color:#64748b;text-align:center;">No guides yet. Use Add Guide to create the first real guide.</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    <script src="../../js/superuser.js"></script>
+    <script src="../../js/superadmin.js"></script>
+</body>
+</html>
+
+
+
+

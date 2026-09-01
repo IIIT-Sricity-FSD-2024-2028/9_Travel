@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Destination - Edit Ongoing Trip</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+  <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+  
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand-icon">DD</div>
+        <div class="sidebar-logo-text">
+          <div>Dream<br>Destination</div>
+        </div>
+      </div>
+                  <nav class="sidebar-nav">
+                <a href="traveler_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="traveler_mytrips.html" class="nav-item active">
+                    <i data-icon="plane"></i> My Trips
+                </a>
+                <a href="traveler_schedule.html" class="nav-item">
+                    <i data-icon="calendar"></i> Schedule
+                </a>
+                <a href="traveler_progress.html" class="nav-item">
+                    <i data-icon="activity"></i> Progress
+                </a>
+                <a href="traveler_alerts.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications & Alerts
+                </a>
+                <a href="traveler_messages.html" class="nav-item">
+                    <i data-icon="message"></i> Messages
+                </a>
+                <a href="traveler_report_issue.html" class="nav-item">
+                    <i data-icon="alert"></i> Report Issue
+                </a>
+                <a href="traveler_support.html" class="nav-item">
+                    <i data-icon="headphones"></i> Support
+                </a>
+                <a href="traveler_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item logout"><i data-icon="logout"></i> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="traveler_alerts.html" data-dd-action="route" data-dd-target="traveler_alerts.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="traveler_profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">JT</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">John Traveler</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Explorer</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+      <div class="page-content">
+        
+        <!-- Top Navigation & Details -->
+        <a href="traveler_mytrips.html" class="top-header-edit">
+            <i data-icon="arrow-left" style="width: 16px; height: 16px;"></i> Back to My Trips
+        </a>
+        
+        <div class="page-title-row">
+            <h1>Edit Trip</h1>
+            <div class="subtitle">
+                Paris Adventure - TR-2345
+                <span class="badge-upcoming" style="background: #dcfce7; color: #16a34a;">Ongoing</span>
+            </div>
+        </div>
+
+        <div class="alert-banner warning">
+            <i data-icon="alert-triangle" style="width: 18px; height: 18px;"></i>
+            <div>
+                <h4>Limited Editing - Trip in Progress</h4>
+                <p>Since your trip is ongoing, you can only update preferences, special requests, and emergency contact information. Major changes like dates and travelers cannot be modified.</p>
+            </div>
+        </div>
+
+        <div class="edit-layout single-col">
+            <div class="edit-left">
+                
+                <!-- Trip Dates Section -->
+                <div class="edit-card">
+                    <div class="edit-card-title"><i data-icon="calendar"></i> Trip Dates</div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Start Date</label>
+                            <input type="text" class="form-control" value="20-03-2026" disabled>
+                            <div class="help-text locked"><i data-icon="lock" style="width:14px; height:14px;"></i> Cannot change - trip in progress</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">End Date</label>
+                            <input type="text" class="form-control" value="27-03-2026" disabled>
+                            <div class="help-text locked"><i data-icon="lock" style="width:14px; height:14px;"></i> Cannot change - trip in progress</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Travelers & Accommodation -->
+                <div class="edit-card">
+                    <div class="edit-card-title"><i data-icon="users"></i> Travelers & Accommodation</div>
+                    <div class="form-group">
+                        <label class="form-label">Number of Travelers</label>
+                        <input type="number" class="form-control" value="2" disabled>
+                        <div class="help-text locked"><i data-icon="lock" style="width:14px; height:14px;"></i> Cannot change - trip in progress</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Accommodation Preference</label>
+                        <select class="form-control" disabled>
+                            <option>Deluxe Suite</option>
+                        </select>
+                        <div class="help-text locked"><i data-icon="lock" style="width:14px; height:14px;"></i> Cannot change - accommodation booked</div>
+                    </div>
+                </div>
+
+                <!-- Meal Preferences -->
+                <div class="edit-card">
+                    <div class="edit-card-title"><i data-icon="coffee"></i> Meal Preferences</div>
+                    <div class="form-group">
+                        <label class="form-label">Meal Plan</label>
+                        <select class="form-control">
+                            <option>All Meals Included</option>
+                            <option>Breakfast & Dinner</option>
+                            <option>Breakfast Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dietary Restrictions</label>
+                        <input type="text" class="form-control" value="Vegetarian">
+                        <div class="help-text success"><i data-icon="check" style="width:14px; height:14px;"></i> Can be updated anytime</div>
+                    </div>
+                </div>
+
+                <!-- Special Requests & Accessibility -->
+                <div class="edit-card">
+                    <div class="edit-card-title"><i data-icon="info"></i> Special Requests & Accessibility</div>
+                    <div class="form-group">
+                        <label class="form-label">Special Requests</label>
+                        <input type="text" class="form-control" value="Late check-in requested">
+                        <div class="help-text success"><i data-icon="check" style="width:14px; height:14px;"></i> Can be updated anytime</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Accessibility Needs</label>
+                        <input type="text" class="form-control" value="None">
+                        <div class="help-text success"><i data-icon="check" style="width:14px; height:14px;"></i> Can be updated anytime</div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="edit-card">
+                    <div class="edit-card-title"><i data-icon="phone" style="color: #ef4444;"></i> Emergency Contact</div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Name</label>
+                        <input type="text" class="form-control" value="Jane Doe">
+                        <div class="help-text success"><i data-icon="check" style="width:14px; height:14px;"></i> Can be updated anytime</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Phone</label>
+                        <input type="text" class="form-control" value="+1 555-0199">
+                        <div class="help-text success"><i data-icon="check" style="width:14px; height:14px;"></i> Can be updated anytime</div>
+                    </div>
+                </div>
+
+                <div style="max-width: 300px; margin-top: 24px;">
+                    <button class="btn-save-primary" data-dd-action="save-traveler-edit"><i data-icon="save" style="width:16px;"></i> Save Changes</button>
+                    <a href="traveler_mytrips.html" class="btn-cancel-link">Cancel</a>
+                </div>
+
+            </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/icons.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  
+  <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+</body>
+</html>
+
+
+
+
+
+

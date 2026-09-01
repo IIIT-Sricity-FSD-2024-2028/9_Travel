@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traveler Schedule - Upcoming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <style>
+        /* Dashboard Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-block;
+            color: var(--text-secondary, #64748b);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--text-primary, #0f172a); }
+
+        /* Header Card */
+        .schedule-header-card {
+            background: var(--bg-surface, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .schedule-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary, #0f172a);
+            margin: 0 0 0.25rem 0;
+        }
+        .schedule-meta {
+            font-size: 0.875rem;
+            color: var(--text-secondary, #64748b);
+            margin: 0;
+        }
+        .status-pill {
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        .status-ongoing { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .status-upcoming { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+
+        /* Timeline Card */
+        .service-timeline-card {
+            background: var(--bg-surface, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .service-timeline-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border-color: var(--border-color-hover, #cbd5e1);
+        }
+        .service-icon-box {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+        .icon-completed { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .icon-upcoming { background: rgba(14, 165, 233, 0.15); color: #38bdf8; }
+
+        .service-content { flex-grow: 1; }
+        .service-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.35rem;
+        }
+        .service-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary, #0f172a);
+            margin: 0;
+        }
+        .service-status-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.3rem;
+            text-transform: uppercase;
+        }
+        .tag-completed { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .tag-upcoming { background: rgba(14, 165, 233, 0.15); color: #38bdf8; }
+
+        .service-location {
+            font-size: 0.85rem;
+            color: var(--text-secondary, #475569);
+            margin: 0 0 1rem 0;
+        }
+
+        .service-details-row {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-muted, #64748b);
+        }
+
+        .detail-pill {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .pill-transport { background: rgba(147, 51, 234, 0.15); color: #c084fc; }
+        .pill-accom { background: rgba(79, 70, 229, 0.15); color: #a5b4fc; }
+        .pill-meal { background: rgba(219, 39, 119, 0.15); color: #f472b6; }
+
+        .service-actions {
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-color, #f1f5f9);
+            display: flex;
+            gap: 0.75rem;
+        }
+        .service-actions button {
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-complete {
+            background: #10b981;
+            color: white;
+            border: none;
+        }
+        .btn-complete:hover { background: #059669; }
+        .btn-report {
+            background: var(--bg-card-alt, #ffffff);
+            color: var(--text-secondary, #64748b);
+            border: 1px solid var(--border-color, #e2e8f0);
+        }
+        .btn-report:hover { background: var(--bg-hover, #f8fafc); color: var(--text-primary, #0f172a); }
+
+        /* Right Column Cards */
+        .info-card {
+            background: var(--bg-surface, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .info-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary, #0f172a);
+            margin: 0 0 1.25rem 0;
+        }
+        .info-item {
+            margin-bottom: 1rem;
+        }
+        .info-item:last-child { margin-bottom: 0; }
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-muted, #64748b);
+            margin-bottom: 0.25rem;
+        }
+        .info-value {
+            font-size: 0.9rem;
+            color: var(--text-primary, #0f172a);
+            font-weight: 500;
+        }
+
+        /* Progress Area */
+        .progress-row { margin-bottom: 1.25rem; }
+        .progress-row:last-child { margin-bottom: 0; }
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .label-completed { color: #16a34a; }
+        .val-completed { color: #16a34a; }
+        .label-upcoming { color: #3b82f6; }
+        .val-upcoming { color: #3b82f6; }
+
+        .p-bar {
+            height: 6px;
+            border-radius: 9999px;
+            background: var(--bg-card-alt, #f1f5f9);
+            overflow: hidden;
+        }
+        .p-bar-green { background: rgba(16, 185, 129, 0.2); }
+        .p-bar-blue { background: rgba(59, 130, 246, 0.2); }
+        .p-fill-completed {
+            height: 100%;
+            background: #10b981;
+            width: 75%;
+        }
+        .p-fill-upcoming {
+            height: 100%;
+            background: #3b82f6;
+            width: 25%;
+        }
+
+        /* Buttons */
+        .btn-block {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .btn-block:last-child { margin-bottom: 0; }
+        .btn-primary {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover { background: #0284c7; }
+        .btn-secondary {
+            background: var(--bg-card-alt, transparent);
+            color: var(--text-secondary, #475569);
+            border: 1px solid var(--border-color, #e2e8f0);
+        }
+        .btn-secondary:hover { background: var(--bg-hover, #f8fafc); color: var(--text-primary, #0f172a); }
+
+        /* Reuse the standard schedule layout from the schedules page */
+        .page-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary, #0f172a);
+            margin: 0 0 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .page-title p {
+            font-size: 0.875rem;
+            color: var(--text-secondary, #64748b);
+            margin: 0 0 1.5rem 0;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .v-stat-card {
+            background: var(--bg-surface, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .v-stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+        .v-stat-card.bg-green::after { background: #10b981; }
+        .v-stat-card.bg-purple::after { background: #8b5cf6; }
+        .v-stat-card.bg-blue::after { background: #3b82f6; }
+        .v-stat-card.bg-orange::after { background: #f59e0b; }
+        
+        .v-stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .v-stat-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .v-stat-card.bg-green .v-stat-icon { background: rgba(16, 185, 129, 0.15); color: #16a34a; }
+        .v-stat-card.bg-purple .v-stat-icon { background: rgba(139, 92, 246, 0.15); color: #7c3aed; }
+        .v-stat-card.bg-blue .v-stat-icon { background: rgba(59, 130, 246, 0.15); color: #2563eb; }
+        .v-stat-card.bg-orange .v-stat-icon { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+        
+        .v-stat-val {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary, #0f172a);
+        }
+        .v-stat-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary, #475569);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        .v-stat-link {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-muted, #64748b);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .v-stat-link:hover { color: var(--text-primary, #0f172a); }
+
+        .filter-bar {
+            background: var(--bg-surface, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .filter-search {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary, #64748b);
+            flex-grow: 1;
+        }
+        .filter-search input {
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 400px;
+            color: var(--text-primary, #0f172a);
+            background: transparent;
+        }
+        .filter-search input::placeholder { color: #94a3b8; }
+        .filter-dropdown {
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 0.5rem;
+            outline: none;
+            color: var(--text-primary, #0f172a);
+            background-color: var(--bg-surface, #ffffff);
+            font-size: 0.875rem;
+            font-weight: 500;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9L12 15L18 9" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+  <script src="../../js/theme.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo-container">
+                <div class="brand-icon">DD</div>
+                <div class="brand-text">Vendor Portal</div>
+            </div>
+                        <nav class="sidebar-nav">
+                <a href="vendor_dashboard.html" class="nav-item">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="vendor_notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="vendor_service_requests.html" class="nav-item">
+                    <i data-icon="clipboard"></i> Service Requests
+                </a>
+                <a href="vendor_active_services.html" class="nav-item">
+                    <i data-icon="activity"></i> Active Services
+                </a>
+                <a href="vendor_traveler_schedules.html" class="nav-item active">
+                    <i data-icon="calendar"></i> Traveler Schedules
+                </a>
+                <a href="vendor_service_updates.html" class="nav-item">
+                    <i data-icon="message"></i> Service Updates
+                </a>
+                <a href="vendor_report_issue.html" class="nav-item">
+                    <i data-icon="alert"></i> Report Issue
+                </a>
+                <a href="vendor_service_history.html" class="nav-item">
+                    <i data-icon="clock"></i> Service History
+                </a>
+                <a href="vendor_profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+            <a href="../../login.html" class="logout-btn logout"><i data-icon="logout"></i> Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+        <div class="search-bar">
+            <i data-icon="search"></i>
+            <input type="text" placeholder="Search trips, issues, or notifications..." />
+        </div>
+        <div class="header-right">
+            <div class="notif-wrapper" style="position: relative;">
+                <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                    <i data-icon="bell"></i>
+                    <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                    <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                        <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                        <!-- Dynamic notification items rendered by workflow.js -->
+                    </div>
+                    <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                        <a href="vendor_notifications.html" data-dd-action="route" data-dd-target="vendor_notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">L</div>
+                <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                    <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Lokesh</div>
+                    <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Service Vendor</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <!-- Page content -->
+            <div class="page-scroll">
+                <div class="page-title">
+                    <h1><i data-icon="calendar"></i> Traveler Schedules</h1>
+                    <p>View travelers using your services</p>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <!-- Stat 1 -->
+                    <div class="v-stat-card bg-green">
+                        <div class="v-stat-top">
+                            <div class="v-stat-icon"><i data-icon="user"></i></div>
+                            <div class="v-stat-val">3</div>
+                        </div>
+                        <div class="v-stat-title">Active Travelers</div>
+                        <div class="v-stat-link">View travelers &rarr;</div>
+                    </div>
+                    <!-- Stat 2 -->
+                    <div class="v-stat-card bg-purple">
+                        <div class="v-stat-top">
+                            <div class="v-stat-icon"><i data-icon="checkcircle"></i></div>
+                            <div class="v-stat-val">3</div>
+                        </div>
+                        <div class="v-stat-title">Services Completed</div>
+                        <div class="v-stat-link">View history &rarr;</div>
+                    </div>
+                    <!-- Stat 3 -->
+                    <div class="v-stat-card bg-blue">
+                        <div class="v-stat-top">
+                            <div class="v-stat-icon"><i data-icon="calendar"></i></div>
+                            <div class="v-stat-val">4</div>
+                        </div>
+                        <div class="v-stat-title">Upcoming Services</div>
+                        <div class="v-stat-link">View schedule &rarr;</div>
+                    </div>
+                    <!-- Stat 4 -->
+                    <div class="v-stat-card bg-orange">
+                        <div class="v-stat-top">
+                            <div class="v-stat-icon"><i data-icon="activity"></i></div>
+                            <div class="v-stat-val">7</div>
+                        </div>
+                        <div class="v-stat-title">Total Services</div>
+                        <div class="v-stat-link">View all &rarr;</div>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <div class="filter-search">
+                        <i data-icon="search"></i>
+                        <input type="text" placeholder="Search by traveler name, trip name, or ID..." />
+                    </div>
+                    <div class="filter-actions">
+                        <select class="filter-dropdown">
+                            <option>All Services</option>
+                            <option>Ongoing</option>
+                            <option>Upcoming</option>
+                            <option>Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <a href="vendor_traveler_schedules.html" class="back-link">&larr; Back to All Travelers</a>
+                
+                <div class="dashboard-grid">
+                    <!-- Left Column -->
+                    <div class="left-col">
+                        <!-- Header Card -->
+                        <div class="schedule-header-card">
+                            <div>
+                                <h1 class="schedule-title">Bali Beach Getaway</h1>
+                                <p class="schedule-meta">Sarah Johnson • TR-3156</p>
+                            </div>
+                            <div class="status-pill status-upcoming">UPCOMING</div>
+                        </div>
+                        
+                        <!-- Timeline Details -->
+                        <!-- Card 1 (Upcoming) -->
+                        <div class="service-timeline-card">
+                            <div class="service-icon-box icon-upcoming">
+                                <i data-icon="plane"></i>
+                            </div>
+                            <div class="service-content">
+                                <div class="service-top">
+                                    <h3 class="service-name">Airport Transfer</h3>
+                                    <span class="service-status-tag tag-upcoming">upcoming</span>
+                                </div>
+                                <p class="service-location">Ngurah Rai International Airport</p>
+                                <div class="service-details-row">
+                                    <div class="detail-item"><i data-icon="calendar"></i> Apr 15, 2026</div>
+                                    <div class="detail-item"><i data-icon="clock"></i> 02:00 PM</div>
+                                    <span class="detail-pill pill-transport">Transportation</span>
+                                </div>
+                                <div class="service-actions">
+                                    <button class="btn-complete">Mark as Completed</button>
+                                    <button class="btn-report">Report Issue</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 (Upcoming) -->
+                        <div class="service-timeline-card">
+                            <div class="service-icon-box icon-upcoming">
+                                <i data-icon="mappin"></i>
+                            </div>
+                            <div class="service-content">
+                                <div class="service-top">
+                                    <h3 class="service-name">Resort Check-in</h3>
+                                    <span class="service-status-tag tag-upcoming">upcoming</span>
+                                </div>
+                                <p class="service-location">Luxury Beach Resort</p>
+                                <div class="service-details-row">
+                                    <div class="detail-item"><i data-icon="calendar"></i> Apr 15, 2026</div>
+                                    <div class="detail-item"><i data-icon="clock"></i> 04:30 PM</div>
+                                    <span class="detail-pill pill-accom">Accommodation</span>
+                                </div>
+                                <div class="service-actions">
+                                    <button class="btn-complete">Mark as Completed</button>
+                                    <button class="btn-report">Report Issue</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="right-col">
+                        <!-- Trip Info Card -->
+                        <div class="info-card">
+                            <h3 class="info-card-title">Trip Information</h3>
+                            <div class="info-item">
+                                <div class="info-label">Traveler</div>
+                                <div class="info-value">Sarah Johnson</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Destination</div>
+                                <div class="info-value">Bali, Indonesia</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Duration</div>
+                                <div class="info-value">Apr 15, 2026 - Apr 22, 2026</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Your Services Card -->
+                        <div class="info-card">
+                            <h3 class="info-card-title">Your Services</h3>
+                            <div class="progress-row">
+                                <div class="progress-labels">
+                                    <span class="progress-title label-completed">Completed</span>
+                                    <span class="progress-val val-completed">0</span>
+                                </div>
+                                <div class="p-bar p-bar-green">
+                                    <div class="p-fill-completed"></div>
+                                </div>
+                            </div>
+                            <div class="progress-row">
+                                <div class="progress-labels">
+                                    <span class="progress-title label-upcoming">Upcoming</span>
+                                    <span class="progress-val val-upcoming">2</span>
+                                </div>
+                                <div class="p-bar p-bar-blue">
+                                    <div class="p-fill-upcoming"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="info-card">
+                            <h3 class="info-card-title">Quick Actions</h3>
+                            <button class="btn-block btn-primary">Contact Traveler</button>
+                            <button class="btn-block btn-secondary">Update Service Status</button>
+                            <button class="btn-block btn-secondary">Report Issue</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+    
+</body>
+</html>
+
+
+
+
+

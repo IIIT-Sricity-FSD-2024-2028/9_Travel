@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Guide Portal</title>
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/sidebarlayout.css" />
+    <link rel="stylesheet" href="../../css/dashboardpageelements.css" />
+    <link rel="stylesheet" href="../../css/cardcomponent.css" />
+
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <script src="../../js/auth_guard.js"></script>
+    <script src="../../js/theme.js"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="../../landing_page.html">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon gradient-primary">
+                        <span>DD</span>
+                    </div>
+                    <div>
+                        <div class="sidebar-logo-text">Guide Portal</div>
+                    </div>
+                </div>
+            </a>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i data-icon="dashboard"></i> Dashboard
+                </a>
+                <a href="assignments.html" class="nav-item">
+                    <i data-icon="clipboard"></i> Assignments
+                </a>
+                <a href="traveler_schedules.html" class="nav-item">
+                    <i data-icon="calendar"></i> Traveler Schedules
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i data-icon="bell"></i> Notifications
+                </a>
+                <a href="tour_updates.html" class="nav-item">
+                    <i data-icon="message"></i> Tour Updates
+                </a>
+                <a href="issue_reporting.html" class="nav-item">
+                    <i data-icon="alert"></i> Issue Reporting
+                </a>
+                <a href="activity_log.html" class="nav-item">
+                    <i data-icon="activity"></i> Activity Log
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i data-icon="user"></i> Profile
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../../login.html" class="nav-item logout">
+                    <i data-icon="logout"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i data-icon="search"></i>
+                    <input type="text" placeholder="Search trips, issues, or notifications..." />
+                </div>
+                <div class="header-right">
+                    <div class="notif-wrapper" style="position: relative;">
+                        <button class="notif-btn" id="notif-trigger" title="Notifications" style="position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); cursor: pointer; color: var(--text-secondary, #475569);">
+                            <i data-icon="bell"></i>
+                            <span class="notif-dot" style="position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; border: 2px solid var(--bg-surface, #fff);"></span>
+                        </button>
+                        <div class="notif-dropdown" id="notif-dropdown" style="position: absolute; top: calc(100% + 12px); right: 0; width: 340px; background: var(--bg-surface, #ffffff); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color, #e2e8f0); z-index: 1000; display: none; flex-direction: column; overflow: hidden;">
+                            <div class="notif-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; justify-content: space-between; align-items: center;">
+                                <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary, #0f172a);">Notifications</h3>
+                                <button class="mark-read" data-dd-action="mark-all-read" style="font-size: 12px; color: #0ea5e9; background: none; border: none; cursor: pointer; font-weight: 600;">Mark all read</button>
+                            </div>
+                            <div class="notif-list" id="header-notif-list" style="max-height: 360px; overflow-y: auto;">
+                                <!-- Dynamic notification items rendered by workflow.js -->
+                            </div>
+                            <div class="notif-footer" style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #f1f5f9);">
+                                <a href="notifications.html" data-dd-action="route" data-dd-target="notifications.html" style="font-size: 13px; color: #0ea5e9; text-decoration: none; font-weight: 700;">View All Notifications →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-pill" data-dd-action="route" data-dd-target="profile.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem 0.35rem 1rem; border-left: 1.5px solid var(--border-color, #E2E8F0); border-radius: 99px; cursor: pointer;">
+                        <div class="support-avatar" style="width: 2.35rem; height: 2.35rem; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #0ea5e9); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">K</div>
+                        <div class="user-info" style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                            <div class="user-info-bold" data-session-name="true" style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary, #0f172a); line-height: 1.2;">Koushik</div>
+                            <div data-session-role="true" style="font-size: 0.75rem; color: var(--text-secondary, #64748b); line-height: 1.2;">Tour Guide</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content dashboard-container" id="guide-dashboard">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <h1 class="text-2xl font-bold text-white mb-2">Guide Dashboard 👋</h1>
+                    <p class="text-white opacity-90">Welcome to your tour guide coordination dashboard</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid-4">
+                    <!-- Assigned Travelers -->
+                    <div class="stat-card-premium" data-dd-action="route" data-dd-target="traveler_schedules.html" style="cursor: pointer;">
+                        <div class="stat-number-premium text-purple-premium">3</div>
+                        <div class="stat-label-premium">Assigned Travelers</div>
+                    </div>
+                    <!-- Active Tours -->
+                    <div class="stat-card-premium" data-dd-action="route" data-dd-target="traveler_schedule_ongoing.html" style="cursor: pointer;">
+                        <div class="stat-number-premium text-green-premium">1</div>
+                        <div class="stat-label-premium">Active Tours</div>
+                    </div>
+                    <!-- Upcoming Tours -->
+                    <div class="stat-card-premium" data-dd-action="route" data-dd-target="traveler_schedule_upcoming.html" style="cursor: pointer;">
+                        <div class="stat-number-premium text-blue-premium">2</div>
+                        <div class="stat-label-premium">Upcoming Tours</div>
+                    </div>
+                    <!-- Tours Completed -->
+                    <div class="stat-card-premium" data-dd-action="route" data-dd-target="traveler_schedule_completed.html" style="cursor: pointer;">
+                        <div class="stat-number-premium text-purple-premium">2</div>
+                        <div class="stat-label-premium">Tours Completed</div>
+                    </div>
+                </div>
+
+                <!-- Main Layout -->
+                <div class="bottom-grid">
+
+                    <!-- Left Column: Pending Assignments -->
+                    <div class="card p-0 overflow-hidden">
+                        <div class="p-6 pb-2" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h2 class="text-lg font-bold text-gray-900 mb-0" style="display: flex; align-items: center; gap: 8px;">
+                                Pending Assignments 
+                                <span class="header-count-badge amber" style="display: inline-flex; align-items: center; justify-content: center; background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.75rem; font-weight: 700; padding: 2px 10px; border-radius: 99px;">2 Pending</span>
+                            </h2>
+                        </div>
+
+                        <div class="assignment-list" style="max-height: 520px; overflow-y: auto; padding-right: 4px;">
+                            <!-- Trip 1 -->
+                            <div class="assignment-card-full" style="background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); border-left: 4px solid #f59e0b; border-radius: 14px; margin-bottom: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.03); transition: all 0.25s ease;">
+                                <div class="ac-content" style="padding: 18px 20px 14px 20px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+                                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; flex: 1; min-width: 0;">
+                                            <span style="font-size: 0.75rem; font-weight: 800; color: #0284c7; background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(14, 165, 233, 0.25); padding: 3px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0;">TOUR-101</span>
+                                            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary, #0f172a); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Goa Beach Tour</h3>
+                                        </div>
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #d97706; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 4px 12px; border-radius: 99px; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; display: inline-block; box-shadow: 0 0 6px rgba(245, 158, 11, 0.8);"></span>
+                                            Pending
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <div class="meta-chip blue">
+                                            <i data-icon="users" style="width: 14px; height: 14px;"></i>
+                                            <span>6 people</span>
+                                        </div>
+                                        <div class="meta-chip purple">
+                                            <i data-icon="calendar" style="width: 14px; height: 14px;"></i>
+                                            <span>12-14 May</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ac-actions" style="display: flex; gap: 10px; padding: 0 20px 16px 20px; background: transparent; width: 100%; box-sizing: border-box;">
+                                    <button class="btn-accept" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; font-size: 0.875rem; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                                        <i data-icon="checkcircle" style="width: 16px; height: 16px;"></i> Accept
+                                    </button>
+                                    <button class="btn-reject" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; font-size: 0.875rem; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #ef4444, #dc2626); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
+                                        <i data-icon="x" style="width: 16px; height: 16px;"></i> Reject
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Trip 2 -->
+                            <div class="assignment-card-full" style="background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); border-left: 4px solid #f59e0b; border-radius: 14px; margin-bottom: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.03); transition: all 0.25s ease;">
+                                <div class="ac-content" style="padding: 18px 20px 14px 20px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+                                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; flex: 1; min-width: 0;">
+                                            <span style="font-size: 0.75rem; font-weight: 800; color: #0284c7; background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(14, 165, 233, 0.25); padding: 3px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0;">TOUR-102</span>
+                                            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary, #0f172a); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tokyo City Tour</h3>
+                                        </div>
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #d97706; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 4px 12px; border-radius: 99px; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; display: inline-block; box-shadow: 0 0 6px rgba(245, 158, 11, 0.8);"></span>
+                                            Pending
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        <div class="meta-chip blue">
+                                            <i data-icon="users" style="width: 14px; height: 14px;"></i>
+                                            <span>4 people</span>
+                                        </div>
+                                        <div class="meta-chip purple">
+                                            <i data-icon="calendar" style="width: 14px; height: 14px;"></i>
+                                            <span>20-22 Apr</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ac-actions" style="display: flex; gap: 10px; padding: 0 20px 16px 20px; background: transparent; width: 100%; box-sizing: border-box;">
+                                    <button class="btn-accept" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; font-size: 0.875rem; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                                        <i data-icon="checkcircle" style="width: 16px; height: 16px;"></i> Accept
+                                    </button>
+                                    <button class="btn-reject" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; font-size: 0.875rem; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #ef4444, #dc2626); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
+                                        <i data-icon="x" style="width: 16px; height: 16px;"></i> Reject
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Active Tours -->
+                    <div class="card p-0 overflow-hidden">
+                        <div class="p-6 pb-2">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4">Active Tours</h2>
+                        </div>
+
+                        <div class="active-tours-list" style="max-height: 520px; overflow-y: auto; padding-right: 4px;">
+                            <div class="active-tour-card-full" style="background: var(--bg-card-alt, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); border-left: 4px solid #10b981; border-radius: 14px; margin-bottom: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.03); transition: all 0.25s ease;">
+                                <div class="at-content" style="padding: 18px 20px 14px 20px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+                                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; flex: 1; min-width: 0;">
+                                            <span style="font-size: 0.75rem; font-weight: 800; color: #0284c7; background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(14, 165, 233, 0.25); padding: 3px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0;">TOUR-098</span>
+                                            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary, #0f172a); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Rome Historical Sites</h3>
+                                        </div>
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 12px; border-radius: 99px; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);"></span>
+                                            In Progress
+                                        </span>
+                                    </div>
+                                    <div class="meta-chip red">
+                                        <i data-icon="mappin" style="width: 14px; height: 14px;"></i>
+                                        <span>Current: Colosseum</span>
+                                    </div>
+                                </div>
+                                <div class="at-actions" style="display: flex; gap: 10px; padding: 0 20px 16px 20px; background: transparent; width: 100%; box-sizing: border-box;">
+                                    <button class="btn-update-status" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; font-size: 0.875rem; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #0ea5e9, #0284c7); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);">
+                                        <i data-icon="edit" style="width: 16px; height: 16px;"></i> Update Status
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold text-gray-900">Recent Activity</h2>
+                        <a href="activity_log.html" class="text-sm font-semibold text-blue-600 hover:underline flex items-center gap-1">
+                            View all <i data-icon="arrowright"></i>
+                        </a>
+                    </div>
+                    <div class="pl-2">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Accepted assignment for TOUR-098</p>
+                                <p class="text-xs text-gray-500">2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Updated tour status to "In Progress"</p>
+                                <p class="text-xs text-gray-500">4 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Reported transport delay for TOUR-095</p>
+                                <p class="text-xs text-gray-500">1 day ago</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Completed TOUR-092 successfully</p>
+                                <p class="text-xs text-gray-500">3 days ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/icons.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-02"></script>
+</body>
+
+</html>
