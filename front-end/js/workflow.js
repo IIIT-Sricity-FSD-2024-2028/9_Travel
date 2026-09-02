@@ -10786,7 +10786,7 @@
                     </div>
                 </div>
                 <div style="padding:12px 14px;border-radius:10px;background:#f0fdf4;border:1px solid #bbf7d0;font-size:12px;color:#166534;margin-bottom:18px;line-height:1.4;">
-                    💡 <strong>Salaried Compensation Note:</strong> Travel Partners & Support Staff are salaried employees (0% trip share). Adjust the guide and vendor payout split below. Total must equal 100%.
+                    💡 <strong>Partner Split Choice:</strong> Travel Partners & Support Staff are salaried employees. Set any guide and vendor payout share percentage as per your choice.
                 </div>
                 
                 <div style="margin-bottom:14px;padding:14px;border:1px solid var(--border-color,#e2e8f0);border-radius:12px;background:var(--bg-surface,#fff);display:flex;justify-content:space-between;align-items:center;">
@@ -10815,7 +10815,7 @@
 
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:10px;background:var(--bg-card-alt,#f8fafc);border:1px solid var(--border-color,#e2e8f0);margin-bottom:20px;">
                     <span style="font-size:13px;font-weight:700;color:var(--text-secondary,#475569);">Total Payout Split</span>
-                    <span id="pse-total-badge" style="font-size:13px;font-weight:800;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">100% ✓</span>
+                    <span id="pse-total-badge" style="font-size:13px;font-weight:800;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">${gPct + vPct}%</span>
                 </div>
 
                 <div style="display:flex;gap:10px;justify-content:flex-end;">
@@ -10838,17 +10838,17 @@
         const sum = gPct + vPct;
         const badge = document.getElementById('pse-total-badge');
         if (badge) {
-            badge.textContent = sum === 100 ? '100% ✓' : `${sum}% ✗`;
-            badge.style.background = sum === 100 ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)';
-            badge.style.color = sum === 100 ? '#10b981' : '#ef4444';
+            badge.textContent = `${sum}%`;
+            badge.style.background = 'rgba(16,185,129,0.12)';
+            badge.style.color = '#10b981';
         }
     };
 
     window._savePartnerShares = function(tripId, totalBudget) {
         const gPct = Number(document.getElementById('pse-guide-pct')?.value || 0);
         const vPct = Number(document.getElementById('pse-vendor-pct')?.value || 0);
-        if (gPct + vPct !== 100) {
-            if (typeof notify === 'function') notify(`Total share percentage must equal 100% (Currently ${gPct + vPct}%).`, 'error');
+        if (gPct < 0 || gPct > 100 || vPct < 0 || vPct > 100) {
+            if (typeof notify === 'function') notify(`Share percentages must be between 0% and 100%.`, 'error');
             return;
         }
         const gAmt = parseFloat(((totalBudget * gPct) / 100).toFixed(2));
