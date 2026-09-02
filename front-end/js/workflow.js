@@ -7109,8 +7109,16 @@
 
             let actions = '';
             if (isCompleted) {
+                const isDisbursed = trip.budgetShare?.disbursed;
                 actions = `
                     <a href="${detailPage}?trip=${trip.id}" class="tbl-act-btn tbl-act-slate"><i data-icon="eye"></i> View History</a>
+                    ${isDisbursed ? `
+                        <span class="badge badge-emerald" style="padding:6px 12px;font-size:12px;color:#10b981;background:rgba(16,185,129,0.15);border-radius:6px;font-weight:700;"><i data-icon="check"></i> Paid Guide & Vendor</span>
+                    ` : `
+                        <button type="button" class="tbl-act-btn tbl-act-emerald" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:800;cursor:pointer;" onclick="window.openBudgetShareModal('${trip.id}')">
+                            💳 Pay Guide & Vendor
+                        </button>
+                    `}
                 `;
             } else if (isCancelled) {
                 const ref = trip.refundRecord;
@@ -10630,9 +10638,9 @@
             <div style="background:var(--bg-surface,#fff);border:1px solid var(--border-color,#e2e8f0);border-radius:24px;width:100%;max-width:600px;padding:28px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);color:var(--text-primary,#0f172a);position:relative;box-sizing:border-box;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">
                 ${w.step < 3 ? `<button onclick="window.closeBudgetShareModal()" style="position:absolute;top:18px;right:18px;background:none;border:none;color:var(--text-secondary,#64748b);font-size:22px;cursor:pointer;">&times;</button>` : ''}
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0ea5e9,#6366f1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">💸</div>
+                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">💳</div>
                     <div>
-                        <div style="font-size:17px;font-weight:800;color:var(--text-primary,#0f172a);">Disburse Budget Shares</div>
+                        <div style="font-size:17px;font-weight:800;color:var(--text-primary,#0f172a);">Pay Tour Guide & Vendor</div>
                         <div style="font-size:12px;color:var(--text-secondary,#64748b);">Trip ${escapeHTML(trip.id)} • ${escapeHTML(trip.title||'')}</div>
                     </div>
                 </div>
@@ -10647,7 +10655,7 @@
         const trip = (state.trips || []).find(t => t.id === tripId || t.requestId === tripId);
         if (!trip) { if (typeof notify === 'function') notify('Trip not found', 'error'); return; }
         if (trip.budgetShare?.disbursed) {
-            if (typeof notify === 'function') notify('Budget shares already disbursed for this trip.', 'warning');
+            if (typeof notify === 'function') notify('Payment already completed for this trip.', 'warning');
             return;
         }
         const shares = trip.budgetShare || { partnerPercent:0, guidePercent:50, vendorPercent:50, supportPercent:0, adminPercent:0 };
@@ -10701,21 +10709,23 @@
             if (!pin) { if (typeof notify==='function') notify('Enter your Transaction PIN / OTP to authorize.','error'); return; }
             // Commit to state
             const {pcts, trip} = w;
+            const session = readSession();
+            const payerName = session?.name || 'Travel Partner';
             updateTrip(trip.id, (t, st) => {
                 const b = Number(t.budget || 0);
                 const calc = k => parseFloat(((b * pcts[k]) / 100).toFixed(2));
                 const gAmt=calc('guide'), vAmt=calc('vendor'), aAmt=calc('admin');
-                t.budgetShare = { disbursed:true, disbursedAt:nowISO(),
+                t.budgetShare = { disbursed:true, disbursedAt:nowISO(), disbursedBy: payerName,
                     partnerPercent:0, partnerAmount:0,
                     guidePercent:pcts.guide,     guideAmount:gAmt,
                     vendorPercent:pcts.vendor,   vendorAmount:vAmt,
                     supportPercent:0, supportAmount:0,
                     adminPercent:pcts.admin,     adminAmount:aAmt,
                     gwMethod: w.gwMethod, totalBudget:b };
-                addUpdate(t,'Super Admin','Budget Disbursed',
-                    `Paid via ${w.gwMethod} — Guide:${formatMoney(gAmt)}(${pcts.guide}%), Vendor:${formatMoney(vAmt)}(${pcts.vendor}%), Admin:${formatMoney(aAmt)}(${pcts.admin}%). Partner & Support compensated via monthly salary.`,'Paid');
-                if (t.guide) notifyStakeholders(st,t,'Budget Share Received',`Your share of ${formatMoney(gAmt)} (${pcts.guide}%) for trip ${t.id} has been paid.`,'Paid',['guide']);
-                if (t.vendor) notifyStakeholders(st,t,'Budget Share Received',`Your share of ${formatMoney(vAmt)} (${pcts.vendor}%) for trip ${t.id} has been paid.`,'Paid',['vendor']);
+                addUpdate(t,'Travel Partner','Partner Paid Guide & Vendor',
+                    `${payerName} paid accepted shares via ${w.gwMethod} — Guide: ${formatMoney(gAmt)} (${pcts.guide}%), Vendor: ${formatMoney(vAmt)} (${pcts.vendor}%).`,'Paid');
+                if (t.guide) notifyStakeholders(st,t,'Payment Received from Partner',`Travel Partner ${payerName} paid your accepted share of ${formatMoney(gAmt)} (${pcts.guide}%) for trip ${t.id}.`,'Paid',['guide']);
+                if (t.vendor) notifyStakeholders(st,t,'Payment Received from Partner',`Travel Partner ${payerName} paid your accepted share of ${formatMoney(vAmt)} (${pcts.vendor}%) for trip ${t.id}.`,'Paid',['vendor']);
             });
             renderAll();
         }
