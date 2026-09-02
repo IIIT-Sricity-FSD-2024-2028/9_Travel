@@ -1075,27 +1075,26 @@ const NotificationPopup = {
         const style = document.createElement('style');
         style.id = 'dd-notification-popup-styles';
         style.innerHTML = `
-            /* Floating Popup Container - WIDE IN MAIN PORTAL SPACE APART FROM SIDEBAR */
+            /* Compact Floating Popup Container - top-right, small */
             #dd-notification-popup-container {
                 position: fixed;
-                top: 20px;
-                left: calc(260px + (100vw - 260px) / 2);
-                transform: translateX(-50%);
+                top: 16px;
+                right: 20px;
+                left: auto;
+                transform: none;
                 z-index: 100000;
                 display: flex;
                 flex-direction: column;
-                align-items: center;
-                max-width: min(880px, calc(100vw - 300px));
-                width: calc(100vw - 300px);
+                align-items: flex-end;
+                width: 280px;
                 pointer-events: none;
-                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                gap: 6px;
             }
 
-            @media (max-width: 900px) {
+            @media (max-width: 600px) {
                 #dd-notification-popup-container {
-                    left: 50%;
-                    max-width: calc(100vw - 32px);
-                    width: calc(100vw - 32px);
+                    right: 10px;
+                    width: calc(100vw - 20px);
                 }
             }
 
@@ -1104,136 +1103,60 @@ const NotificationPopup = {
                 width: 100%;
                 background: var(--bg-surface, #ffffff);
                 border: 1px solid var(--border-color, #cbd5e1);
-                border-top: 4px solid #0ea5e9;
-                border-radius: 16px;
-                padding: 14px 18px;
-                box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.28), 0 4px 8px -2px rgba(0, 0, 0, 0.08);
+                border-left: 3px solid #0ea5e9;
+                border-radius: 10px;
+                padding: 8px 12px 6px 12px;
+                box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.18);
                 font-family: 'Inter', sans-serif;
-                animation: ddSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                animation: ddSlideRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                 position: relative;
                 overflow: hidden;
                 cursor: pointer;
-                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease, box-shadow 0.2s ease;
-                z-index: 10;
+                transition: transform 0.2s ease, opacity 0.2s ease;
             }
 
             .dd-popup-card:hover {
-                box-shadow: 0 22px 40px -10px rgba(0, 0, 0, 0.32);
+                box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.22);
             }
 
-            /* STACKING OVERLAP: Layer cards one underneath another */
+            /* Stack: only show top card, rest hidden */
             #dd-notification-popup-container:not(.expanded) .dd-popup-card:nth-child(2) {
-                margin-top: -64px;
-                transform: translateY(12px) scale(0.96);
-                opacity: 0.88;
+                margin-top: -44px;
+                transform: translateY(6px) scale(0.97);
+                opacity: 0.6;
                 z-index: 9;
-                filter: brightness(0.96);
             }
 
-            #dd-notification-popup-container:not(.expanded) .dd-popup-card:nth-child(3) {
-                margin-top: -64px;
-                transform: translateY(22px) scale(0.92);
-                opacity: 0.72;
-                z-index: 8;
-                filter: brightness(0.92);
-            }
-
-            #dd-notification-popup-container:not(.expanded) .dd-popup-card:nth-child(n+4) {
+            #dd-notification-popup-container:not(.expanded) .dd-popup-card:nth-child(3),
+            #dd-notification-popup-container:not(.expanded) .dd-popup-card:nth-child(n+3) {
                 display: none;
             }
 
             /* EXPANDED STACK STATE */
             #dd-notification-popup-container.expanded .dd-popup-card,
             #dd-notification-popup-container:hover .dd-popup-card {
-                margin-top: 10px !important;
+                margin-top: 0 !important;
                 transform: translateY(0) scale(1) !important;
                 opacity: 1 !important;
                 filter: none !important;
                 display: block !important;
             }
 
-            .dd-popup-card.dd-popup-success { border-top-color: #10b981; }
-            .dd-popup-card.dd-popup-warning { border-top-color: #f59e0b; }
-            .dd-popup-card.dd-popup-error { border-top-color: #ef4444; }
-            .dd-popup-card.dd-popup-info { border-top-color: #0ea5e9; }
+            .dd-popup-card.dd-popup-success { border-left-color: #10b981; }
+            .dd-popup-card.dd-popup-warning { border-left-color: #f59e0b; }
+            .dd-popup-card.dd-popup-error   { border-left-color: #ef4444; }
+            .dd-popup-card.dd-popup-info    { border-left-color: #0ea5e9; }
 
-            .dd-popup-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 8px;
-            }
-
-            .dd-popup-portal-tag {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 11px;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                color: #0ea5e9;
-                background: rgba(14, 165, 233, 0.1);
-                padding: 3px 10px;
-                border-radius: 999px;
-            }
-
-            .dd-popup-stack-badge {
-                font-size: 11px;
-                font-weight: 700;
-                color: #fff;
-                background: #0ea5e9;
-                padding: 2px 8px;
-                border-radius: 999px;
-                margin-left: 6px;
-            }
-
-            .dd-popup-dot {
-                width: 7px;
-                height: 7px;
-                border-radius: 50%;
-                background: #0ea5e9;
-                box-shadow: 0 0 8px #0ea5e9;
-                animation: ddPulse 2s infinite;
-            }
-
-            .dd-popup-close {
-                background: transparent;
-                border: none;
-                font-size: 18px;
-                font-weight: 700;
-                color: var(--text-secondary, #94a3b8);
-                cursor: pointer;
-                line-height: 1;
-                padding: 2px 6px;
-                border-radius: 6px;
-                transition: background 0.2s, color 0.2s;
-            }
-            .dd-popup-close:hover {
-                background: rgba(0, 0, 0, 0.08);
-                color: var(--text-primary, #0f172a);
-            }
+            /* Hide bulky sections — keep only title + message */
+            .dd-popup-header { display: none !important; }
+            .dd-popup-icon   { display: none !important; }
+            .dd-popup-footer { display: none !important; }
 
             .dd-popup-body {
                 display: flex;
-                gap: 12px;
+                gap: 0;
                 align-items: flex-start;
             }
-
-            .dd-popup-icon {
-                width: 38px;
-                height: 38px;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                background: rgba(14, 165, 233, 0.12);
-                color: #0ea5e9;
-            }
-            .dd-popup-card.dd-popup-success .dd-popup-icon { background: rgba(16, 185, 129, 0.12); color: #10b981; }
-            .dd-popup-card.dd-popup-warning .dd-popup-icon { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
-            .dd-popup-card.dd-popup-error .dd-popup-icon { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
 
             .dd-popup-content {
                 flex: 1;
@@ -1241,207 +1164,98 @@ const NotificationPopup = {
             }
 
             .dd-popup-title {
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: 700;
                 color: var(--text-primary, #0f172a);
-                margin-bottom: 3px;
+                margin-bottom: 2px;
                 line-height: 1.3;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .dd-popup-message {
-                font-size: 12.5px;
-                color: var(--text-secondary, #475569);
-                line-height: 1.4;
-                margin-bottom: 8px;
-            }
-
-            .dd-popup-footer {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                font-size: 12px;
-            }
-
-            .dd-popup-time {
-                color: var(--text-secondary, #94a3b8);
                 font-size: 11px;
+                color: var(--text-secondary, #475569);
+                line-height: 1.35;
+                margin-bottom: 4px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
 
-            .dd-popup-action {
+            .dd-popup-stack-badge {
+                font-size: 10px;
                 font-weight: 700;
-                color: #0ea5e9;
-                text-decoration: none;
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
+                color: #fff;
+                background: #0ea5e9;
+                padding: 1px 6px;
+                border-radius: 999px;
+                position: absolute;
+                top: 6px;
+                right: 6px;
             }
 
             .dd-popup-progress {
                 position: absolute;
                 bottom: 0;
                 left: 0;
-                height: 3px;
+                height: 2px;
                 background: linear-gradient(90deg, #0ea5e9, #14b8a6);
                 width: 100%;
-                animation: ddProgress 7s linear forwards;
+                animation: ddProgress 2s linear forwards;
             }
+            .dd-popup-card.dd-popup-success .dd-popup-progress { background: #10b981; }
+            .dd-popup-card.dd-popup-warning .dd-popup-progress { background: #f59e0b; }
+            .dd-popup-card.dd-popup-error   .dd-popup-progress { background: #ef4444; }
 
             /* Bell Dropdown Popup */
             #dd-bell-dropdown-popup {
                 position: fixed;
-                width: 360px;
+                width: 340px;
                 max-width: 92vw;
                 background: var(--bg-surface, #ffffff);
                 border: 1px solid var(--border-color, #e2e8f0);
-                border-radius: 18px;
-                box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.25);
+                border-radius: 16px;
+                box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.22);
                 z-index: 999999;
                 display: none;
                 flex-direction: column;
                 overflow: hidden;
                 font-family: 'Inter', sans-serif;
-                animation: ddFadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                animation: ddFadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             }
-            #dd-bell-dropdown-popup.open {
-                display: flex !important;
-            }
+            #dd-bell-dropdown-popup.open { display: flex !important; }
 
-            .dd-bell-header {
-                padding: 16px 20px;
-                border-bottom: 1px solid var(--border-color, #e2e8f0);
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                background: var(--bg-card-alt, #f8fafc);
-            }
-
-            .dd-bell-header h3 {
-                margin: 0;
-                font-size: 15px;
-                font-weight: 700;
-                color: var(--text-primary, #0f172a);
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .dd-bell-actions {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .dd-bell-count {
-                background: #0ea5e9;
-                color: #fff;
-                font-size: 11px;
-                font-weight: 700;
-                padding: 2px 8px;
-                border-radius: 999px;
-            }
-
-            .dd-bell-mark-all {
-                font-size: 12px;
-                color: #0ea5e9;
-                font-weight: 600;
-                background: none;
-                border: none;
-                cursor: pointer;
-                padding: 0;
-            }
+            .dd-bell-header { padding: 14px 18px; border-bottom: 1px solid var(--border-color, #e2e8f0); display: flex; align-items: center; justify-content: space-between; background: var(--bg-card-alt, #f8fafc); }
+            .dd-bell-header h3 { margin: 0; font-size: 14px; font-weight: 700; color: var(--text-primary, #0f172a); display: flex; align-items: center; gap: 8px; }
+            .dd-bell-actions { display: flex; align-items: center; gap: 10px; }
+            .dd-bell-count { background: #0ea5e9; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+            .dd-bell-mark-all { font-size: 11px; color: #0ea5e9; font-weight: 600; background: none; border: none; cursor: pointer; padding: 0; }
             .dd-bell-mark-all:hover { text-decoration: underline; }
+            .dd-bell-list { max-height: 300px; overflow-y: auto; }
+            .dd-bell-item { padding: 12px 16px; border-bottom: 1px solid var(--border-color, #f1f5f9); display: flex; gap: 10px; cursor: pointer; transition: background 0.15s ease; text-decoration: none; color: inherit; }
+            .dd-bell-item:hover { background: var(--bg-card-alt, #f8fafc); }
+            .dd-bell-item.unread { background: rgba(14, 165, 233, 0.05); }
+            .dd-bell-item-icon { width: 30px; height: 30px; border-radius: 8px; background: rgba(14, 165, 233, 0.12); color: #0ea5e9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+            .dd-bell-item-content { flex: 1; min-width: 0; }
+            .dd-bell-item-title { font-size: 12px; font-weight: 700; color: var(--text-primary, #0f172a); margin-bottom: 2px; }
+            .dd-bell-item-desc { font-size: 11px; color: var(--text-secondary, #64748b); line-height: 1.35; margin-bottom: 3px; word-break: break-word; }
+            .dd-bell-item-time { font-size: 10px; color: var(--text-secondary, #94a3b8); }
+            .dd-bell-empty { padding: 20px; text-align: center; color: var(--text-secondary, #64748b); font-size: 12px; }
+            .dd-bell-footer { padding: 12px; text-align: center; border-top: 1px solid var(--border-color, #e2e8f0); background: var(--bg-card-alt, #f8fafc); }
+            .dd-bell-footer a { font-size: 12px; font-weight: 700; color: #0ea5e9; text-decoration: none; }
+            .dd-bell-footer a:hover { text-decoration: underline; }
 
-            .dd-bell-list {
-                max-height: 320px;
-                overflow-y: auto;
-            }
-
-            .dd-bell-item {
-                padding: 14px 18px;
-                border-bottom: 1px solid var(--border-color, #f1f5f9);
-                display: flex;
-                gap: 12px;
-                cursor: pointer;
-                transition: background 0.15s ease;
-                text-decoration: none;
-                color: inherit;
-            }
-            .dd-bell-item:hover {
-                background: var(--bg-card-alt, #f8fafc);
-            }
-            .dd-bell-item.unread {
-                background: rgba(14, 165, 233, 0.06);
-            }
-
-            .dd-bell-item-icon {
-                width: 34px;
-                height: 34px;
-                border-radius: 10px;
-                background: rgba(14, 165, 233, 0.12);
-                color: #0ea5e9;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-            }
-
-            .dd-bell-item-content {
-                flex: 1;
-                min-width: 0;
-            }
-
-            .dd-bell-item-title {
-                font-size: 13px;
-                font-weight: 700;
-                color: var(--text-primary, #0f172a);
-                margin-bottom: 3px;
-            }
-
-            .dd-bell-item-desc {
-                font-size: 12px;
-                color: var(--text-secondary, #64748b);
-                line-height: 1.35;
-                margin-bottom: 4px;
-                word-break: break-word;
-            }
-
-            .dd-bell-item-time {
-                font-size: 11px;
-                color: var(--text-secondary, #94a3b8);
-            }
-
-            .dd-bell-empty {
-                padding: 24px;
-                text-align: center;
-                color: var(--text-secondary, #64748b);
-                font-size: 13px;
-            }
-
-            .dd-bell-footer {
-                padding: 14px;
-                text-align: center;
-                border-top: 1px solid var(--border-color, #e2e8f0);
-                background: var(--bg-card-alt, #f8fafc);
-            }
-
-            .dd-bell-footer a {
-                font-size: 13px;
-                font-weight: 700;
-                color: #0ea5e9;
-                text-decoration: none;
-            }
-            .dd-bell-footer a:hover {
-                text-decoration: underline;
-            }
-
-            @keyframes ddSlideDown {
-                from { transform: translateY(-120%); opacity: 0; }
-                to { transform: translateY(0); opacity: 1; }
+            @keyframes ddSlideRight {
+                from { transform: translateX(110%); opacity: 0; }
+                to   { transform: translateX(0);    opacity: 1; }
             }
 
             @keyframes ddProgress {
                 from { width: 100%; }
-                to { width: 0%; }
+                to   { width: 0%; }
             }
 
             @keyframes ddPulse {
@@ -1450,8 +1264,8 @@ const NotificationPopup = {
             }
 
             @keyframes ddFadeInDown {
-                from { opacity: 0; transform: translateY(-8px); }
-                to { opacity: 1; transform: translateY(0); }
+                from { opacity: 0; transform: translateY(-6px); }
+                to   { opacity: 1; transform: translateY(0); }
             }
         `;
         document.head.appendChild(style);
@@ -1555,9 +1369,10 @@ const NotificationPopup = {
             osc.stop(audioCtx.currentTime + 0.25);
         } catch (_) {}
 
+        // Auto-dismiss after 2 seconds
         setTimeout(() => {
             this.close(notifId);
-        }, 8000);
+        }, 2000);
     },
 
     updateStackBadges() {
