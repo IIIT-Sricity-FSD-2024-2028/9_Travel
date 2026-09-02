@@ -102,9 +102,12 @@
                 <div class="sa-page-header">
                     <div>
                         <h1>User Management</h1>
-                        <p>Manage all platform users with full control</p>
+                        <p>Manage all platform users with full control & automated payroll</p>
                     </div>
-                    <button class="sa-btn-primary" onclick="window.location.href='superuser_add_user.html'"><i data-icon="plus"></i> Add User</button>
+                    <div style="display:flex; gap:10px;">
+                        <button class="sa-btn-primary" onclick="window.runBulkEmployeePayroll()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 14px rgba(16,185,129,0.3);"><i data-icon="dollar"></i> ⚡ Run Bulk Payroll</button>
+                        <button class="sa-btn-primary" onclick="window.location.href='superuser_add_user.html'"><i data-icon="plus"></i> Add User</button>
+                    </div>
                 </div>
 
                 <!-- Stats Cards -->

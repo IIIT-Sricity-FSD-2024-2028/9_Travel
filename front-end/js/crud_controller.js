@@ -911,3 +911,97 @@ window.disburseEmployeeSalary = function(userId, userName, amount) {
         alert(`₹${Number(amount).toLocaleString()} salary disbursed to ${userName} successfully!`);
     }
 };
+
+window.runBulkEmployeePayroll = function() {
+    let users = (CRUD.currentUsers && CRUD.currentUsers.length) ? CRUD.currentUsers : [];
+    if (!users.length) {
+        try {
+            const st = JSON.parse(localStorage.getItem('dream_destination_workflow_v5') || '{}');
+            if (st && Array.isArray(st.users)) users = st.users;
+        } catch (_) {}
+    }
+
+    let salStore = {};
+    try {
+        salStore = JSON.parse(localStorage.getItem('dd_user_salaries_v1') || '{}');
+    } catch (_) {}
+
+    const salariedRoles = ['Travel Partner', 'Support Executive', 'Support', 'Super User'];
+    const eligibleEmployees = users.filter(u => {
+        const isSalariedRole = salariedRoles.includes(u.role);
+        const hasCustomSal = (u.id && salStore[u.id] > 0) || (u.email && salStore[u.email.toLowerCase()] > 0) || (u.monthlySalary > 0);
+        const isActive = (u.status || 'Active') === 'Active';
+        return isActive && (isSalariedRole || hasCustomSal);
+    });
+
+    if (!eligibleEmployees.length) {
+        if (typeof Toast !== 'undefined') Toast.info('No active salaried employees found for payroll execution.');
+        else alert('No active salaried employees found for payroll execution.');
+        return;
+    }
+
+    let totalPayrollAmount = 0;
+    const payrollDetails = eligibleEmployees.map(emp => {
+        let sal = (emp.id && salStore[emp.id] !== undefined)
+            ? salStore[emp.id]
+            : ((emp.email && salStore[emp.email.toLowerCase()] !== undefined)
+                ? salStore[emp.email.toLowerCase()]
+                : emp.monthlySalary);
+
+        if (sal === undefined || sal === null || sal === '') {
+            sal = (emp.role === 'Travel Partner' ? 65000 : emp.role === 'Support Executive' ? 45000 : 80000);
+        }
+        sal = Number(sal) || 0;
+        totalPayrollAmount += sal;
+        return { emp, sal };
+    });
+
+    const month = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    const confirmMsg = `⚡ RUN AUTOMATED BULK PAYROLL\n\n` +
+        `Disburse monthly salaries for ${month}?\n\n` +
+        `• Total Salaried Employees: ${eligibleEmployees.length} staff members\n` +
+        `• Total Payroll Outflow: ₹${totalPayrollAmount.toLocaleString()}\n\n` +
+        `Click OK to execute automated bank transfers and log payment receipts for all employees.`;
+
+    if (!confirm(confirmMsg)) return;
+
+    try {
+        const salLogs = JSON.parse(localStorage.getItem('dd_salary_payouts_v1') || '[]');
+        const stKey = 'dream_destination_workflow_v5';
+        const st = JSON.parse(localStorage.getItem(stKey) || '{}');
+        if (!st.notifications) st.notifications = [];
+
+        payrollDetails.forEach(({ emp, sal }) => {
+            const payId = 'PAY-' + Math.floor(1000 + Math.random() * 9000);
+            salLogs.unshift({
+                id: payId,
+                userId: emp.id || emp.email,
+                userName: emp.name,
+                userEmail: emp.email,
+                role: emp.role,
+                amount: sal,
+                month: month,
+                disbursedAt: new Date().toISOString(),
+                status: 'Completed'
+            });
+
+            st.notifications.unshift({
+                id: 'NOTIF-' + Date.now().toString().slice(-4) + Math.floor(Math.random() * 100),
+                title: 'Monthly Salary Disbursed',
+                message: `Your monthly salary of ₹${sal.toLocaleString()} for ${month} has been successfully processed by Super Admin.`,
+                recipientId: emp.id || emp.email,
+                timestamp: new Date().toISOString(),
+                read: false
+            });
+        });
+
+        localStorage.setItem('dd_salary_payouts_v1', JSON.stringify(salLogs));
+        localStorage.setItem(stKey, JSON.stringify(st));
+    } catch (_) {}
+
+    const successMsg = `⚡ Bulk Payroll Executed Successfully!\n\n` +
+        `Disbursed ₹${totalPayrollAmount.toLocaleString()} to ${eligibleEmployees.length} employees for ${month}.`;
+
+    if (typeof Toast !== 'undefined') Toast.success(successMsg);
+    else alert(successMsg);
+};
