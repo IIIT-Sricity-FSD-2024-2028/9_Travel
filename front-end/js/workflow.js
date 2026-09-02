@@ -1707,6 +1707,20 @@
             };
             trip.guideStatus = 'Assigned';
             trip.assignedGuideEmail = trip.guide.email;
+            if (!trip.budgetShare) {
+                const totalB = Number(trip.budget || 1200);
+                trip.budgetShare = {
+                    guidePercent: 50,
+                    vendorPercent: 50,
+                    guideAmount: Math.round((totalB * 50) / 100),
+                    vendorAmount: Math.round((totalB * 50) / 100),
+                    partnerPercent: 0,
+                    partnerAmount: 0,
+                    supportPercent: 0,
+                    supportAmount: 0,
+                    totalBudget: totalB
+                };
+            }
             trip.progress = Math.max(trip.progress, 15);
             trip.currentActivity = `${guide.name} assigned as tour guide`;
             addUpdate(trip, 'Travel Partner', 'Guide Assigned', `${guide.name} was assigned to ${trip.id}. Waiting for guide acceptance.`, 'Assigned');
@@ -1728,6 +1742,20 @@
             trip.vendorStatus = 'Requested';
             trip.serviceStatus = 'Pending';
             trip.assignedVendorEmail = trip.vendor.email;
+            if (!trip.budgetShare) {
+                const totalB = Number(trip.budget || 1200);
+                trip.budgetShare = {
+                    guidePercent: 50,
+                    vendorPercent: 50,
+                    guideAmount: Math.round((totalB * 50) / 100),
+                    vendorAmount: Math.round((totalB * 50) / 100),
+                    partnerPercent: 0,
+                    partnerAmount: 0,
+                    supportPercent: 0,
+                    supportAmount: 0,
+                    totalBudget: totalB
+                };
+            }
             trip.progress = Math.max(trip.progress, 15);
             trip.currentActivity = `${vendor.name} requested for ${trip.vendor.type}`;
             addUpdate(trip, 'Travel Partner', 'Vendor Requested', `${vendor.name} was requested for ${trip.vendor.type} on ${trip.id}.`, 'Pending');
@@ -2521,13 +2549,19 @@
 
     function getVendorTrips(state) {
         const session = readSession();
-        const trips = acceptedTrips(state).filter((trip) => trip.vendor);
-        if (session.role === 'Vendor' && session.email) {
-            const matched = trips.filter((trip) =>
-                (trip.vendor.email && trip.vendor.email.toLowerCase() === session.email.toLowerCase()) ||
-                (trip.vendor.name && trip.vendor.name.toLowerCase() === (session.name || '').toLowerCase()) ||
-                (trip.vendor.id && trip.vendor.id === session.id)
-            );
+        const trips = (state.trips || []).filter((trip) => trip && trip.vendor && trip.status !== 'cancelled');
+        if (session && session.email) {
+            const currentEmail = (session.email || '').toLowerCase().trim();
+            const currentName = (session.name || '').toLowerCase().trim();
+            const currentId = (session.id || '').toLowerCase().trim();
+            const matched = trips.filter((trip) => {
+                const vEmail = (trip.assignedVendorEmail || trip.vendor?.email || '').toLowerCase().trim();
+                const vName = (trip.vendor?.name || '').toLowerCase().trim();
+                const vId = (trip.vendor?.id || '').toLowerCase().trim();
+                return (vEmail && (vEmail === currentEmail || currentEmail.includes(vEmail))) ||
+                       (vName && currentName && (vName === currentName || currentName.includes(vName) || vName.includes(currentName))) ||
+                       (vId && vId === currentId);
+            });
             if (matched.length > 0) return matched;
         }
         return trips;
@@ -2535,13 +2569,19 @@
 
     function getGuideTrips(state) {
         const session = readSession();
-        const trips = acceptedTrips(state).filter((trip) => trip.guide);
-        if (session.role === 'Tour Guide' && session.email) {
-            const matched = trips.filter((trip) =>
-                (trip.guide.email && trip.guide.email.toLowerCase() === session.email.toLowerCase()) ||
-                (trip.guide.name && trip.guide.name.toLowerCase() === (session.name || '').toLowerCase()) ||
-                (trip.guide.id && trip.guide.id === session.id)
-            );
+        const trips = (state.trips || []).filter((trip) => trip && trip.guide && trip.status !== 'cancelled');
+        if (session && session.email) {
+            const currentEmail = (session.email || '').toLowerCase().trim();
+            const currentName = (session.name || '').toLowerCase().trim();
+            const currentId = (session.id || '').toLowerCase().trim();
+            const matched = trips.filter((trip) => {
+                const gEmail = (trip.assignedGuideEmail || trip.guide?.email || '').toLowerCase().trim();
+                const gName = (trip.guide?.name || '').toLowerCase().trim();
+                const gId = (trip.guide?.id || '').toLowerCase().trim();
+                return (gEmail && (gEmail === currentEmail || currentEmail.includes(gEmail))) ||
+                       (gName && currentName && (gName === currentName || currentName.includes(gName) || gName.includes(currentName))) ||
+                       (gId && gId === currentId);
+            });
             if (matched.length > 0) return matched;
         }
         return trips;
@@ -7516,8 +7556,9 @@
         if (!page) return;
         const grid = page.querySelector('.assignment-card')?.parentElement;
         const tbody = page.querySelector('table tbody');
-        const pending = acceptedTrips(state).filter((trip) => trip.guide && trip.guideStatus === 'Assigned');
-        const accepted = acceptedTrips(state).filter((trip) => trip.guide && ['Accepted', 'Completed'].includes(trip.guideStatus));
+        const guideTrips = getGuideTrips(state);
+        const pending = guideTrips.filter((trip) => trip.guide && ['Assigned', 'Pending', 'Requested'].includes(trip.guideStatus));
+        const accepted = guideTrips.filter((trip) => trip.guide && ['Accepted', 'Completed'].includes(trip.guideStatus));
         if (grid) {
             grid.innerHTML = pending.map((trip) => {
                 const gPct = trip.budgetShare?.guidePercent !== undefined ? trip.budgetShare.guidePercent : 50;
@@ -7974,7 +8015,7 @@
         if (currentPage() !== 'vendor_service_requests.html') return;
         const tbody = document.querySelector('.data-table tbody');
         if (!tbody) return;
-        const trips = getVendorTrips(state).filter((trip) => trip.vendor && ['Requested', 'Pending'].includes(trip.vendorStatus));
+        const trips = getVendorTrips(state).filter((trip) => trip.vendor && ['Requested', 'Pending', 'Assigned'].includes(trip.vendorStatus));
         tbody.innerHTML = trips.map((trip) => {
             const vPct = trip.budgetShare?.vendorPercent !== undefined ? trip.budgetShare.vendorPercent : 50;
             const vAmt = trip.budgetShare?.vendorAmount ?? Math.round((Number(trip.budget || 0) * vPct) / 100);
