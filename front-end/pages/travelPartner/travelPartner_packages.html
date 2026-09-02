@@ -92,14 +92,26 @@
         /* Package Grid Overrides */
         .pkg-catalog-grid {
             display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)) !important;
-            gap: 1.5rem !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 1.25rem !important;
             width: 100% !important;
             margin-top: 1.5rem !important;
             box-sizing: border-box !important;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1280px) {
+            .pkg-catalog-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .pkg-catalog-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
+        @media (max-width: 600px) {
             .pkg-catalog-grid {
                 grid-template-columns: 1fr !important;
             }
@@ -132,7 +144,7 @@
 
         .pkg-card-media {
             position: relative;
-            height: 200px;
+            height: 180px;
             width: 100%;
             overflow: hidden;
             background: radial-gradient(circle at center, #1e293b, #0f172a);
