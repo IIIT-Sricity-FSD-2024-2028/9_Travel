@@ -594,7 +594,7 @@ function getDestinationCoverPhoto(trip) {
           salaryDisplay = `
             <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
               <span style="font-weight:700; color:#059669; font-size:0.875rem;">₹${sal.toLocaleString()}/mo</span>
-              <button onclick="window.disburseEmployeeSalary('${escapeJS(user.id)}', '${escapeJS(user.name)}', ${sal})" style="padding:3px 10px; font-size:11px; background:linear-gradient(135deg, #10b981, #059669); color:#ffffff; border:none; border-radius:6px; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(16,185,129,0.25);" title="Disburse monthly salary">
+              <button onclick="window.disburseEmployeeSalary('${escapeJS(user.id)}', '${escapeJS(user.name)}', ${sal}, '${escapeJS(user.email || '')}', '${escapeJS(user.role || '')}')" style="padding:3px 10px; font-size:11px; background:linear-gradient(135deg, #10b981, #059669); color:#ffffff; border:none; border-radius:6px; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(16,185,129,0.25);" title="Disburse monthly salary">
                 💸 Disburse Salary
               </button>
             </div>`;
@@ -873,7 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-window.disburseEmployeeSalary = function(userId, userName, amount) {
+window.disburseEmployeeSalary = function(userId, userName, amount, userEmail, role) {
     const month = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
     if (!confirm(`Confirm Salary Dispersal?\n\nDisburse ₹${Number(amount).toLocaleString()} monthly salary to ${userName} for ${month}?`)) {
         return;
@@ -884,8 +884,10 @@ window.disburseEmployeeSalary = function(userId, userName, amount) {
         const payId = 'PAY-' + Date.now().toString().slice(-4);
         salLogs.unshift({
             id: payId,
-            userId: userId,
+            userId: userId || userEmail,
             userName: userName,
+            userEmail: userEmail || '',
+            role: role || '',
             amount: amount,
             month: month,
             disbursedAt: new Date().toISOString(),
@@ -903,7 +905,9 @@ window.disburseEmployeeSalary = function(userId, userName, amount) {
             message: `Your monthly salary of ₹${Number(amount).toLocaleString()} for ${month} has been successfully processed by Super Admin.`,
             type: 'Success',
             readBy: [],
-            recipientId: userId,
+            recipientId: userId || userEmail || '',
+            userEmail: userEmail || '',
+            userName: userName || '',
             createdAt: new Date().toISOString(),
             timestamp: new Date().toISOString(),
             read: false
