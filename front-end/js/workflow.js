@@ -10472,32 +10472,22 @@
                     </div>
                 </div>`;
 
+            const hasGuide = Boolean(trip.guide && trip.guide.name);
+            const hasVendor = Boolean(trip.vendor && trip.vendor.name);
+
+            const guideRow = hasGuide ? editableRow('dw-guide-pct', 'Tour Guide', escapeHTML(trip.guide.name), 'TG', '#7e22ce', '#f3e8ff', gVal) : '';
+            const vendorRow = hasVendor ? editableRow('dw-vendor-pct', 'Vendor Service', escapeHTML(trip.vendor.name), 'VS', '#c2410c', '#ffedd5', vVal) : '';
+            const noRolesRow = (!hasGuide && !hasVendor) ? '<div style="padding:14px;text-align:center;color:#64748b;font-size:13px;background:var(--bg-card-alt,#f8fafc);border-radius:12px;margin-bottom:8px;">No Tour Guide or Vendor assigned to this trip.</div>' : '';
+
             body = `
                 <div style="background:var(--bg-card-alt,#f8fafc);border:1px solid var(--border-color,#e2e8f0);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
                     <div><div style="font-size:11px;color:var(--text-secondary,#64748b);font-weight:600;">Total Trip Budget</div><div style="font-size:22px;font-weight:900;color:#10b981;">${formatMoney(totalBudget)}</div></div>
-                    <span id="alloc-total-badge" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">${gVal + vVal + aVal}% Accepted Split</span>
+                    <span id="alloc-total-badge" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">${(hasGuide ? gVal : 0) + (hasVendor ? vVal : 0)}% Accepted Split</span>
                 </div>
                 <div style="font-size:13px;font-weight:700;color:var(--text-primary,#0f172a);margin-bottom:10px;">Payout disbursement based on partner accepted percentage split</div>
-                ${salariedRow('Travel Partner', escapeHTML(trip.partnerName||'Partner'), 'tp', '#0369a1', '#e0f2fe')}
-                ${editableRow('dw-guide-pct', 'Tour Guide', escapeHTML(trip.guide?.name||'Guide'), 'TG', '#7e22ce', '#f3e8ff', gVal)}
-                ${editableRow('dw-vendor-pct', 'Vendor Service', escapeHTML(trip.vendor?.name||'Vendor'), 'VS', '#c2410c', '#ffedd5', vVal)}
-                ${salariedRow('Support Executive', 'Ops Support', 'se', '#15803d', '#dcfce7')}
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:2px solid #6366f1;border-radius:12px;background:rgba(99,102,241,0.05);margin-bottom:8px;">
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <div style="width:34px;height:34px;border-radius:10px;background:#ede9fe;color:#6366f1;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;">SA</div>
-                        <div>
-                            <div style="font-size:13px;font-weight:700;color:var(--text-primary,#0f172a);">Super Admin <span style="font-size:10px;padding:2px 6px;background:#6366f1;color:#fff;border-radius:99px;">You</span></div>
-                            <div style="font-size:11px;color:var(--text-secondary,#64748b);">Platform Commission / Reserve</div>
-                        </div>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <input type="number" id="dw-admin-pct" value="${aVal}" min="0" max="100"
-                            style="width:56px;padding:6px 6px;border:2px solid #6366f1;border-radius:8px;font-weight:700;text-align:center;font-size:14px;background:var(--bg-surface,#fff);color:#6366f1;"
-                            oninput="window._disburseCalc()"/>
-                        <span style="font-size:13px;font-weight:700;color:#6366f1;">%</span>
-                        <span id="dw-admin-pct-amt" style="min-width:75px;text-align:right;font-size:13px;font-weight:800;color:#6366f1;">${formatMoney((totalBudget*aVal)/100)}</span>
-                    </div>
-                </div>
+                ${guideRow}
+                ${vendorRow}
+                ${noRolesRow}
                 <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end;">
                     <button onclick="window.closeBudgetShareModal()" style="padding:10px 18px;border:1px solid var(--border-color,#cbd5e1);border-radius:10px;background:var(--bg-surface,#fff);color:var(--text-secondary,#475569);font-weight:600;cursor:pointer;">Cancel</button>
                     <button onclick="window._disburseNext()" style="padding:10px 22px;border:none;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;font-weight:800;cursor:pointer;">Next → Account Setup</button>
@@ -10506,11 +10496,13 @@
 
         // ── STEP 2: Accounts ─────────────────────────────────────────────
         if (w.step === 1) {
-            const roles = [
-                {key:'guide',   label:'Tour Guide',     name: trip.guide?.name||'Guide',   color:'#7e22ce', pct: w.pcts.guide},
-                {key:'vendor',  label:'Vendor',         name: trip.vendor?.name||'Vendor', color:'#c2410c', pct: w.pcts.vendor},
-                {key:'admin',   label:'Super Admin',    name:'You (Platform Fee)',          color:'#6366f1', pct: w.pcts.admin},
-            ].filter(r => r.pct > 0);
+            const roles = [];
+            if (trip.guide && trip.guide.name && w.pcts.guide > 0) {
+                roles.push({key:'guide', label:'Tour Guide', name: trip.guide.name, color:'#7e22ce', pct: w.pcts.guide});
+            }
+            if (trip.vendor && trip.vendor.name && w.pcts.vendor > 0) {
+                roles.push({key:'vendor', label:'Vendor Service', name: trip.vendor.name, color:'#c2410c', pct: w.pcts.vendor});
+            }
             const amt = r => parseFloat(((totalBudget * r.pct) / 100).toFixed(2));
             const accRow = r => `
                 <div style="padding:14px;border:1px solid var(--border-color,#e2e8f0);border-radius:12px;background:var(--bg-surface,#fff);margin-bottom:10px;">
@@ -10544,8 +10536,8 @@
                     </div>
                 </div>`;
             body = `
-                <div style="font-size:13px;color:var(--text-secondary,#64748b);margin-bottom:14px;">Enter or verify the payout accounts for each active stakeholder.</div>
-                ${roles.map(accRow).join('')}
+                <div style="font-size:13px;color:var(--text-secondary,#64748b);margin-bottom:14px;">Enter or verify the payout accounts for assigned personnel.</div>
+                ${roles.length ? roles.map(accRow).join('') : '<div style="padding:14px;color:#64748b;text-align:center;">No accounts required.</div>'}
                 <div style="display:flex;gap:10px;margin-top:16px;justify-content:space-between;">
                     <button onclick="window._disburseBack()" style="padding:10px 18px;border:1px solid var(--border-color,#cbd5e1);border-radius:10px;background:var(--bg-surface,#fff);color:var(--text-secondary,#475569);font-weight:600;cursor:pointer;">← Back</button>
                     <button onclick="window._disburseNext()" style="padding:10px 22px;border:none;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;font-weight:800;cursor:pointer;">Next → Payment Gateway</button>
@@ -10558,7 +10550,7 @@
                 <div style="background:var(--bg-card-alt,#f8fafc);border:1px solid var(--border-color,#e2e8f0);border-radius:14px;padding:14px 16px;margin-bottom:16px;">
                     <div style="font-size:12px;color:var(--text-secondary,#64748b);font-weight:600;">Total Disbursing</div>
                     <div style="font-size:26px;font-weight:900;color:#10b981;">${formatMoney(totalBudget)}</div>
-                    <div style="font-size:12px;color:var(--text-secondary,#64748b);margin-top:4px;">Split to ${Object.values(w.pcts).filter(v=>v>0).length} active stakeholders</div>
+                    <div style="font-size:12px;color:var(--text-secondary,#64748b);margin-top:4px;">Disbursing to assigned personnel</div>
                 </div>
                 <div style="font-size:13px;font-weight:700;color:var(--text-primary,#0f172a);margin-bottom:10px;">Select Payment Method</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
@@ -10575,10 +10567,10 @@
                     <div style="margin-bottom:10px;">
                         <label style="display:block;font-size:12px;font-weight:600;color:var(--text-secondary,#64748b);margin-bottom:4px;">Authorizing Bank Account</label>
                         <select id="gw-bank" style="width:100%;padding:10px 12px;border:1px solid var(--border-color,#cbd5e1);border-radius:10px;font-size:13px;background:var(--bg-surface,#fff);color:var(--text-primary,#0f172a);">
-                            <option>HDFC Bank — Super Admin Account</option>
-                            <option>ICICI Bank — Platform Account</option>
+                            <option>Travel Partner Operating Account</option>
+                            <option>HDFC Bank — Corporate Account</option>
+                            <option>ICICI Bank — Business Account</option>
                             <option>SBI — Corporate Account</option>
-                            <option>Axis Bank — Operations Account</option>
                         </select>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
@@ -10594,7 +10586,7 @@
                         </div>
                     </div>
                     <div style="padding:10px 14px;border-radius:10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);font-size:12px;color:#92400e;">
-                        ⚠️ This will initiate a real bank transfer to all accounts set in Step 2. Review before confirming.
+                        ⚠️ This will initiate a real bank transfer to assigned personnel accounts set in Step 2. Review before confirming.
                     </div>
                 </div>
                 <div style="display:flex;gap:10px;justify-content:space-between;">
@@ -10605,11 +10597,13 @@
 
         // ── STEP 4: Processing / Receipt ─────────────────────────────────
         if (w.step === 3) {
-            const roles = [
-                {label:'Tour Guide',     pct:w.pcts.guide,   color:'#7e22ce'},
-                {label:'Vendor Service', pct:w.pcts.vendor,  color:'#c2410c'},
-                {label:'Super Admin',    pct:w.pcts.admin,   color:'#6366f1'},
-            ].filter(r=>r.pct>0);
+            const roles = [];
+            if (trip.guide && trip.guide.name && w.pcts.guide > 0) {
+                roles.push({label:'Tour Guide', pct:w.pcts.guide, color:'#7e22ce'});
+            }
+            if (trip.vendor && trip.vendor.name && w.pcts.vendor > 0) {
+                roles.push({label:'Vendor Service', pct:w.pcts.vendor, color:'#c2410c'});
+            }
             body = `
                 <div style="text-align:center;padding:10px 0 20px;">
                     <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:28px;box-shadow:0 8px 24px rgba(16,185,129,0.4);">✓</div>
@@ -10786,6 +10780,45 @@
         const totalBudget = Number(trip.budget || 0);
         const gPct = curShare.guidePercent !== undefined ? curShare.guidePercent : 50;
         const vPct = curShare.vendorPercent !== undefined ? curShare.vendorPercent : 50;
+
+        const hasGuide = Boolean(trip.guide && trip.guide.name);
+        const hasVendor = Boolean(trip.vendor && trip.vendor.name);
+
+        const guideRowHtml = hasGuide ? `
+            <div style="margin-bottom:14px;padding:14px;border:1px solid var(--border-color,#e2e8f0);border-radius:12px;background:var(--bg-surface,#fff);display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <div style="font-size:13px;font-weight:700;color:#7e22ce;">Tour Guide Share</div>
+                    <div style="font-size:11px;color:var(--text-secondary,#64748b);">${escapeHTML(trip.guide.name)}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <input type="number" id="pse-guide-pct" value="${gPct}" min="0" max="100" style="width:60px;padding:6px;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:700;text-align:center;font-size:14px;background:var(--bg-surface,#fff);color:var(--text-primary,#0f172a);" oninput="window._pseCalc(${totalBudget})" />
+                    <span style="font-weight:700;color:var(--text-secondary,#64748b);">%</span>
+                    <span id="pse-guide-amt" style="min-width:80px;text-align:right;font-weight:800;color:#10b981;">${formatMoney((totalBudget*gPct)/100)}</span>
+                </div>
+            </div>
+        ` : '';
+
+        const vendorRowHtml = hasVendor ? `
+            <div style="margin-bottom:18px;padding:14px;border:1px solid var(--border-color,#e2e8f0);border-radius:12px;background:var(--bg-surface,#fff);display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <div style="font-size:13px;font-weight:700;color:#c2410c;">Vendor Service Share</div>
+                    <div style="font-size:11px;color:var(--text-secondary,#64748b);">${escapeHTML(trip.vendor.name)} ${trip.vendor.type ? `(${escapeHTML(trip.vendor.type)})` : ''}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <input type="number" id="pse-vendor-pct" value="${vPct}" min="0" max="100" style="width:60px;padding:6px;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:700;text-align:center;font-size:14px;background:var(--bg-surface,#fff);color:var(--text-primary,#0f172a);" oninput="window._pseCalc(${totalBudget})" />
+                    <span style="font-weight:700;color:var(--text-secondary,#64748b);">%</span>
+                    <span id="pse-vendor-amt" style="min-width:80px;text-align:right;font-weight:800;color:#10b981;">${formatMoney((totalBudget*vPct)/100)}</span>
+                </div>
+            </div>
+        ` : '';
+
+        const noAssignedHtml = (!hasGuide && !hasVendor) ? `
+            <div style="padding:16px;text-align:center;color:#64748b;font-size:13px;background:var(--bg-card-alt,#f8fafc);border-radius:12px;margin-bottom:18px;">
+                No Tour Guide or Vendor assigned to this trip yet.
+            </div>
+        ` : '';
+
+        const activeTotal = (hasGuide ? gPct : 0) + (hasVendor ? vPct : 0);
         
         modal.innerHTML = `
             <div style="background:var(--bg-surface,#fff);border:1px solid var(--border-color,#e2e8f0);border-radius:24px;width:100%;max-width:540px;padding:28px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);color:var(--text-primary,#0f172a);position:relative;box-sizing:border-box;">
@@ -10798,36 +10831,16 @@
                     </div>
                 </div>
                 <div style="padding:12px 14px;border-radius:10px;background:#f0fdf4;border:1px solid #bbf7d0;font-size:12px;color:#166534;margin-bottom:18px;line-height:1.4;">
-                    💡 <strong>Partner Split Choice:</strong> Travel Partners & Support Staff are salaried employees. Set any guide and vendor payout share percentage as per your choice.
+                    💡 <strong>Partner Split Choice:</strong> Set payout share percentages for personnel assigned to this trip as per your choice.
                 </div>
                 
-                <div style="margin-bottom:14px;padding:14px;border:1px solid var(--border-color,#e2e8f0);border-radius:12px;background:var(--bg-surface,#fff);display:flex;justify-content:space-between;align-items:center;">
-                    <div>
-                        <div style="font-size:13px;font-weight:700;color:#7e22ce;">Tour Guide Share</div>
-                        <div style="font-size:11px;color:var(--text-secondary,#64748b);">${escapeHTML(trip.guide?.name || 'Assigned Guide')}</div>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <input type="number" id="pse-guide-pct" value="${gPct}" min="0" max="100" style="width:60px;padding:6px;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:700;text-align:center;font-size:14px;background:var(--bg-surface,#fff);color:var(--text-primary,#0f172a);" oninput="window._pseCalc(${totalBudget})" />
-                        <span style="font-weight:700;color:var(--text-secondary,#64748b);">%</span>
-                        <span id="pse-guide-amt" style="min-width:80px;text-align:right;font-weight:800;color:#10b981;">${formatMoney((totalBudget*gPct)/100)}</span>
-                    </div>
-                </div>
-
-                <div style="margin-bottom:18px;padding:14px;border:1px solid var(--border-color,#e2e8f0);border-radius:12px;background:var(--bg-surface,#fff);display:flex;justify-content:space-between;align-items:center;">
-                    <div>
-                        <div style="font-size:13px;font-weight:700;color:#c2410c;">Vendor Service Share</div>
-                        <div style="font-size:11px;color:var(--text-secondary,#64748b);">${escapeHTML(trip.vendor?.name || 'Assigned Vendor')}</div>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <input type="number" id="pse-vendor-pct" value="${vPct}" min="0" max="100" style="width:60px;padding:6px;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:700;text-align:center;font-size:14px;background:var(--bg-surface,#fff);color:var(--text-primary,#0f172a);" oninput="window._pseCalc(${totalBudget})" />
-                        <span style="font-weight:700;color:var(--text-secondary,#64748b);">%</span>
-                        <span id="pse-vendor-amt" style="min-width:80px;text-align:right;font-weight:800;color:#10b981;">${formatMoney((totalBudget*vPct)/100)}</span>
-                    </div>
-                </div>
+                ${guideRowHtml}
+                ${vendorRowHtml}
+                ${noAssignedHtml}
 
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:10px;background:var(--bg-card-alt,#f8fafc);border:1px solid var(--border-color,#e2e8f0);margin-bottom:20px;">
                     <span style="font-size:13px;font-weight:700;color:var(--text-secondary,#475569);">Total Payout Split</span>
-                    <span id="pse-total-badge" style="font-size:13px;font-weight:800;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">${gPct + vPct}%</span>
+                    <span id="pse-total-badge" style="font-size:13px;font-weight:800;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">${activeTotal}%</span>
                 </div>
 
                 <div style="display:flex;gap:10px;justify-content:flex-end;">
@@ -10841,8 +10854,10 @@
     };
 
     window._pseCalc = function(totalBudget) {
-        const gPct = Number(document.getElementById('pse-guide-pct')?.value || 0);
-        const vPct = Number(document.getElementById('pse-vendor-pct')?.value || 0);
+        const elGInput = document.getElementById('pse-guide-pct');
+        const elVInput = document.getElementById('pse-vendor-pct');
+        const gPct = elGInput ? Number(elGInput.value || 0) : 0;
+        const vPct = elVInput ? Number(elVInput.value || 0) : 0;
         const elG = document.getElementById('pse-guide-amt');
         const elV = document.getElementById('pse-vendor-amt');
         if (elG) elG.textContent = formatMoney((totalBudget * gPct) / 100);
@@ -10857,37 +10872,31 @@
     };
 
     window._savePartnerShares = function(tripId, totalBudget) {
-        const gPct = Number(document.getElementById('pse-guide-pct')?.value || 0);
-        const vPct = Number(document.getElementById('pse-vendor-pct')?.value || 0);
+        const elGInput = document.getElementById('pse-guide-pct');
+        const elVInput = document.getElementById('pse-vendor-pct');
+        const gPct = elGInput ? Number(elGInput.value || 0) : 0;
+        const vPct = elVInput ? Number(elVInput.value || 0) : 0;
         if (gPct < 0 || gPct > 100 || vPct < 0 || vPct > 100) {
             if (typeof notify === 'function') notify(`Share percentages must be between 0% and 100%.`, 'error');
             return;
         }
         const gAmt = parseFloat(((totalBudget * gPct) / 100).toFixed(2));
         const vAmt = parseFloat(((totalBudget * vPct) / 100).toFixed(2));
-        
-        updateTrip(tripId, (t, st) => {
-            t.budgetShare = {
-                ...(t.budgetShare || {}),
-                partnerPercent: 0,
-                partnerAmount: 0,
-                supportPercent: 0,
-                supportAmount: 0,
-                guidePercent: gPct,
-                guideAmount: gAmt,
-                vendorPercent: vPct,
-                vendorAmount: vAmt,
-                adminPercent: t.budgetShare?.adminPercent || 0,
-                adminAmount: t.budgetShare?.adminAmount || 0,
+        updateTrip(tripId, (trip) => {
+            const existing = trip.budgetShare || {};
+            trip.budgetShare = {
+                ...existing,
+                guidePercent: elGInput ? gPct : (existing.guidePercent || 0),
+                guideAmount: elGInput ? gAmt : (existing.guideAmount || 0),
+                vendorPercent: elVInput ? vPct : (existing.vendorPercent || 0),
+                vendorAmount: elVInput ? vAmt : (existing.vendorAmount || 0),
                 totalBudget: totalBudget
             };
-            addUpdate(t, 'Travel Partner', 'Payout Shares Updated', `Travel Partner configured payout shares: Guide ${gPct}% (${formatMoney(gAmt)}), Vendor ${vPct}% (${formatMoney(vAmt)}). Partner & Support receive fixed salaries.`, 'Updated');
-            notifyStakeholders(st, t, 'Payout Shares Adjusted', `Travel Partner adjusted trip payout shares for ${t.id}: Guide ${gPct}%, Vendor ${vPct}%.`, 'Updated', ['guide', 'vendor']);
+            addUpdate(trip, 'Travel Partner', 'Shares Updated', `Updated shares — Guide: ${trip.budgetShare.guidePercent}%, Vendor: ${trip.budgetShare.vendorPercent}%.`, 'Updated');
         });
-        
-        const m = document.getElementById('dd-partner-share-modal');
-        if (m) m.remove();
-        if (typeof notify === 'function') notify('Trip payout shares updated successfully!', 'success');
+        const modal = document.getElementById('dd-partner-share-modal');
+        if (modal) modal.remove();
+        if (typeof notify === 'function') notify('Payout shares updated successfully!', 'success');
         renderAll();
     };
 
