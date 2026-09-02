@@ -7177,6 +7177,72 @@
         renderAssignedTravelersWidget(state);
     }
 
+    function acceptedTrips(state) {
+        if (!state || !Array.isArray(state.trips)) return [];
+        const session = readSession();
+        const currentEmail = (session?.email || '').toLowerCase().trim();
+        const role = (session?.role || '').toLowerCase();
+
+        return state.trips.filter(t => {
+            if (t.status === 'cancelled') return false;
+            if (role.includes('superuser') || role.includes('support')) return true;
+            const pEmail = (t.partnerEmail || '').toLowerCase().trim();
+            return !pEmail || pEmail === currentEmail || t.status === 'accepted' || t.status === 'confirmed' || t.status === 'ongoing' || t.status === 'upcoming' || t.status === 'requested';
+        });
+    }
+
+    function assignableGuides(state) {
+        if (Array.isArray(state?.guides) && state.guides.length > 0) {
+            return state.guides;
+        }
+        if (Array.isArray(state?.users)) {
+            const userGuides = state.users.filter(u => (u.role || '').toLowerCase() === 'guide');
+            if (userGuides.length > 0) {
+                return userGuides.map(u => ({
+                    id: u.id || u.email,
+                    name: u.name || u.email,
+                    experience: u.experience || '8 yrs',
+                    languages: u.languages || 'English, Hindi, Spanish',
+                    rating: u.rating || '4.9',
+                    tours: u.toursCompleted || u.tours || 250,
+                    status: u.status || 'Available',
+                    email: u.email
+                }));
+            }
+        }
+        return [
+            { id: 'G-1', name: 'Arun Kumar', experience: '8 yrs', languages: 'English, Hindi, Spanish', rating: '4.9', tours: '250', status: 'Available', email: 'arunkumar@example.com' },
+            { id: 'G-2', name: 'Pierre Dubois', experience: '12 yrs', languages: 'English, French, Spanish', rating: '4.8', tours: '312', status: 'Available', email: 'pierre@example.com' },
+            { id: 'G-3', name: 'Yuki Tanaka', experience: '6 yrs', languages: 'English, Japanese', rating: '4.7', tours: '180', status: 'Available', email: 'yuki@example.com' }
+        ];
+    }
+
+    function assignableVendors(state) {
+        if (Array.isArray(state?.vendors) && state.vendors.length > 0) {
+            return state.vendors;
+        }
+        if (Array.isArray(state?.users)) {
+            const userVendors = state.users.filter(u => (u.role || '').toLowerCase() === 'vendor');
+            if (userVendors.length > 0) {
+                return userVendors.map(u => ({
+                    id: u.id || u.email,
+                    name: u.name || u.email,
+                    type: u.serviceType || u.category || 'Transport & Stay',
+                    location: u.location || 'Main City',
+                    rating: u.rating || '4.8',
+                    trips: u.tripsCompleted || u.trips || 45,
+                    status: u.status || 'Available',
+                    email: u.email
+                }));
+            }
+        }
+        return [
+            { id: 'V-1', name: 'ABC Travels', type: 'Transport', location: 'Goa', rating: '4.5', trips: '45', status: 'Available', email: 'abctravels@example.com' },
+            { id: 'V-2', name: 'Luxury Hotels Group', type: 'Hotel', location: 'Rome', rating: '4.8', trips: '150', status: 'Available', email: 'luxuryhotels@example.com' },
+            { id: 'V-3', name: 'Adventure Activities Co.', type: 'Activity', location: 'Rome', rating: '4.6', trips: '80', status: 'Available', email: 'adventureco@example.com' }
+        ];
+    }
+
     function selectedTripForAssignment(state, kind) {
         const params = new URLSearchParams(window.location.search);
         const requestedId = params.get('trip');
