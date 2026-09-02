@@ -234,7 +234,8 @@ async function renderTripRequests() {
 
   try {
     const res = await ApiClient.get('/trip-requests');
-    res.data.forEach((request) => {
+    const requests = Array.isArray(res) ? res : (res.data || []);
+    requests.forEach((request) => {
       const cardHTML = `
         <div class="trip-card requested" style="animation: fadeIn 0.5s ease-out;">
           <div class="trip-card-header"><div class="t-icon blue"><i data-icon="plane"></i></div><div><div class="t-title">${request.destination}</div><div class="t-id">${request.id}</div></div></div>

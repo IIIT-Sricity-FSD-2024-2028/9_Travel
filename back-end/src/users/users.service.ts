@@ -29,6 +29,7 @@ export class UsersService {
       phone: dto.phone || '',
       password: dto.password,
       role,
+      monthlySalary: dto.monthlySalary !== undefined ? Number(dto.monthlySalary) : undefined,
       status: dto.status || ('Active' as const),
       joined: this.data.now(),
     };
@@ -43,6 +44,7 @@ export class UsersService {
     if (dto.phone !== undefined) user.phone = dto.phone;
     if (dto.password) user.password = dto.password;
     if (dto.role) user.role = normalizeRole(dto.role) || user.role;
+    if (dto.monthlySalary !== undefined) user.monthlySalary = Number(dto.monthlySalary);
     if (dto.status) user.status = dto.status;
     this.data.persist();
     return this.data.stripPassword(user);

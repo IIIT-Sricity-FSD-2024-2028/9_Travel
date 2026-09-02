@@ -12,6 +12,7 @@ export interface UserEntity {
   password?: string;
   role: Role;
   status: 'Active' | 'Inactive' | 'Suspended';
+  monthlySalary?: number;
   availabilityStatus?: string;
   availability?: string;
   profile?: Record<string, any>;

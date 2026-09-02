@@ -329,7 +329,7 @@ const CRUD = {
     let trips = [];
     try {
       const res = await ApiClient.get('/trips');
-      trips = res.data || [];
+      trips = Array.isArray(res) ? res : (res.data || []);
     } catch (err) {
       console.warn('API get trips failed; using local workflow state fallback:', err.message);
     }
@@ -540,7 +540,7 @@ function getDestinationCoverPhoto(trip) {
     if (!tbody) return;
     try {
       const res = await ApiClient.get('/users');
-      const users = res.data || [];
+      const users = Array.isArray(res) ? res : (res.data || []);
       tbody.innerHTML = '';
       this.currentUsers = users;
       this.renderUserStats(users);
@@ -914,8 +914,15 @@ window.disburseEmployeeSalary = function(userId, userName, amount) {
     }
 };
 
-window.runBulkEmployeePayroll = function() {
+window.runBulkEmployeePayroll = async function() {
     let users = (CRUD.currentUsers && CRUD.currentUsers.length) ? CRUD.currentUsers : [];
+    if (!users.length) {
+        try {
+            const res = await ApiClient.get('/users');
+            users = Array.isArray(res) ? res : (res.data || []);
+            if (users.length) CRUD.currentUsers = users;
+        } catch (_) {}
+    }
     if (!users.length) {
         try {
             const st = JSON.parse(localStorage.getItem('dream_destination_workflow_v5') || '{}');
