@@ -9853,6 +9853,18 @@
         return state.packages;
     };
 
+    window.addWorkflowPackage = function (newPkg) {
+        const state = loadState();
+        let pkgs = Array.isArray(state.packages) && state.packages.length > 0 ? state.packages : window.getAllWorkflowPackages();
+        pkgs.unshift(newPkg);
+        state.packages = pkgs;
+        saveState(state, true, true);
+        if (typeof notify === 'function') {
+            notify('New package created successfully!', 'success');
+        }
+        return state.packages;
+    };
+
     window._showScheduleHistory = false;
     window.toggleScheduleHistory = function () {
         window._showScheduleHistory = !window._showScheduleHistory;
