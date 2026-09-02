@@ -881,8 +881,9 @@ window.disburseEmployeeSalary = function(userId, userName, amount) {
 
     try {
         const salLogs = JSON.parse(localStorage.getItem('dd_salary_payouts_v1') || '[]');
+        const payId = 'PAY-' + Date.now().toString().slice(-4);
         salLogs.unshift({
-            id: 'PAY-' + Date.now().toString().slice(-4),
+            id: payId,
             userId: userId,
             userName: userName,
             amount: amount,
@@ -892,19 +893,37 @@ window.disburseEmployeeSalary = function(userId, userName, amount) {
         });
         localStorage.setItem('dd_salary_payouts_v1', JSON.stringify(salLogs));
 
-        // Create notification for employee in workflow state
-        const stKey = 'dream_destination_workflow_v5';
-        const st = JSON.parse(localStorage.getItem(stKey) || '{}');
-        if (!st.notifications) st.notifications = [];
-        st.notifications.unshift({
+        // Standardized notification payload for workflow state and employee dashboards
+        const notifObj = {
             id: 'NOTIF-' + Date.now().toString().slice(-4),
+            roles: ['partner', 'support', 'guide', 'vendor', 'all', 'superuser'],
+            tripId: '',
+            tripTitle: 'Monthly Salary',
             title: 'Monthly Salary Disbursed',
             message: `Your monthly salary of ₹${Number(amount).toLocaleString()} for ${month} has been successfully processed by Super Admin.`,
+            type: 'Success',
+            readBy: [],
             recipientId: userId,
+            createdAt: new Date().toISOString(),
             timestamp: new Date().toISOString(),
             read: false
+        };
+
+        // Sync notification across all state stores
+        ['dd_workflow_state_v3', 'dream_destination_workflow_v5'].forEach(stKey => {
+            try {
+                const st = JSON.parse(localStorage.getItem(stKey) || '{}');
+                if (st) {
+                    if (!Array.isArray(st.notifications)) st.notifications = [];
+                    st.notifications.unshift(notifObj);
+                    localStorage.setItem(stKey, JSON.stringify(st));
+                }
+            } catch (_) {}
         });
-        localStorage.setItem(stKey, JSON.stringify(st));
+
+        if (typeof ApiClient !== 'undefined' && typeof ApiClient.post === 'function') {
+            ApiClient.post('/notifications', notifObj).catch(() => {});
+        }
     } catch (_) {}
 
     if (typeof Toast !== 'undefined') {
@@ -977,15 +996,14 @@ window.runBulkEmployeePayroll = async function() {
 
     try {
         const salLogs = JSON.parse(localStorage.getItem('dd_salary_payouts_v1') || '[]');
-        const stKey = 'dream_destination_workflow_v5';
-        const st = JSON.parse(localStorage.getItem(stKey) || '{}');
-        if (!st.notifications) st.notifications = [];
+        const newNotifs = [];
 
         payrollDetails.forEach(({ emp, sal }) => {
             const payId = 'PAY-' + Math.floor(1000 + Math.random() * 9000);
+            const empId = emp.id || emp.email;
             salLogs.unshift({
                 id: payId,
-                userId: emp.id || emp.email,
+                userId: empId,
                 userName: emp.name,
                 userEmail: emp.email,
                 role: emp.role,
@@ -995,18 +1013,41 @@ window.runBulkEmployeePayroll = async function() {
                 status: 'Completed'
             });
 
-            st.notifications.unshift({
+            const notifObj = {
                 id: 'NOTIF-' + Date.now().toString().slice(-4) + Math.floor(Math.random() * 100),
+                roles: ['partner', 'support', 'guide', 'vendor', 'all', 'superuser'],
+                tripId: '',
+                tripTitle: 'Monthly Salary',
                 title: 'Monthly Salary Disbursed',
-                message: `Your monthly salary of ₹${sal.toLocaleString()} for ${month} has been successfully processed by Super Admin.`,
-                recipientId: emp.id || emp.email,
+                message: `Your monthly salary of ₹${Number(sal).toLocaleString()} for ${month} has been successfully processed by Super Admin.`,
+                type: 'Success',
+                readBy: [],
+                recipientId: empId,
+                userEmail: emp.email || '',
+                userName: emp.name || '',
+                createdAt: new Date().toISOString(),
                 timestamp: new Date().toISOString(),
                 read: false
-            });
+            };
+            newNotifs.push(notifObj);
         });
 
         localStorage.setItem('dd_salary_payouts_v1', JSON.stringify(salLogs));
-        localStorage.setItem(stKey, JSON.stringify(st));
+
+        ['dd_workflow_state_v3', 'dream_destination_workflow_v5'].forEach(stKey => {
+            try {
+                const st = JSON.parse(localStorage.getItem(stKey) || '{}');
+                if (st) {
+                    if (!Array.isArray(st.notifications)) st.notifications = [];
+                    newNotifs.forEach(n => st.notifications.unshift(n));
+                    localStorage.setItem(stKey, JSON.stringify(st));
+                }
+            } catch (_) {}
+        });
+
+        if (typeof ApiClient !== 'undefined' && typeof ApiClient.post === 'function') {
+            newNotifs.forEach(n => ApiClient.post('/notifications', n).catch(() => {}));
+        }
     } catch (_) {}
 
     const successMsg = `⚡ Bulk Payroll Executed Successfully!\n\n` +

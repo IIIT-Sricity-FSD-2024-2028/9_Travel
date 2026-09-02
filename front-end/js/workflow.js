@@ -3083,35 +3083,124 @@
         });
     }
 
-    function renderSuperuserHeaderNotifications(state) {
-        if (roleFromPath() !== 'superuser') return;
+    function renderHeaderNotifications(state) {
         const lists = document.querySelectorAll('.sa-notif-dropdown .notif-list, #header-notif-list');
         if (!lists.length) return;
         const deletedIds = new Set(state.deletedNotifIds || []);
-        const notifications = (state.notifications || []).filter(n => !deletedIds.has(n.id)).slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const role = roleFromPath() || readSession()?.role || 'superuser';
+        
+        let rawNotifs = [];
+        if (role === 'partner') {
+            rawNotifs = getPartnerNotificationItems(state);
+        } else if (role === 'superuser') {
+            rawNotifs = state.notifications || [];
+        } else {
+            rawNotifs = notificationsForRole(state, role);
+        }
+
+        const notifications = (rawNotifs || [])
+            .filter(n => n && !deletedIds.has(n.id))
+            .slice()
+            .sort((a, b) => new Date(b.createdAt || b.timestamp || 0) - new Date(a.createdAt || a.timestamp || 0));
         
         lists.forEach(list => {
             list.innerHTML = notifications.slice(0, 6).map((item) => {
-                const isUnread = !(item.readBy || []).includes('superuser');
+                const isUnread = item.isUnread !== undefined ? item.isUnread : !(item.readBy || []).includes(role);
+                const isSalary = (item.title || '').toLowerCase().includes('salary') || (item.message || '').toLowerCase().includes('salary');
+                const iconBg = isSalary ? '#dcfce7' : (isUnread ? '#e0f2fe' : '#f1f5f9');
+                const iconColor = isSalary ? '#166534' : (isUnread ? '#0369a1' : '#64748b');
+                const iconContent = isSalary ? '💸' : '<i data-icon="bell"></i>';
+
                 return `
                     <div class="sa-nd-item ${isUnread ? 'unread' : ''}" style="display:flex; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-color, #f8fafc); align-items:flex-start; justify-content:space-between;">
                         <div style="display:flex; gap:12px; flex:1;">
-                            <div class="sa-nd-icon sa-nd-blue" style="background:${isUnread ? '#e0f2fe' : '#f1f5f9'}; color:${isUnread ? '#0369a1' : '#64748b'}; border-radius:10px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                <i data-icon="bell"></i>
+                            <div class="sa-nd-icon" style="background:${iconBg}; color:${iconColor}; border-radius:10px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px;">
+                                ${iconContent}
                             </div>
                             <div class="sa-nd-content" style="flex:1;">
-                                <p style="margin:0; font-size:13px; color:var(--text-primary, #1e293b); line-height:1.4;"><strong>${escapeHTML(item.title)}</strong> ${escapeHTML(item.message)}</p>
-                                <span class="sa-nd-time" style="font-size:11px; color:var(--text-muted, #94a3b8); display:block; margin-top:4px;">${relativeTime(item.createdAt)}</span>
+                                <p style="margin:0; font-size:13px; color:var(--text-primary, #1e293b); line-height:1.4;"><strong>${escapeHTML(item.title || 'Notification')}</strong> ${escapeHTML(item.message || item.subtitle || '')}</p>
+                                <span class="sa-nd-time" style="font-size:11px; color:var(--text-muted, #94a3b8); display:block; margin-top:4px;">${relativeTime(item.createdAt || item.timestamp)}</span>
                             </div>
                         </div>
-                        <button data-dd-action="delete-notif" data-notif-id="${item.id}" title="Delete Notification" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-size:13px; padding:2px 4px; border-radius:4px;" onmouseover="this.style.color='#ef4444';this.style.background='rgba(239,68,68,0.1)';" onmouseout="this.style.color='#94a3b8';this.style.background='none';">
-                            <i data-icon="trash"></i>
-                        </button>
                     </div>
                 `;
-            }).join('') || `<div class="sa-nd-item" style="padding:16px; color:#64748b; font-size:13px; text-align:center;">No platform notifications yet.</div>`;
+            }).join('') || `<div class="sa-nd-item" style="padding:16px; color:#64748b; font-size:13px; text-align:center;">No notifications yet.</div>`;
             iconRefresh(list);
         });
+    }
+
+    function renderMonthlySalaryWidget(state) {
+        const session = readSession();
+        if (!session || !session.email) return;
+
+        let salLogs = [];
+        try {
+            salLogs = JSON.parse(localStorage.getItem('dd_salary_payouts_v1') || '[]');
+        } catch (_) {}
+
+        const currentEmail = (session.email || '').toLowerCase().trim();
+        const currentName = (session.name || '').toLowerCase().trim();
+        const currentId = (session.id || '').toLowerCase().trim();
+
+        const myPayouts = salLogs.filter(p => {
+            const pEmail = (p.userEmail || p.userId || '').toLowerCase().trim();
+            const pName = (p.userName || '').toLowerCase().trim();
+            const pId = (p.userId || '').toLowerCase().trim();
+            return (pEmail && (pEmail === currentEmail || currentEmail.includes(pEmail))) ||
+                   (pName && (pName === currentName || currentName.includes(pName))) ||
+                   (pId && pId === currentId);
+        });
+
+        const salaryNotifs = (state.notifications || []).filter(n => {
+            const isSal = (n.title || '').toLowerCase().includes('salary') || (n.message || '').toLowerCase().includes('salary');
+            const rec = (n.recipientId || n.userEmail || '').toLowerCase().trim();
+            return isSal && (!rec || rec === currentEmail || rec === currentId || (currentName && (n.message || '').toLowerCase().includes(currentName)));
+        });
+
+        if (!myPayouts.length && !salaryNotifs.length) return;
+
+        const targetContainer = document.querySelector('.page-content, .dashboard-container');
+        if (!targetContainer) return;
+
+        let salaryWidget = document.getElementById('employee-salary-payout-widget');
+        const latestPayout = myPayouts[0] || {};
+        const amountVal = latestPayout.amount || (salaryNotifs[0] && (salaryNotifs[0].message.match(/₹([\d,]+)/) || [])[1]);
+        const amount = amountVal ? (String(amountVal).startsWith('₹') ? amountVal : `₹${Number(amountVal.toString().replace(/,/g, '')).toLocaleString()}`) : 'Disbursed';
+        const month = latestPayout.month || 'Current Month';
+        const dateStr = latestPayout.disbursedAt ? new Date(latestPayout.disbursedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently';
+
+        const widgetHTML = `
+            <div id="employee-salary-payout-widget" class="card" style="background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); color: #ffffff; padding: 20px 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            💸
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #a7f3d0;">Monthly Salary Disbursed</div>
+                            <div style="font-size: 22px; font-weight: 800; margin-top: 2px;">${amount} <span style="font-size: 14px; font-weight: 500; opacity: 0.85;">(${month})</span></div>
+                            <div style="font-size: 12px; color: #d1fae5; margin-top: 2px;">Processed on ${dateStr} • Direct Bank Transfer Completed</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: rgba(255, 255, 255, 0.2); color: #ffffff; padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.3);">
+                            ✓ Completed (${latestPayout.id || 'PAY-SUCCESS'})
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        if (salaryWidget) {
+            salaryWidget.outerHTML = widgetHTML;
+        } else {
+            const welcomeBanner = targetContainer.querySelector('.welcome-banner, .top-header, .stats-grid');
+            if (welcomeBanner && welcomeBanner.parentNode === targetContainer) {
+                welcomeBanner.insertAdjacentHTML('afterend', widgetHTML);
+            } else {
+                targetContainer.insertAdjacentHTML('afterbegin', widgetHTML);
+            }
+        }
     }
 
 
@@ -8823,7 +8912,8 @@
         renderProfilePage();
         renderNotificationDots(state);
         checkAndTriggerPopupsForCurrentPortal(state);
-        renderSuperuserHeaderNotifications(state);
+        renderHeaderNotifications(state);
+        renderMonthlySalaryWidget(state);
         renderSuperuserAlerts(state);
         renderTravelerAlerts(state);
         renderPartnerNotifications(state);
