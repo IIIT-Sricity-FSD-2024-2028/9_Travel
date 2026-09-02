@@ -935,6 +935,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             loadPackages();
+            if (typeof window.refreshIcons === 'function') {
+                window.refreshIcons();
+            }
         });
     </script>
 </body>
