@@ -821,7 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!document.hidden && !document.getElementById('prototype-confirm-modal')) {
         CRUD.renderTrips();
       }
-    }, 60000);
+    }, 300000);
   }
   if (document.getElementById('users-render-body') || document.getElementById('sa-users-body')) {
     CRUD.renderUsers();
@@ -829,7 +829,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!document.hidden && !document.getElementById('prototype-confirm-modal')) {
         CRUD.renderUsers();
       }
-    }, 60000);
+    }, 300000);
   }
   document.getElementById('sa-user-search')?.addEventListener('input', () => CRUD.applyUserFilters());
   document.getElementById('sa-role-filter')?.addEventListener('change', () => CRUD.applyUserFilters());

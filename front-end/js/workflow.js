@@ -10898,7 +10898,7 @@
             if (!isUserActivelyTyping()) {
                 hydrateStateFromBackend(false);
             }
-        }, 60000);
+        }, 300000);
         window.addEventListener('storage', (e) => {
             if (e.key === STORE_KEY || e.key === 'dd_session') {
                 renderAll();

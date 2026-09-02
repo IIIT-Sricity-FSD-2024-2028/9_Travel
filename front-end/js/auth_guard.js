@@ -153,5 +153,5 @@
 
     // Delay initial check so the page loads first, then poll every 30 seconds
     setTimeout(doStatusCheck, 5000);
-    setInterval(doStatusCheck, 60000);
+    setInterval(doStatusCheck, 300000);
 }());
