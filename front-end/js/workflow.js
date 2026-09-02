@@ -7438,8 +7438,8 @@
                         <span class="meta-label" style="font-weight:700;">Payout Split</span>
                         <div style="font-size:11px;color:var(--text-secondary,#64748b);">Guide: ${trip.budgetShare?.guidePercent ?? 50}% • Vendor: ${trip.budgetShare?.vendorPercent ?? 50}%</div>
                     </div>
-                    <button onclick="window.openPartnerShareEditor('${escapeJS(trip.id)}')" style="padding:6px 12px;border:none;border-radius:8px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:700;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(16,185,129,0.3);">
-                        <i data-icon="edit"></i> Edit Shares
+                    <button onclick="window.openBudgetShareModal('${escapeJS(trip.id)}')" style="padding:6px 12px;border:none;border-radius:8px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:700;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(16,185,129,0.3);">
+                        💳 Pay Guide & Vendor
                     </button>
                 </div>
             </div>
