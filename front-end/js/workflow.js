@@ -3,7 +3,7 @@
     if (pageName === 'landing_page.html' || pageName === 'index.html' || pageName === '') {
         return;
     }
-    const STORE_KEY = 'dd_workflow_state_v3';
+    const STORE_KEY = 'dd_workflow_state_v4';
     const SESSION_OWNER_KEY = 'dd_state_owner'; // tracks which user's session is cached
     const API_BASE_URL = window.API_BASE_URL || (typeof window !== 'undefined' ? `http://${window.location.hostname || 'localhost'}:3000` : 'http://localhost:3000');
     let backendHydrated = false;
@@ -327,7 +327,8 @@
             guide: 'Tour Guide',
             support: 'Support Executive',
         };
-        return map[readSession().role] || 'Super User';
+        const r = String(readSession().role || '').toLowerCase();
+        return map[r] || 'Travel Partner';
     }
 
     async function backendRequest(path, options = {}) {
@@ -1043,9 +1044,37 @@
                     readBy: ['superuser']
                 }
             ],
-            issues: [],
-            messages: [],
-            trips: [],
+            trips: [
+                {
+                    id: 'TRIP-9',
+                    requestId: 'REQ-9',
+                    title: 'Ooty Hills & Tea Explorer',
+                    travelerName: 'N Bharath',
+                    travelerEmail: 'traveler@gmail.com',
+                    partnerEmail: 'dileep@gmail.com',
+                    destination: 'Ooty, Tamil Nadu, India',
+                    startDate: '2026-09-09',
+                    endDate: '2026-09-14',
+                    adults: 2,
+                    children: 0,
+                    budget: 30000,
+                    paymentStatus: 'Unpaid',
+                    status: 'planning',
+                    requestStatus: 'Accepted',
+                    stage: 'Planning',
+                    progress: 10,
+                    guideStatus: 'Pending',
+                    vendorStatus: 'Pending',
+                    serviceStatus: 'Pending',
+                    schedule: [
+                        { id: 'SCH-TRIP-9-1', day: 1, date: '2026-09-09', time: '09:00', title: 'Arrival pickup and accommodation check-in', owner: 'vendor', location: 'Arrival Terminal', status: 'upcoming' },
+                        { id: 'SCH-TRIP-9-2', day: 2, date: '2026-09-10', time: '14:00', title: 'Featured cultural exploration & heritage district tour', owner: 'guide', location: 'Heritage Quarter', status: 'upcoming' }
+                    ],
+                    updates: [
+                        { id: 'UPD-SEED-9', source: 'Travel Partner', title: 'Request Accepted', message: 'Travel partner accepted Ooty Hills & Tea Explorer. Assign guide and vendor next.', status: 'Accepted', createdAt: nowISO() }
+                    ]
+                }
+            ],
         };
     }
 
@@ -1318,7 +1347,7 @@
             parsed = null;
         }
 
-        if (!parsed || !Array.isArray(parsed.trips)) {
+        if (!parsed || !Array.isArray(parsed.trips) || parsed.trips.length === 0) {
             parsed = seedState();
             parsed.trips.forEach((trip) => {
                 (trip.updates || []).slice(0, 3).forEach((update) => {
