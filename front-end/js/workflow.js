@@ -1093,11 +1093,22 @@
         const notifRoles = notif.roles || [];
 
         // 1. Role match check
-        const roleMatches = notifRoles.includes(activeRole) || notifRoles.includes('all');
-        if (!roleMatches) return false;
-
+        const isSalaryNotif = /salary|payroll|disburs/i.test(`${notif.title || ''} ${notif.message || ''}`);
+        const notifRecipient = (notif.recipientId || notif.userEmail || '').toLowerCase().trim();
         const currentEmail = (session?.email || '').toLowerCase().trim();
         const currentName = (session?.name || '').toLowerCase().trim();
+        const currentId = (session?.id || '').toLowerCase().trim();
+
+        const isDirectRecipient = Boolean(
+            notifRecipient && (
+                notifRecipient === currentEmail ||
+                notifRecipient === currentId ||
+                (currentName && (notif.message || '').toLowerCase().includes(currentName))
+            )
+        );
+
+        const roleMatches = notifRoles.includes(activeRole) || notifRoles.includes('all') || isSalaryNotif || isDirectRecipient || !notifRoles.length;
+        if (!roleMatches) return false;
 
         // Find associated trip in state if any
         let trip = null;
@@ -1132,7 +1143,7 @@
                 return false;
             }
 
-            return false;
+            return true;
         }
 
         // 3. Tour Guide Role Validation - STRICT ISOLATION
@@ -1158,7 +1169,7 @@
             if (notif.tripId || notif.guideEmail || notif.guideName) {
                 return false;
             }
-            return false;
+            return true;
         }
 
         // 4. Vendor Role Validation - STRICT ISOLATION
@@ -1184,10 +1195,10 @@
             if (notif.tripId || notif.vendorEmail || notif.vendorName) {
                 return false;
             }
-            return false;
+            return true;
         }
 
-        // 5. Support Role Validation - ONLY SUPPORT & ISSUE NOTIFICATIONS
+        // 5. Support Role Validation - SUPPORT, ISSUE & SALARY/PAYROLL NOTIFICATIONS
         if (activeRole === 'support') {
             const titleLower = (notif.title || '').toLowerCase();
             const msgLower = (notif.message || '').toLowerCase();
@@ -1195,11 +1206,17 @@
                 titleLower.includes('issue') ||
                 titleLower.includes('resolution') ||
                 titleLower.includes('help') ||
+                titleLower.includes('salary') ||
+                titleLower.includes('payroll') ||
                 msgLower.includes('support') ||
                 msgLower.includes('issue') ||
                 msgLower.includes('resolution') ||
+                msgLower.includes('salary') ||
+                msgLower.includes('payroll') ||
                 notif.category === 'support' ||
-                Boolean(notif.issueId);
+                Boolean(notif.issueId) ||
+                isSalaryNotif ||
+                isDirectRecipient;
             return isSupportNotification;
         }
 
