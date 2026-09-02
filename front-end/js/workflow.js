@@ -4873,9 +4873,9 @@
 
     function getSelectedCurrency() {
         try {
-            return localStorage.getItem('dd_currency') || 'INR';
+            return localStorage.getItem('dd_currency') || 'USD';
         } catch (_) {
-            return 'INR';
+            return 'USD';
         }
     }
 
@@ -6086,7 +6086,7 @@
         const state = loadState();
         const trips = state.trips || [];
         const lines = [
-            ['Trip ID', 'Title', 'Destination', 'Status', 'Traveler', 'Guide', 'Vendor', 'Start Date', 'End Date', 'Budget (INR)', 'Progress'],
+            ['Trip ID', 'Title', 'Destination', 'Status', 'Traveler', 'Guide', 'Vendor', 'Start Date', 'End Date', 'Budget (USD)', 'Progress'],
             ...trips.map((trip) => [
                 trip.id,
                 trip.title,

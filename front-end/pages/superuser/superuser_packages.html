@@ -415,7 +415,7 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="sa-form-group">
-                    <label class="sa-form-label">Budget (₹) <span style="color:#ef4444;">*</span></label>
+                    <label class="sa-form-label">Budget ($USD) <span style="color:#ef4444;">*</span></label>
                     <input type="number" id="pkgFormBudget" class="sa-form-control" placeholder="e.g. 50000" min="0" required />
                 </div>
                 <div class="sa-form-group">
@@ -526,7 +526,7 @@
 
             const totalBudget = currentPackages.reduce((acc, p) => acc + (Number(p.budget) || 0), 0);
             const avg = currentPackages.length ? Math.round(totalBudget / currentPackages.length) : 0;
-            document.getElementById('stat-avg-budget').innerText = `₹${avg.toLocaleString()}`;
+            document.getElementById('stat-avg-budget').innerText = typeof formatMoney === 'function' ? formatMoney(avg) : `$${avg.toLocaleString()}`;
         }
 
         function renderPackages(packages) {
@@ -567,7 +567,7 @@
                             <div class="pkg-card-meta">
                                 <div class="pkg-card-price">
                                     <span class="pkg-card-price-label">Price per person</span>
-                                    <span class="pkg-card-price-val">₹${(Number(pkg.budget) || 0).toLocaleString()}</span>
+                                    <span class="pkg-card-price-val">${typeof formatMoney === 'function' ? formatMoney(Number(pkg.budget) || 0) : '$' + (Number(pkg.budget) || 0).toLocaleString('en-US')}</span>
                                 </div>
                                 <div class="pkg-card-actions">
                                     <button class="btn-action-icon" onclick="openEditPackageModal('${escapeJS(pkg.id)}')" title="Edit Package">
