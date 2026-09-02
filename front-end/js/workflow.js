@@ -929,7 +929,7 @@
                     id: 'NTF-SEED-V1',
                     roles: ['vendor'],
                     title: 'New Service Request',
-                    message: 'You have been assigned to provide hotel and transfer services for Paris Adventure (TRP-101).',
+                    message: 'You have been assigned to provide hotel and transfer services for Ooty Hills & Tea Explorer (TRP-101).',
                     type: 'Service Request',
                     createdAt: new Date(Date.now() - 300000).toISOString(),
                     readBy: []
@@ -1010,7 +1010,7 @@
                     id: 'NTF-SEED-T4',
                     roles: ['traveler'],
                     title: 'Guide Assignment Confirmation',
-                    message: 'Koushik has been assigned as your expert local guide for Paris Adventure.',
+                    message: 'Koushik has been assigned as your expert local guide for Ooty Hills & Tea Explorer.',
                     type: 'Assignment',
                     createdAt: new Date(Date.now() - 172800000).toISOString(),
                     readBy: []
