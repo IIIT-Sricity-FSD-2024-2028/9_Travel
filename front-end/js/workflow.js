@@ -6714,9 +6714,15 @@
                                             </span>
                                         </td>
                                         <td style="padding:12px;text-align:right;">
-                                            <button onclick="window.openBudgetShareModal('${escapeHTML(trip.id)}')" style="padding:6px 14px;border:none;border-radius:8px;background:${isDisbursed ? '#e0f2fe' : 'linear-gradient(135deg,#10b981,#059669)'};color:${isDisbursed ? '#0369a1' : '#fff'};font-weight:700;font-size:12px;cursor:pointer;">
-                                                ${isDisbursed ? 'Edit Shares' : 'Disburse Shares'}
-                                            </button>
+                                            ${isDisbursed ? `
+                                                <button onclick="window.openBudgetShareModal('${escapeHTML(trip.id)}')" style="padding:6px 14px;border:none;border-radius:8px;background:rgba(16,185,129,0.15);color:#10b981;font-weight:700;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                                                    <i data-icon="check"></i> Paid Guide & Vendor
+                                                </button>
+                                            ` : `
+                                                <button onclick="window.openBudgetShareModal('${escapeHTML(trip.id)}')" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:800;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(16,185,129,0.3);">
+                                                    💳 Pay Guide & Vendor
+                                                </button>
+                                            `}
                                         </td>
                                     </tr>
                                 `;
