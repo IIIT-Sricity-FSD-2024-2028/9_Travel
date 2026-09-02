@@ -10467,9 +10467,9 @@
             body = `
                 <div style="background:var(--bg-card-alt,#f8fafc);border:1px solid var(--border-color,#e2e8f0);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
                     <div><div style="font-size:11px;color:var(--text-secondary,#64748b);font-weight:600;">Total Trip Budget</div><div style="font-size:22px;font-weight:900;color:#10b981;">${formatMoney(totalBudget)}</div></div>
-                    <span id="alloc-total-badge" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">100% ✓</span>
+                    <span id="alloc-total-badge" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:rgba(16,185,129,0.12);color:#10b981;">${gVal + vVal + aVal}% Accepted Split</span>
                 </div>
-                <div style="font-size:13px;font-weight:700;color:var(--text-primary,#0f172a);margin-bottom:10px;">Set payout commission split for active trip roles (must total 100%)</div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary,#0f172a);margin-bottom:10px;">Payout disbursement based on partner accepted percentage split</div>
                 ${salariedRow('Travel Partner', escapeHTML(trip.partnerName||'Partner'), 'tp', '#0369a1', '#e0f2fe')}
                 ${editableRow('dw-guide-pct', 'Tour Guide', escapeHTML(trip.guide?.name||'Guide'), 'TG', '#7e22ce', '#f3e8ff', gVal)}
                 ${editableRow('dw-vendor-pct', 'Vendor Service', escapeHTML(trip.vendor?.name||'Vendor'), 'VS', '#c2410c', '#ffedd5', vVal)}
@@ -10675,7 +10675,7 @@
         if (elA) elA.textContent = formatMoney((total * aPct) / 100);
         const sum = ['guide','vendor'].reduce((a,k) => a + Number(document.getElementById(`dw-${k}-pct`)?.value||0), 0) + aPct;
         const badge = document.getElementById('alloc-total-badge');
-        if (badge) { badge.textContent = sum === 100 ? '100% ✓' : `${sum}% ✗`; badge.style.background = sum===100?'rgba(16,185,129,0.12)':'rgba(239,68,68,0.12)'; badge.style.color = sum===100?'#10b981':'#ef4444'; }
+        if (badge) { badge.textContent = `${sum}% Accepted Split`; badge.style.background = 'rgba(16,185,129,0.12)'; badge.style.color = '#10b981'; }
     };
 
     window._disburseNext = function() {
@@ -10689,8 +10689,10 @@
                 support: 0,
                 admin:   Number(document.getElementById('dw-admin-pct')?.value||0),
             };
-            const sum = Object.values(pcts).reduce((a,v)=>a+v,0);
-            if (sum !== 100) { if (typeof notify==='function') notify(`Total is ${sum}% — must be exactly 100%.`,'error'); return; }
+            if (pcts.guide < 0 || pcts.guide > 100 || pcts.vendor < 0 || pcts.vendor > 100 || pcts.admin < 0 || pcts.admin > 100) {
+                if (typeof notify === 'function') notify('Percentages must be between 0% and 100%.', 'error');
+                return;
+            }
             w.pcts = pcts;
         }
         if (w.step === 2) {
