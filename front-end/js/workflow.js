@@ -7261,7 +7261,10 @@
     function selectedTripForAssignment(state, kind) {
         const params = new URLSearchParams(window.location.search);
         const requestedId = params.get('trip');
-        const trips = acceptedTrips(state).filter(t => t.status !== 'completed' && t.status !== 'cancelled');
+        let trips = acceptedTrips(state).filter(t => t && t.status !== 'completed' && t.status !== 'cancelled');
+        if (!trips || trips.length === 0) {
+            trips = (state?.trips || []).filter(t => t && t.status !== 'completed' && t.status !== 'cancelled');
+        }
         if (requestedId) {
             const exact = trips.find((trip) => trip.id === requestedId);
             if (exact) return exact;
@@ -7273,8 +7276,8 @@
     }
 
     function renderAssignmentPage(state, kind) {
-        const page = currentPage();
-        if ((kind === 'guide' && page !== 'travelPartner_guideAssignment.html') || (kind === 'vendor' && page !== 'travelPartner_vendorAssignment.html')) return;
+        const page = currentPage().toLowerCase();
+        if ((kind === 'guide' && !page.includes('guideassignment')) || (kind === 'vendor' && !page.includes('vendorassignment'))) return;
         const trip = selectedTripForAssignment(state, kind);
         const detailCard = document.querySelector('.trip-details-card');
         const list = kind === 'guide' ? document.querySelector('.guide-list') : document.querySelector('.vendor-list');
