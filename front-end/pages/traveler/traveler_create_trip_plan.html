@@ -507,11 +507,14 @@
   ];
 
   function getAllPackages() {
+      if (typeof getAllWorkflowPackages === 'function') {
+          return getAllWorkflowPackages();
+      }
       const state = (typeof readWorkflowState === 'function') ? readWorkflowState() : {};
-      const customPackages = (state && Array.isArray(state.packages)) ? state.packages : [];
-      const fallbackIds = new Set(fallbackPackages.map(p => p.id));
-      const filteredCustom = customPackages.filter(p => p && p.title && !fallbackIds.has(p.id));
-      return [...fallbackPackages, ...filteredCustom];
+      if (state && Array.isArray(state.packages) && state.packages.length > 0) {
+          return state.packages;
+      }
+      return fallbackPackages;
   }
 
   function renderPackages() {
