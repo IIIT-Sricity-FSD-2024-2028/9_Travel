@@ -9865,6 +9865,23 @@
         return state.packages;
     };
 
+    window.updateWorkflowPackage = function (updatedPkg) {
+        const state = loadState();
+        let pkgs = Array.isArray(state.packages) && state.packages.length > 0 ? state.packages : window.getAllWorkflowPackages();
+        const index = pkgs.findIndex(p => p.id === updatedPkg.id);
+        if (index !== -1) {
+            pkgs[index] = { ...pkgs[index], ...updatedPkg };
+        } else {
+            pkgs.unshift(updatedPkg);
+        }
+        state.packages = pkgs;
+        saveState(state, true, true);
+        if (typeof notify === 'function') {
+            notify('Package updated successfully!', 'success');
+        }
+        return state.packages;
+    };
+
     window._showScheduleHistory = false;
     window.toggleScheduleHistory = function () {
         window._showScheduleHistory = !window._showScheduleHistory;

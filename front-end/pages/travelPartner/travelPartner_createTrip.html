@@ -146,6 +146,25 @@
                                     <input type="text" class="form-input" id="pkgHighlights" placeholder="e.g. 7 Days Premium Resort stay, Snorkeling, Spa">
                                 </div>
                                 <div class="form-group full-width">
+                                    <label class="form-label">Package Cover Photo</label>
+                                    <div style="display:flex; flex-direction:column; gap:8px;">
+                                        <div style="display:flex; gap:8px;">
+                                            <input type="file" id="pkgImageFile" accept="image/*" class="form-input" onchange="handleTripFileSelected(event)" style="padding:6px;">
+                                            <select id="pkgImagePreset" class="form-input" onchange="handleTripPresetSelect(event)">
+                                                <option value="../../images/maldives_package.png">Preset: Maldives</option>
+                                                <option value="../../images/swiss_alps_package.png">Preset: Swiss Alps</option>
+                                                <option value="../../images/japan_package.png">Preset: Japan</option>
+                                                <option value="../../images/paris_package.png">Preset: Paris</option>
+                                                <option value="../../images/goa_package.png">Preset: Goa</option>
+                                                <option value="../../images/rome_package.png">Preset: Rome</option>
+                                            </select>
+                                        </div>
+                                        <div style="width:100%; height:160px; border-radius:10px; overflow:hidden; background:#0f172a; border:1px dashed #cbd5e1; display:flex; align-items:center; justify-content:center;">
+                                            <img id="tripPhotoPreview" src="../../images/maldives_package.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='../../images/maldives_package.png'">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group full-width">
                                     <label class="form-label">Package Description</label>
                                     <textarea class="form-textarea" id="pkgDesc" placeholder="Brief description of the package..."></textarea>
                                 </div>
@@ -168,7 +187,7 @@
                             <button type="button" class="btn-submit" onclick="submitPackage()">
                                 <i data-icon="plus"></i> Create Package
                             </button>
-                            <button type="button" class="btn-cancel">Cancel</button>
+                            <button type="button" class="btn-cancel" onclick="window.location.href='travelPartner_trips.html'">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -183,6 +202,24 @@
     <script src="../../js/workflow.js?v=live-20260811-02"></script>
     <script>
       let scheduleItemsCount = 0;
+      let selectedTripPhoto = '../../images/maldives_package.png';
+
+      function handleTripFileSelected(e) {
+          const file = e.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(evt) {
+                  selectedTripPhoto = evt.target.result;
+                  document.getElementById('tripPhotoPreview').src = selectedTripPhoto;
+              };
+              reader.readAsDataURL(file);
+          }
+      }
+
+      function handleTripPresetSelect(e) {
+          selectedTripPhoto = e.target.value;
+          document.getElementById('tripPhotoPreview').src = selectedTripPhoto;
+      }
 
       function addScheduleItem() {
           scheduleItemsCount++;
@@ -241,21 +278,21 @@
           });
 
           const newPkg = {
-              id: 'PKG-' + Date.now(),
+              id: 'PKG-' + Date.now().toString().slice(-4),
               title: title,
               destination: dest,
               durationDays: parseInt(document.getElementById('pkgDuration').value) || 7,
               budget: parseInt(document.getElementById('pkgBudget').value) || 5000,
               description: document.getElementById('pkgDesc').value || '',
               highlights: highlights,
-              imageUrl: '../../images/maldives_package.png', // Default placeholder
+              imageUrl: selectedTripPhoto,
               schedule: schItems
           };
 
-          state.packages.push(newPkg);
+          state.packages.unshift(newPkg);
           writeWorkflowState(state);
           notify('Package created successfully!', 'success');
-          setTimeout(() => window.location.href = 'travelPartner_trips.html', 1500);
+          setTimeout(() => window.location.href = 'travelPartner_packages.html', 1200);
       }
 
       // Add one default item

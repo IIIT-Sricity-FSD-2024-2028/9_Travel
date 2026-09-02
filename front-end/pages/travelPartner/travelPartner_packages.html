@@ -14,7 +14,6 @@
     <script src="../../js/auth_guard.js"></script>
     <script src="../../js/theme.js"></script>
     <style>
-        /* Custom scoped styles to ensure hyper-clean visual rendering in both Dark & Light themes */
         .pkg-stats-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -153,7 +152,7 @@
         .pkg-card-media-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.75) 0%, transparent 60%);
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, transparent 60%);
         }
 
         .badge-duration {
@@ -187,6 +186,33 @@
             border-radius: 999px;
             box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
             z-index: 2;
+        }
+
+        .badge-edit-photo {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 3;
+            transition: all 0.2s ease;
+        }
+
+        .badge-edit-photo:hover {
+            background: #0ea5e9;
+            border-color: #0ea5e9;
+            transform: scale(1.05);
         }
 
         .pkg-card-body {
@@ -361,22 +387,47 @@
         .pkg-card-footer {
             margin-top: auto;
             padding-top: 10px;
+            display: flex;
+            gap: 10px;
         }
 
-        .btn-delete-card {
-            width: 100%;
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.25);
+        .btn-edit-card {
+            flex: 1;
+            background: rgba(14, 165, 233, 0.1);
+            color: #0ea5e9;
+            border: 1px solid rgba(14, 165, 233, 0.25);
             border-radius: 10px;
-            padding: 10px 16px;
+            padding: 10px 14px;
             font-weight: 700;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit-card:hover {
+            background: #0ea5e9;
+            color: #ffffff;
+            border-color: #0ea5e9;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+        }
+
+        .btn-delete-card {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             transition: all 0.2s ease;
         }
 
@@ -432,7 +483,7 @@
             border: 1px solid var(--border-color, #e2e8f0);
             border-radius: 20px;
             width: 100%;
-            max-width: 580px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
@@ -464,7 +515,7 @@
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.1rem;
         }
 
         .pkg-form-group {
@@ -505,6 +556,55 @@
             background: #0d1322 !important;
             border-color: #232f4b !important;
             color: #f8fafc !important;
+        }
+
+        .photo-preview-box {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #0f172a;
+            border: 1px dashed var(--border-color, #cbd5e1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .photo-preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-tab-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .photo-tab-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid var(--border-color, #e2e8f0);
+            background: var(--bg-card-alt, #f8fafc);
+            color: var(--text-secondary, #64748b);
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .photo-tab-btn,
+        body.dark-theme .photo-tab-btn {
+            background: #162032 !important;
+            border-color: #232f4b !important;
+            color: #94a3b8 !important;
+        }
+
+        .photo-tab-btn.active {
+            background: #0ea5e9 !important;
+            color: #ffffff !important;
+            border-color: #0ea5e9 !important;
         }
 
         .pkg-modal-footer {
@@ -614,7 +714,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                     <div>
                         <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary, #0f172a); margin: 0;">Package Catalog Management</h1>
-                        <p style="font-size: 0.875rem; color: var(--text-secondary, #64748b); margin-top: 4px; margin-bottom: 0;">Add, inspect, and delete travel package templates offered to travelers in real-time</p>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary, #64748b); margin-top: 4px; margin-bottom: 0;">Add, edit photos, inspect, and delete travel package templates offered to travelers in real-time</p>
                     </div>
                     <button class="btn-add-pkg-action" onclick="openAddPackageModal()">
                         <i data-icon="plus"></i> Add New Package
@@ -660,56 +760,86 @@
         </main>
     </div>
 
-    <!-- Create New Package Modal -->
-    <div class="pkg-modal-backdrop" id="addPackageModal">
+    <!-- Create / Edit Package Modal -->
+    <div class="pkg-modal-backdrop" id="pkgModalBackdrop">
         <div class="pkg-modal-card">
             <div class="pkg-modal-header">
-                <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800;">Create New Travel Package</h3>
-                <button onclick="closeAddPackageModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+                <h3 id="modalTitle" style="margin: 0; font-size: 1.15rem; font-weight: 800;">Create New Travel Package</h3>
+                <button onclick="closePkgModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
             </div>
             <div class="pkg-modal-body">
+                <input type="hidden" id="editPkgId" value="" />
+
                 <div class="pkg-form-group">
                     <label>Package Title *</label>
-                    <input type="text" id="newPkgTitle" placeholder="e.g. Swiss Alps Explorer" required />
+                    <input type="text" id="pkgFormTitle" placeholder="e.g. Swiss Alps Explorer" required />
                 </div>
                 <div class="pkg-form-group">
                     <label>Destination City & Country *</label>
-                    <input type="text" id="newPkgDest" placeholder="e.g. Zurich, Switzerland" required />
+                    <input type="text" id="pkgFormDest" placeholder="e.g. Zurich, Switzerland" required />
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="pkg-form-group">
                         <label>Price Budget ($ USD) *</label>
-                        <input type="number" id="newPkgBudget" placeholder="3500" min="100" required />
+                        <input type="number" id="pkgFormBudget" placeholder="3500" min="100" required />
                     </div>
                     <div class="pkg-form-group">
                         <label>Duration (Days) *</label>
-                        <input type="number" id="newPkgDays" placeholder="7" min="1" max="30" required />
+                        <input type="number" id="pkgFormDays" placeholder="7" min="1" max="30" required />
                     </div>
                 </div>
+
+                <!-- Photo Upload Section -->
                 <div class="pkg-form-group">
-                    <label>Package Cover Image</label>
-                    <select id="newPkgImage">
-                        <option value="../../images/maldives_package.png">Maldives Tropical Overwater Resort</option>
-                        <option value="../../images/swiss_alps_package.png">Swiss Alps Mountain Lodge</option>
-                        <option value="../../images/japan_package.png">Japan Kyoto Pagoda & City</option>
-                        <option value="../../images/paris_package.png">Paris Eiffel Tower & Romance</option>
-                        <option value="../../images/goa_package.png">Goa Beach Resort & Sun</option>
-                        <option value="../../images/rome_package.png">Rome Historic Colosseum & Heritage</option>
-                    </select>
+                    <label>Package Photo *</label>
+                    <div class="photo-tab-bar">
+                        <button type="button" class="photo-tab-btn active" id="tabUploadFile" onclick="setPhotoTab('file')">📁 Upload File</button>
+                        <button type="button" class="photo-tab-btn" id="tabUrl" onclick="setPhotoTab('url')">🔗 Image URL</button>
+                        <button type="button" class="photo-tab-btn" id="tabPreset" onclick="setPhotoTab('preset')">🖼️ Pick Preset</button>
+                    </div>
+
+                    <!-- Option 1: File Upload -->
+                    <div id="photoSecFile" style="display: block;">
+                        <input type="file" id="pkgFormFileInput" accept="image/*" onchange="handleFileSelected(event)" style="margin-bottom: 4px;" />
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);">Select a photo from your computer (JPG, PNG, WebP)</span>
+                    </div>
+
+                    <!-- Option 2: Image URL -->
+                    <div id="photoSecUrl" style="display: none;">
+                        <input type="url" id="pkgFormUrlInput" placeholder="https://images.unsplash.com/photo-..." oninput="handleUrlInput(event)" />
+                    </div>
+
+                    <!-- Option 3: Presets -->
+                    <div id="photoSecPreset" style="display: none;">
+                        <select id="pkgFormPresetSelect" onchange="handlePresetSelect(event)">
+                            <option value="../../images/maldives_package.png">Maldives Tropical Overwater Resort</option>
+                            <option value="../../images/swiss_alps_package.png">Swiss Alps Mountain Lodge</option>
+                            <option value="../../images/japan_package.png">Japan Kyoto Pagoda & City</option>
+                            <option value="../../images/paris_package.png">Paris Eiffel Tower & Romance</option>
+                            <option value="../../images/goa_package.png">Goa Beach Resort & Sun</option>
+                            <option value="../../images/rome_package.png">Rome Historic Colosseum & Heritage</option>
+                        </select>
+                    </div>
+
+                    <!-- Photo Preview Box -->
+                    <div class="photo-preview-box" id="photoPreviewContainer">
+                        <img id="photoPreviewImg" src="../../images/maldives_package.png" alt="Preview" onerror="this.src='../../images/maldives_package.png'" />
+                    </div>
                 </div>
+
                 <div class="pkg-form-group">
                     <label>Short Description *</label>
-                    <textarea id="newPkgDesc" rows="3" placeholder="Describe the trip highlights and experience offered..." required></textarea>
+                    <textarea id="pkgFormDesc" rows="3" placeholder="Describe the trip highlights and experience offered..." required></textarea>
                 </div>
                 <div class="pkg-form-group">
                     <label>Key Highlights (comma-separated)</label>
-                    <input type="text" id="newPkgHighlights" placeholder="Luxury Hotel Stay, Guided City Tour, Free Airport Transfer" />
+                    <input type="text" id="pkgFormHighlights" placeholder="Luxury Hotel Stay, Guided City Tour, Free Airport Transfer" />
                 </div>
             </div>
             <div class="pkg-modal-footer">
-                <button onclick="closeAddPackageModal()" style="padding: 9px 18px; border-radius: 10px; border: 1px solid var(--border-color); background: transparent; color: var(--text-primary); font-weight: 600; cursor: pointer;">Cancel</button>
-                <button onclick="submitNewPackage()" class="btn-add-pkg-action" style="padding: 9px 20px;">
-                    <i data-icon="check"></i> Create Package
+                <button onclick="closePkgModal()" style="padding: 9px 18px; border-radius: 10px; border: 1px solid var(--border-color); background: transparent; color: var(--text-primary); font-weight: 600; cursor: pointer;">Cancel</button>
+                <button onclick="savePkgForm()" class="btn-add-pkg-action" style="padding: 9px 20px;">
+                    <i data-icon="check"></i> <span id="saveBtnText">Save Package</span>
                 </button>
             </div>
         </div>
@@ -718,9 +848,10 @@
     <!-- Scripts -->
     <script src="../../js/icons.js"></script>
     <script src="../../js/app.js"></script>
-    <script src="../../js/workflow.js?v=live-20260811-03"></script>
+    <script src="../../js/workflow.js?v=live-20260811-04"></script>
     <script>
         let currentPackages = [];
+        let selectedImageDataUrl = '../../images/maldives_package.png';
 
         function loadPackages() {
             if (typeof getAllWorkflowPackages === 'function') {
@@ -765,7 +896,7 @@
                         </button>
                     </div>
                 `;
-                if (typeof feather !== 'undefined') feather.replace();
+                if (typeof window.refreshIcons === 'function') window.refreshIcons();
                 return;
             }
 
@@ -792,6 +923,9 @@
                             <div class="pkg-card-media-overlay"></div>
                             <div class="badge-duration"><i data-icon="clock" style="width:12px; height:12px;"></i> ${pkg.durationDays || 7} Days</div>
                             <div class="badge-pkg-id">${pkg.id}</div>
+                            <button class="badge-edit-photo" onclick="openEditPackageModal('${pkg.id}')" title="Change Photo">
+                                <i data-icon="camera" style="width:13px; height:13px;"></i> Change Photo
+                            </button>
                         </div>
                         <div class="pkg-card-body">
                             <h3 class="pkg-card-title">${String(pkg.title).replace(/</g, '&lt;')}</h3>
@@ -818,8 +952,11 @@
                             </div>
 
                             <div class="pkg-card-footer">
+                                <button class="btn-edit-card" onclick="openEditPackageModal('${pkg.id}')">
+                                    <i data-icon="edit" style="width:14px; height:14px;"></i> Edit Package
+                                </button>
                                 <button class="btn-delete-card" onclick="handleDeletePackage('${pkg.id}', '${String(pkg.title).replace(/'/g, "\\'")}')">
-                                    <i data-icon="trash-2" style="width:14px; height:14px;"></i> Delete Package
+                                    <i data-icon="trash-2" style="width:14px; height:14px;"></i> Delete
                                 </button>
                             </div>
                         </div>
@@ -827,7 +964,7 @@
                 `;
             }).join('');
 
-            if (typeof feather !== 'undefined') feather.replace();
+            if (typeof window.refreshIcons === 'function') window.refreshIcons();
         }
 
         function toggleScheduleView(pkgId) {
@@ -871,22 +1008,115 @@
             filterPackages();
         }
 
+        /* Photo Tab Controller */
+        function setPhotoTab(mode) {
+            document.getElementById('tabUploadFile').classList.toggle('active', mode === 'file');
+            document.getElementById('tabUrl').classList.toggle('active', mode === 'url');
+            document.getElementById('tabPreset').classList.toggle('active', mode === 'preset');
+
+            document.getElementById('photoSecFile').style.display = mode === 'file' ? 'block' : 'none';
+            document.getElementById('photoSecUrl').style.display = mode === 'url' ? 'block' : 'none';
+            document.getElementById('photoSecPreset').style.display = mode === 'preset' ? 'block' : 'none';
+
+            if (mode === 'preset') {
+                updatePhotoPreview(document.getElementById('pkgFormPresetSelect').value);
+            } else if (mode === 'url') {
+                updatePhotoPreview(document.getElementById('pkgFormUrlInput').value || '../../images/maldives_package.png');
+            }
+        }
+
+        function handleFileSelected(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    selectedImageDataUrl = evt.target.result;
+                    updatePhotoPreview(selectedImageDataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleUrlInput(e) {
+            selectedImageDataUrl = e.target.value.trim() || '../../images/maldives_package.png';
+            updatePhotoPreview(selectedImageDataUrl);
+        }
+
+        function handlePresetSelect(e) {
+            selectedImageDataUrl = e.target.value;
+            updatePhotoPreview(selectedImageDataUrl);
+        }
+
+        function updatePhotoPreview(url) {
+            selectedImageDataUrl = url;
+            const imgEl = document.getElementById('photoPreviewImg');
+            if (imgEl) imgEl.src = url;
+        }
+
+        /* Modal Handlers */
         function openAddPackageModal() {
-            document.getElementById('addPackageModal').classList.add('active');
+            document.getElementById('editPkgId').value = '';
+            document.getElementById('modalTitle').innerText = 'Create New Travel Package';
+            document.getElementById('saveBtnText').innerText = 'Create Package';
+
+            document.getElementById('pkgFormTitle').value = '';
+            document.getElementById('pkgFormDest').value = '';
+            document.getElementById('pkgFormBudget').value = '';
+            document.getElementById('pkgFormDays').value = '';
+            document.getElementById('pkgFormDesc').value = '';
+            document.getElementById('pkgFormHighlights').value = '';
+            document.getElementById('pkgFormFileInput').value = '';
+            document.getElementById('pkgFormUrlInput').value = '';
+            
+            setPhotoTab('file');
+            updatePhotoPreview('../../images/maldives_package.png');
+
+            document.getElementById('pkgModalBackdrop').classList.add('active');
         }
 
-        function closeAddPackageModal() {
-            document.getElementById('addPackageModal').classList.remove('active');
+        function openEditPackageModal(pkgId) {
+            const pkg = currentPackages.find(p => p.id === pkgId);
+            if (!pkg) return;
+
+            document.getElementById('editPkgId').value = pkg.id;
+            document.getElementById('modalTitle').innerText = `Edit Package (${pkg.id})`;
+            document.getElementById('saveBtnText').innerText = 'Save Changes';
+
+            document.getElementById('pkgFormTitle').value = pkg.title || '';
+            document.getElementById('pkgFormDest').value = pkg.destination || '';
+            document.getElementById('pkgFormBudget').value = pkg.budget || '';
+            document.getElementById('pkgFormDays').value = pkg.durationDays || '';
+            document.getElementById('pkgFormDesc').value = pkg.description || '';
+            document.getElementById('pkgFormHighlights').value = Array.isArray(pkg.highlights) ? pkg.highlights.join(', ') : '';
+            
+            selectedImageDataUrl = pkg.imageUrl || '../../images/maldives_package.png';
+            
+            if (selectedImageDataUrl.startsWith('data:')) {
+                setPhotoTab('file');
+            } else if (selectedImageDataUrl.startsWith('http')) {
+                setPhotoTab('url');
+                document.getElementById('pkgFormUrlInput').value = selectedImageDataUrl;
+            } else {
+                setPhotoTab('preset');
+                document.getElementById('pkgFormPresetSelect').value = selectedImageDataUrl;
+            }
+
+            updatePhotoPreview(selectedImageDataUrl);
+            document.getElementById('pkgModalBackdrop').classList.add('active');
         }
 
-        function submitNewPackage() {
-            const title = document.getElementById('newPkgTitle').value.trim();
-            const dest = document.getElementById('newPkgDest').value.trim();
-            const budget = Number(document.getElementById('newPkgBudget').value);
-            const days = Number(document.getElementById('newPkgDays').value);
-            const img = document.getElementById('newPkgImage').value;
-            const desc = document.getElementById('newPkgDesc').value.trim();
-            const rawHighlights = document.getElementById('newPkgHighlights').value.trim();
+        function closePkgModal() {
+            document.getElementById('pkgModalBackdrop').classList.remove('active');
+        }
+
+        function savePkgForm() {
+            const editId = document.getElementById('editPkgId').value;
+            const title = document.getElementById('pkgFormTitle').value.trim();
+            const dest = document.getElementById('pkgFormDest').value.trim();
+            const budget = Number(document.getElementById('pkgFormBudget').value);
+            const days = Number(document.getElementById('pkgFormDays').value);
+            const desc = document.getElementById('pkgFormDesc').value.trim();
+            const rawHighlights = document.getElementById('pkgFormHighlights').value.trim();
 
             if (!title || !dest || !budget || !days || !desc) {
                 alert('Please fill in all required fields (Title, Destination, Budget, Duration, and Description).');
@@ -895,42 +1125,61 @@
 
             const highlights = rawHighlights ? rawHighlights.split(',').map(h => h.trim()).filter(Boolean) : [`${days} Days stay`, 'Guided tour access'];
 
-            const newPkg = {
-                id: 'PKG-' + Date.now().toString().slice(-4),
-                title: title,
-                destination: dest,
-                description: desc,
-                durationDays: days,
-                budget: budget,
-                highlights: highlights,
-                imageUrl: img,
-                schedule: [
-                    { day: 1, time: "09:00", title: "Airport pickup & check-in", owner: "vendor", location: dest, notes: "" },
-                    { day: 2, time: "10:00", title: "Guided sight-seeing tour", owner: "guide", location: dest, notes: "" }
-                ]
-            };
+            if (editId) {
+                // Edit existing package
+                const existingPkg = currentPackages.find(p => p.id === editId) || {};
+                const updatedPkg = {
+                    ...existingPkg,
+                    id: editId,
+                    title: title,
+                    destination: dest,
+                    description: desc,
+                    durationDays: days,
+                    budget: budget,
+                    highlights: highlights,
+                    imageUrl: selectedImageDataUrl
+                };
 
-            if (typeof addWorkflowPackage === 'function') {
-                currentPackages = addWorkflowPackage(newPkg);
+                if (typeof updateWorkflowPackage === 'function') {
+                    currentPackages = updateWorkflowPackage(updatedPkg);
+                } else {
+                    const st = readWorkflowState();
+                    const idx = (st.packages || []).findIndex(p => p.id === editId);
+                    if (idx !== -1) st.packages[idx] = updatedPkg;
+                    writeWorkflowState(st);
+                    currentPackages = st.packages;
+                }
             } else {
-                const st = readWorkflowState();
-                if (!st.packages) st.packages = [];
-                st.packages.unshift(newPkg);
-                writeWorkflowState(st);
-                currentPackages = st.packages;
+                // Create new package
+                const newPkg = {
+                    id: 'PKG-' + Date.now().toString().slice(-4),
+                    title: title,
+                    destination: dest,
+                    description: desc,
+                    durationDays: days,
+                    budget: budget,
+                    highlights: highlights,
+                    imageUrl: selectedImageDataUrl,
+                    schedule: [
+                        { day: 1, time: "09:00", title: "Airport pickup & check-in", owner: "vendor", location: dest, notes: "" },
+                        { day: 2, time: "10:00", title: "Guided sight-seeing tour", owner: "guide", location: dest, notes: "" }
+                    ]
+                };
+
+                if (typeof addWorkflowPackage === 'function') {
+                    currentPackages = addWorkflowPackage(newPkg);
+                } else {
+                    const st = readWorkflowState();
+                    if (!st.packages) st.packages = [];
+                    st.packages.unshift(newPkg);
+                    writeWorkflowState(st);
+                    currentPackages = st.packages;
+                }
             }
 
-            closeAddPackageModal();
+            closePkgModal();
             renderStats();
             filterPackages();
-
-            // Clear inputs
-            document.getElementById('newPkgTitle').value = '';
-            document.getElementById('newPkgDest').value = '';
-            document.getElementById('newPkgBudget').value = '';
-            document.getElementById('newPkgDays').value = '';
-            document.getElementById('newPkgDesc').value = '';
-            document.getElementById('newPkgHighlights').value = '';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
