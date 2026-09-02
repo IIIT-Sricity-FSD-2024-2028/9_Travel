@@ -452,9 +452,12 @@
                 </div>
                 <div id="photoSecPreset" style="display: none;">
                     <select id="pkgFormPresetSelect" class="sa-form-select" onchange="handlePresetSelect(event)">
-                        <option value="../../images/maldives_package.png">Maldives Ocean Resort</option>
-                        <option value="../../images/swiss_alps_package.png">Swiss Alps Mountain Lodge</option>
-                        <option value="../../images/japan_package.png">Japan Cherry Blossom Temple</option>
+                        <option value="../../images/maldives_package.png">🏖️ Maldives Ocean Resort</option>
+                        <option value="../../images/swiss_alps_package.png">🏔️ Swiss Alps Mountain Lodge</option>
+                        <option value="../../images/japan_package.png">⛩️ Japan Cherry Blossom Temple</option>
+                        <option value="../../images/paris_package.png">🗼 Paris Romance &amp; Culture</option>
+                        <option value="../../images/goa_package.png">🌊 Goa Sun &amp; Beach</option>
+                        <option value="../../images/rome_package.png">🏛️ Rome Heritage &amp; Imperial Walk</option>
                     </select>
                 </div>
 
@@ -483,79 +486,37 @@
     <script src="../../js/icons.js"></script>
     <script src="../../js/api_client.js?v=live-20260505-2"></script>
     <script src="../../js/app.js"></script>
+    <script src="../../js/workflow.js?v=live-20260811-04"></script>
     <script src="../../js/superuser.js"></script>
 
     <script>
         let currentPackages = [];
         let selectedImageDataUrl = '../../images/maldives_package.png';
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadPackageCatalog();
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPackageCatalog();
         });
 
-        async function loadPackageCatalog() {
-            try {
-                const stateKey = 'dream_destination_workflow_v5';
-                const st = JSON.parse(localStorage.getItem(stateKey) || '{}');
-                
-                if (st && Array.isArray(st.packages) && st.packages.length > 0) {
-                    currentPackages = st.packages;
-                } else {
-                    currentPackages = [
-                        {
-                            id: 'PKG-1',
-                            title: 'Maldives Escape',
-                            destination: 'Male, Maldives',
-                            description: 'A beautiful escape to the Maldives with luxury overwater resort stays and snorkeling.',
-                            durationDays: 7,
-                            budget: 50000,
-                            highlights: ['7 Days Premium Resort stay', 'Snorkeling & Water Sports', 'Daily spa included'],
-                            imageUrl: '../../images/maldives_package.png',
-                            imageFit: 'cover'
-                        },
-                        {
-                            id: 'PKG-2',
-                            title: 'Swiss Alps Adventure',
-                            destination: 'Zurich, Switzerland',
-                            description: 'An adventurous trip to the Swiss Alps featuring scenic railway passes and alpine skiing.',
-                            durationDays: 5,
-                            budget: 65000,
-                            highlights: ['5 Days Alpine Lodge stay', 'Skiing passes', 'Glacier Express train ride'],
-                            imageUrl: '../../images/swiss_alps_package.png',
-                            imageFit: 'cover'
-                        },
-                        {
-                            id: 'PKG-3',
-                            title: 'Japan Expedition',
-                            destination: 'Tokyo, Japan',
-                            description: 'Explore the wonders of Japan from ancient Kyoto temples to modern Tokyo skyscrapers.',
-                            durationDays: 9,
-                            budget: 85000,
-                            highlights: ['9 Days Multi-city Tour', 'Shinkansen Bullet Train passes', 'Historic Temples'],
-                            imageUrl: '../../images/japan_package.png',
-                            imageFit: 'cover'
-                        },
-                        {
-                            id: 'PKG-4',
-                            title: 'Goa Sun & Beach Tour',
-                            destination: 'Goa, India',
-                            description: 'Relax on sun-kissed beaches, enjoy water sports, and explore vibrant Goan culture.',
-                            durationDays: 5,
-                            budget: 25000,
-                            highlights: ['5 Days Beach Resort Stay', 'Water Sports', 'Heritage Tour'],
-                            imageUrl: '../../images/maldives_package.png',
-                            imageFit: 'contain'
-                        }
-                    ];
-                    st.packages = currentPackages;
-                    localStorage.setItem(stateKey, JSON.stringify(st));
-                }
-
-                updateStats();
-                renderPackages(currentPackages);
-            } catch (err) {
-                console.error('Error loading package catalog:', err);
+        function loadPackageCatalog() {
+            // Use workflow.js as the single source of truth — same as Travel Partner portal
+            if (typeof getAllWorkflowPackages === 'function') {
+                currentPackages = getAllWorkflowPackages();
+            } else if (typeof readWorkflowState === 'function') {
+                const st = readWorkflowState();
+                currentPackages = (st && Array.isArray(st.packages)) ? st.packages : [];
+            } else {
+                // Absolute last-resort fallback matching workflow.js defaults exactly
+                currentPackages = [
+                    { id: 'PKG-1', title: 'Maldives Escape', destination: 'Male, Maldives', description: 'A beautiful escape to the Maldives with luxury overwater resort stays and snorkeling.', durationDays: 7, budget: 5000, highlights: ['7 Days Premium Resort stay', 'Snorkeling & Water Sports', 'Daily breakfast & spa included'], imageUrl: '../../images/maldives_package.png' },
+                    { id: 'PKG-2', title: 'Swiss Alps Adventure', destination: 'Zurich, Switzerland', description: 'An adventurous trip to the Swiss Alps featuring scenic railway passes and alpine skiing.', durationDays: 5, budget: 4000, highlights: ['5 Days Alpine Lodge stay', 'Skiing & Snowboarding passes', 'Glacier Express train ride'], imageUrl: '../../images/swiss_alps_package.png' },
+                    { id: 'PKG-3', title: 'Japan Expedition', destination: 'Tokyo, Japan', description: 'Explore the wonders of Japan from ancient Kyoto temples to modern Tokyo skyscrapers.', durationDays: 9, budget: 6000, highlights: ['9 Days Multi-city Tour', 'Shinkansen (Bullet Train) passes', 'Historic Temples & Modern Cities'], imageUrl: '../../images/japan_package.png' },
+                    { id: 'PKG-4', title: 'Paris Romance & Culture', destination: 'Paris, France', description: 'Immerse yourself in Parisian art, gastronomy, and historic architecture.', durationDays: 7, budget: 4500, highlights: ['7 Days Boutique Hotel Stay', 'Eiffel Tower & Louvre Guided Access', 'Seine River Sunset Dinner Cruise'], imageUrl: '../../images/paris_package.png' },
+                    { id: 'PKG-5', title: 'Goa Sun & Spice Beach Tour', destination: 'Goa, India', description: 'Relax on sun-kissed beaches, enjoy water sports, and explore vibrant Goan culture.', durationDays: 5, budget: 1500, highlights: ['5 Days Beach Resort Stay', 'Water Sports & Beach BBQ', 'Spice Plantation & Heritage Tour'], imageUrl: '../../images/goa_package.png' },
+                    { id: 'PKG-6', title: 'Rome Heritage & Imperial Walk', destination: 'Rome, Italy', description: 'Walk through ancient Roman history, visit the Vatican, and savor culinary delights.', durationDays: 6, budget: 3800, highlights: ['6 Days Historic Center Hotel', 'Colosseum & Vatican Priority Tickets', 'Trastevere Food & Wine Walk'], imageUrl: '../../images/rome_package.png' }
+                ];
             }
+            updateStats();
+            renderPackages(currentPackages);
         }
 
         function updateStats() {
@@ -594,7 +555,7 @@
                 return `
                     <div class="pkg-card">
                         <div class="pkg-card-media">
-                            <img src="${escapeHTML(pkg.imageUrl || '../../images/maldives_package.png')}" class="${imgClass}" alt="${escapeHTML(pkg.title)}" />
+                            <img src="${escapeHTML(pkg.imageUrl || '../../images/maldives_package.png')}" class="${imgClass}" alt="${escapeHTML(pkg.title)}" onerror="this.onerror=null;this.src='../../images/maldives_package.png'" />
                             <div class="pkg-card-badge"><i data-icon="clock" style="width:12px;height:12px;"></i> ${pkg.durationDays || 5} Days</div>
                         </div>
                         <div class="pkg-card-body">
@@ -772,24 +733,21 @@
 
             const highlights = rawHighlights ? rawHighlights.split(',').map(h => h.trim()).filter(Boolean) : [`${days} Days stay`, 'Guided tour access'];
 
-            const stateKey = 'dream_destination_workflow_v5';
-            const st = JSON.parse(localStorage.getItem(stateKey) || '{}');
-            if (!st.packages) st.packages = [];
-
             if (editId) {
-                const idx = currentPackages.findIndex(p => p.id === editId);
-                if (idx !== -1) {
-                    currentPackages[idx] = {
-                        ...currentPackages[idx],
-                        title,
-                        destination: dest,
-                        budget,
-                        durationDays: days,
-                        description: desc,
-                        highlights,
-                        imageUrl: selectedImageDataUrl,
-                        imageFit: fitMode
-                    };
+                // Use workflow.js update function if available
+                if (typeof updateWorkflowPackage === 'function') {
+                    const updatedPkg = { ...currentPackages.find(p => p.id === editId), title, destination: dest, budget, durationDays: days, description: desc, highlights, imageUrl: selectedImageDataUrl, imageFit: fitMode };
+                    updateWorkflowPackage(editId, updatedPkg);
+                    currentPackages = getAllWorkflowPackages ? getAllWorkflowPackages() : currentPackages.map(p => p.id === editId ? updatedPkg : p);
+                } else {
+                    const idx = currentPackages.findIndex(p => p.id === editId);
+                    if (idx !== -1) {
+                        currentPackages[idx] = { ...currentPackages[idx], title, destination: dest, budget, durationDays: days, description: desc, highlights, imageUrl: selectedImageDataUrl, imageFit: fitMode };
+                    }
+                    const stateKey = 'dream_destination_workflow_v5';
+                    const st = JSON.parse(localStorage.getItem(stateKey) || '{}');
+                    st.packages = currentPackages;
+                    localStorage.setItem(stateKey, JSON.stringify(st));
                 }
             } else {
                 const newPkg = {
@@ -803,12 +761,18 @@
                     imageUrl: selectedImageDataUrl,
                     imageFit: fitMode
                 };
-                currentPackages.unshift(newPkg);
+                if (typeof addWorkflowPackage === 'function') {
+                    addWorkflowPackage(newPkg);
+                    currentPackages = getAllWorkflowPackages ? getAllWorkflowPackages() : [newPkg, ...currentPackages];
+                } else {
+                    currentPackages.unshift(newPkg);
+                    const stateKey = 'dream_destination_workflow_v5';
+                    const st = JSON.parse(localStorage.getItem(stateKey) || '{}');
+                    st.packages = currentPackages;
+                    localStorage.setItem(stateKey, JSON.stringify(st));
+                }
             }
 
-            st.packages = currentPackages;
-            localStorage.setItem(stateKey, JSON.stringify(st));
-            
             closePkgModal();
             updateStats();
             renderPackages(currentPackages);
@@ -823,11 +787,15 @@
 
             if (!confirm(`Are you sure you want to delete package "${pkg.title}" (${pkg.id})?`)) return;
 
-            currentPackages = currentPackages.filter(p => p.id !== pkgId);
-            const stateKey = 'dream_destination_workflow_v5';
-            const st = JSON.parse(localStorage.getItem(stateKey) || '{}');
-            st.packages = currentPackages;
-            localStorage.setItem(stateKey, JSON.stringify(st));
+            if (typeof deleteWorkflowPackage === 'function') {
+                currentPackages = deleteWorkflowPackage(pkgId);
+            } else {
+                currentPackages = currentPackages.filter(p => p.id !== pkgId);
+                const stateKey = 'dream_destination_workflow_v5';
+                const st = JSON.parse(localStorage.getItem(stateKey) || '{}');
+                st.packages = currentPackages;
+                localStorage.setItem(stateKey, JSON.stringify(st));
+            }
 
             updateStats();
             renderPackages(currentPackages);
