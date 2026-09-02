@@ -585,10 +585,12 @@ function getDestinationCoverPhoto(trip) {
               : user.monthlySalary);
 
         let salaryDisplay = '-';
-        if (['Travel Partner', 'Support Executive', 'Super User'].includes(user.role) || (userSal !== undefined && userSal !== null && userSal !== '')) {
+        if (['Super User', 'Super Admin'].includes(user.role)) {
+          salaryDisplay = `<span style="font-weight:700;color:#7c3aed;background:#f3e8ff;padding:4px 10px;border-radius:12px;font-size:12px;border:1px solid #ddd6fe;display:inline-flex;align-items:center;gap:4px;">👑 Owner (Platform Profits)</span>`;
+        } else if (['Travel Partner', 'Support Executive', 'Support'].includes(user.role) || (userSal !== undefined && userSal !== null && userSal !== '')) {
           const sal = (userSal !== undefined && userSal !== null && userSal !== '')
             ? Number(userSal)
-            : (user.role === 'Travel Partner' ? 65000 : user.role === 'Support Executive' ? 45000 : 80000);
+            : (user.role === 'Travel Partner' ? 65000 : 45000);
           salaryDisplay = `
             <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
               <span style="font-weight:700; color:#059669; font-size:0.875rem;">₹${sal.toLocaleString()}/mo</span>
@@ -926,8 +928,9 @@ window.runBulkEmployeePayroll = function() {
         salStore = JSON.parse(localStorage.getItem('dd_user_salaries_v1') || '{}');
     } catch (_) {}
 
-    const salariedRoles = ['Travel Partner', 'Support Executive', 'Support', 'Super User'];
+    const salariedRoles = ['Travel Partner', 'Support Executive', 'Support'];
     const eligibleEmployees = users.filter(u => {
+        if (u.role === 'Super User' || u.role === 'Super Admin') return false;
         const isSalariedRole = salariedRoles.includes(u.role);
         const hasCustomSal = (u.id && salStore[u.id] > 0) || (u.email && salStore[u.email.toLowerCase()] > 0) || (u.monthlySalary > 0);
         const isActive = (u.status || 'Active') === 'Active';
