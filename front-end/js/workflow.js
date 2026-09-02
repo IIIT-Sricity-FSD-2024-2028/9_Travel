@@ -7184,10 +7184,13 @@
         const role = (session?.role || '').toLowerCase();
 
         return state.trips.filter(t => {
-            if (t.status === 'cancelled') return false;
+            if (!t || t.status === 'cancelled') return false;
             if (role.includes('superuser') || role.includes('support')) return true;
             const pEmail = (t.partnerEmail || '').toLowerCase().trim();
-            return !pEmail || pEmail === currentEmail || t.status === 'accepted' || t.status === 'confirmed' || t.status === 'ongoing' || t.status === 'upcoming' || t.status === 'requested';
+            const st = String(t.status || '').toLowerCase();
+            const rq = String(t.requestStatus || '').toLowerCase();
+            const isAssignedPartner = !pEmail || pEmail === currentEmail || role.includes('partner');
+            return isAssignedPartner && (['accepted', 'confirmed', 'ongoing', 'upcoming', 'requested', 'planning'].includes(st) || rq === 'accepted');
         });
     }
 

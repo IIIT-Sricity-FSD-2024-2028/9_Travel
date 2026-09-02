@@ -319,6 +319,7 @@ body.dark-theme .page-container {
 /* ==========================================================================
    CARDS & SURFACES
    ========================================================================== */
+[data-theme="dark"] .trip-details-card,
 [data-theme="dark"] .content-card,
 [data-theme="dark"] .dashboard-card,
 [data-theme="dark"] .form-card,
@@ -343,6 +344,7 @@ body.dark-theme .page-container {
 [data-theme="dark"] .issue-card,
 [data-theme="dark"] .history-card,
 [data-theme="dark"] .package-card,
+body.dark-theme .trip-details-card,
 body.dark-theme .content-card,
 body.dark-theme .dashboard-card,
 body.dark-theme .form-card,
@@ -371,6 +373,11 @@ body.dark-theme .package-card {
     border: 1px solid #1e293b !important;
     color: #f8fafc !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .trip-details-card .meta-val,
+body.dark-theme .trip-details-card .meta-val {
+    color: #f8fafc !important;
 }
 
 /* Stat Cards & Metric Cards - High Contrast Obsidian & Vibrant Accents */
