@@ -1064,21 +1064,35 @@
                     endDate: '2026-09-14',
                     adults: 2,
                     children: 0,
+                    travelersCount: 2,
                     budget: 30000,
-                    paymentStatus: 'Unpaid',
-                    status: 'planning',
+                    paymentStatus: 'Paid',
+                    status: 'completed',
                     requestStatus: 'Accepted',
-                    stage: 'Planning',
-                    progress: 10,
-                    guideStatus: 'Pending',
-                    vendorStatus: 'Pending',
-                    serviceStatus: 'Pending',
+                    stage: 'Completed',
+                    progress: 100,
+                    guide: { id: 'GUIDE-1', name: 'Koushik', initials: 'KS', email: 'koushik@gmail.com', phone: '9876543213' },
+                    assignedGuideEmail: 'koushik@gmail.com',
+                    guideStatus: 'Completed',
+                    vendor: { id: 'VENDOR-1', name: 'Lokesh', type: 'Hotels & Transfers', email: 'lokesh@gmail.com', phone: '9876543212' },
+                    assignedVendorEmail: 'lokesh@gmail.com',
+                    vendorStatus: 'Completed',
+                    serviceStatus: 'Completed',
+                    scheduleStarted: true,
+                    completedAt: '2026-09-14T18:00:00.000Z',
+                    currentLocation: 'Ooty, Tamil Nadu, India',
+                    currentActivity: 'Tour completed successfully',
+                    accommodationType: 'standard',
+                    tripPace: 'moderate',
+                    interests: ['Culture', 'Nature'],
+                    notes: '',
                     schedule: [
-                        { id: 'SCH-TRIP-9-1', day: 1, date: '2026-09-09', time: '09:00', title: 'Arrival pickup and accommodation check-in', owner: 'vendor', location: 'Arrival Terminal', status: 'upcoming' },
-                        { id: 'SCH-TRIP-9-2', day: 2, date: '2026-09-10', time: '14:00', title: 'Featured cultural exploration & heritage district tour', owner: 'guide', location: 'Heritage Quarter', status: 'upcoming' }
+                        { id: 'SCH-TRIP-9-1', day: 1, date: '2026-09-09', time: '09:00', title: 'Arrival pickup and accommodation check-in', owner: 'vendor', location: 'Arrival Terminal', status: 'completed', updatedBy: 'Lokesh', updatedAt: nowISO(), notes: 'Done' },
+                        { id: 'SCH-TRIP-9-2', day: 2, date: '2026-09-10', time: '14:00', title: 'Featured cultural exploration & heritage district tour', owner: 'guide', location: 'Heritage Quarter', status: 'completed', updatedBy: 'Koushik', updatedAt: nowISO(), notes: 'Done' }
                     ],
                     updates: [
-                        { id: 'UPD-SEED-9', source: 'Travel Partner', title: 'Request Accepted', message: 'Travel partner accepted Ooty Hills & Tea Explorer. Assign guide and vendor next.', status: 'Accepted', createdAt: nowISO() }
+                        { id: 'UPD-SEED-9-COMPLETED', source: 'Travel Partner', title: 'Trip Completed', message: 'Trip TRIP-9 (Ooty Hills & Tea Explorer) has been completed successfully.', status: 'Completed', createdAt: nowISO() },
+                        { id: 'UPD-SEED-9', source: 'Travel Partner', title: 'Request Accepted', message: 'Travel partner accepted Ooty Hills & Tea Explorer.', status: 'Accepted', createdAt: nowISO() }
                     ]
                 }
             ],
@@ -1849,6 +1863,43 @@
             trip.currentLocation = stats.current?.location || trip.destination;
             addUpdate(trip, 'Travel Partner', 'Trip Started', `${trip.title} started by Travel Partner with the planned package schedule from ${formatShortDate(trip.startDate)} to ${formatShortDate(trip.endDate)}.`, 'Ongoing');
             notifyStakeholders(state, trip, 'Trip Started', `${trip.title} has been started by your Travel Partner. The package schedule is visible to traveler, guide, vendor, and travel partner.`, 'Ongoing');
+        });
+    }
+
+    function completeTrip(id) {
+        return updateTrip(id, (trip, state) => {
+            trip.status = 'completed';
+            trip.stage = 'Completed';
+            trip.progress = 100;
+            trip.paymentStatus = 'Paid';
+            trip.guideStatus = 'Completed';
+            trip.vendorStatus = 'Completed';
+            trip.serviceStatus = 'Completed';
+            trip.scheduleStarted = true;
+            trip.completedAt = trip.completedAt || nowISO();
+            trip.currentActivity = 'Tour completed successfully';
+            trip.currentLocation = trip.destination;
+
+            if (!trip.guide) {
+                trip.guide = { id: 'GUIDE-1', name: 'Koushik', initials: 'KS' };
+                trip.assignedGuideEmail = 'koushik@gmail.com';
+            }
+            if (!trip.vendor) {
+                trip.vendor = { id: 'VENDOR-1', name: 'Lokesh', type: 'Hotels & Transfers' };
+                trip.assignedVendorEmail = 'lokesh@gmail.com';
+            }
+
+            ensureTripSchedule(trip);
+            if (Array.isArray(trip.schedule)) {
+                trip.schedule.forEach((item) => {
+                    item.status = 'completed';
+                    item.notes = item.notes || 'Done';
+                    item.updatedAt = nowISO();
+                });
+            }
+
+            addUpdate(trip, 'Travel Partner', 'Trip Completed', `${trip.title} (${trip.id}) has been completed successfully.`, 'Completed');
+            notifyStakeholders(state, trip, 'Trip Completed', `${trip.title} (${trip.id}) was completed successfully.`, 'Completed', [...STAKEHOLDER_ROLES, 'support']);
         });
     }
 
@@ -7106,7 +7157,12 @@
                 }
             }
 
-            const menuItemsHtml = [vendorMenuItem, guideMenuItem, startTripMenuItem, executionMenuItem, supportMenuItem].filter(Boolean).join('');
+            let completeTripMenuItem = '';
+            if (trip.status !== 'completed' && trip.status !== 'cancelled' && trip.status !== 'requested') {
+                completeTripMenuItem = `<button type="button" class="dd-menu-item" data-dd-action="complete-trip" data-trip-id="${trip.id}" style="color:#059669;"><i data-icon="checkcircle"></i> Complete Trip</button>`;
+            }
+
+            const menuItemsHtml = [vendorMenuItem, guideMenuItem, startTripMenuItem, completeTripMenuItem, executionMenuItem, supportMenuItem].filter(Boolean).join('');
             const menuContent = menuItemsHtml || `<div class="dd-menu-item" style="color:#64748b;font-size:12px;cursor:default;"><i data-icon="check"></i> All Actions Complete</div>`;
 
             const session = readSession();
@@ -9746,6 +9802,15 @@
                 return;
             }
 
+            if (action === 'complete-trip' || action === 'mark-completed') {
+                confirmThen('Complete Trip', `Mark trip ${tripId} as completed?`, 'Complete', 'green', () => {
+                    completeTrip(tripId);
+                    notify('Trip marked as completed successfully!', 'success');
+                    renderAll();
+                });
+                return;
+            }
+
             if (action === 'open-payment-modal' || action === 'pay-trip') {
                 window.openPaymentModal(tripId);
                 return;
@@ -9956,6 +10021,7 @@
         acceptGuide,
         acceptVendor,
         startTrip,
+        completeTrip,
         guideUpdate,
         guideMessage,
         vendorUpdate,
