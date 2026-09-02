@@ -3183,6 +3183,17 @@
     }
 
     function renderMonthlySalaryWidget(state) {
+        const page = currentPage().toLowerCase();
+        const isProfilePage = page.includes('profile');
+        const existingWidget = document.getElementById('employee-salary-payout-widget');
+
+        if (!isProfilePage) {
+            if (existingWidget) {
+                existingWidget.remove();
+            }
+            return;
+        }
+
         const session = readSession();
         if (!session || !session.email) return;
 
@@ -3210,12 +3221,14 @@
             return isSal && (!rec || rec === currentEmail || rec === currentId || (currentName && (n.message || '').toLowerCase().includes(currentName)));
         });
 
-        if (!myPayouts.length && !salaryNotifs.length) return;
+        if (!myPayouts.length && !salaryNotifs.length) {
+            if (existingWidget) existingWidget.remove();
+            return;
+        }
 
         const targetContainer = document.querySelector('.page-content, .dashboard-container');
         if (!targetContainer) return;
 
-        let salaryWidget = document.getElementById('employee-salary-payout-widget');
         const latestPayout = myPayouts[0] || {};
         const amountVal = latestPayout.amount || (salaryNotifs[0] && (salaryNotifs[0].message.match(/₹([\d,]+)/) || [])[1]);
         const amount = amountVal ? (String(amountVal).startsWith('₹') ? amountVal : `₹${Number(amountVal.toString().replace(/,/g, '')).toLocaleString()}`) : 'Disbursed';
@@ -3223,7 +3236,11 @@
         const dateStr = latestPayout.disbursedAt ? new Date(latestPayout.disbursedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently';
 
         const widgetHTML = `
-            <div id="employee-salary-payout-widget" class="card" style="background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); color: #ffffff; padding: 20px 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.3);">
+            <div id="employee-salary-payout-widget" style="margin-top: 24px; background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); color: #ffffff; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.3);">
+                <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px; color: #ffffff; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 12px;">
+                    <span style="display: flex; align-items: center; gap: 8px;">💳 Payments & Confidential Salary</span>
+                    <span style="font-size: 11px; background: rgba(255, 255, 255, 0.2); padding: 4px 10px; border-radius: 99px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Confidential</span>
+                </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                     <div style="display: flex; align-items: center; gap: 16px;">
                         <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 24px;">
@@ -3244,14 +3261,14 @@
             </div>
         `;
 
-        if (salaryWidget) {
-            salaryWidget.outerHTML = widgetHTML;
+        if (existingWidget) {
+            existingWidget.outerHTML = widgetHTML;
         } else {
-            const welcomeBanner = targetContainer.querySelector('.welcome-banner, .top-header, .stats-grid');
-            if (welcomeBanner && welcomeBanner.parentNode === targetContainer) {
-                welcomeBanner.insertAdjacentHTML('afterend', widgetHTML);
+            const splitLayout = targetContainer.querySelector('.split-layout');
+            if (splitLayout) {
+                splitLayout.insertAdjacentHTML('afterend', widgetHTML);
             } else {
-                targetContainer.insertAdjacentHTML('afterbegin', widgetHTML);
+                targetContainer.insertAdjacentHTML('beforeend', widgetHTML);
             }
         }
     }
