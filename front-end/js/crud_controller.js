@@ -589,7 +589,13 @@ function getDestinationCoverPhoto(trip) {
           const sal = (userSal !== undefined && userSal !== null && userSal !== '')
             ? Number(userSal)
             : (user.role === 'Travel Partner' ? 65000 : user.role === 'Support Executive' ? 45000 : 80000);
-          salaryDisplay = `<span style="font-weight:700;color:#059669;">₹${sal.toLocaleString()}/mo</span>`;
+          salaryDisplay = `
+            <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
+              <span style="font-weight:700; color:#059669; font-size:0.875rem;">₹${sal.toLocaleString()}/mo</span>
+              <button onclick="window.disburseEmployeeSalary('${escapeJS(user.id)}', '${escapeJS(user.name)}', ${sal})" style="padding:3px 10px; font-size:11px; background:linear-gradient(135deg, #10b981, #059669); color:#ffffff; border:none; border-radius:6px; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(16,185,129,0.25);" title="Disburse monthly salary">
+                💸 Disburse Salary
+              </button>
+            </div>`;
         } else if (['Vendor', 'Tour Guide'].includes(user.role)) {
           salaryDisplay = `<span style="font-weight:600;color:#0369a1;background:#e0f2fe;padding:3px 8px;border-radius:12px;font-size:12px;">Per-Trip Share</span>`;
         }
@@ -864,3 +870,44 @@ document.addEventListener('DOMContentLoaded', () => {
     tripForm.addEventListener('submit', (e) => CRUD.handleFormSubmit(e, 'trips', 'superuser_trips.html'));
   }
 });
+
+window.disburseEmployeeSalary = function(userId, userName, amount) {
+    const month = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    if (!confirm(`Confirm Salary Dispersal?\n\nDisburse ₹${Number(amount).toLocaleString()} monthly salary to ${userName} for ${month}?`)) {
+        return;
+    }
+
+    try {
+        const salLogs = JSON.parse(localStorage.getItem('dd_salary_payouts_v1') || '[]');
+        salLogs.unshift({
+            id: 'PAY-' + Date.now().toString().slice(-4),
+            userId: userId,
+            userName: userName,
+            amount: amount,
+            month: month,
+            disbursedAt: new Date().toISOString(),
+            status: 'Completed'
+        });
+        localStorage.setItem('dd_salary_payouts_v1', JSON.stringify(salLogs));
+
+        // Create notification for employee in workflow state
+        const stKey = 'dream_destination_workflow_v5';
+        const st = JSON.parse(localStorage.getItem(stKey) || '{}');
+        if (!st.notifications) st.notifications = [];
+        st.notifications.unshift({
+            id: 'NOTIF-' + Date.now().toString().slice(-4),
+            title: 'Monthly Salary Disbursed',
+            message: `Your monthly salary of ₹${Number(amount).toLocaleString()} for ${month} has been successfully processed by Super Admin.`,
+            recipientId: userId,
+            timestamp: new Date().toISOString(),
+            read: false
+        });
+        localStorage.setItem(stKey, JSON.stringify(st));
+    } catch (_) {}
+
+    if (typeof Toast !== 'undefined') {
+        Toast.success(`₹${Number(amount).toLocaleString()} salary disbursed to ${userName} successfully!`);
+    } else {
+        alert(`₹${Number(amount).toLocaleString()} salary disbursed to ${userName} successfully!`);
+    }
+};
