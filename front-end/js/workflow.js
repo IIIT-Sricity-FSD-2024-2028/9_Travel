@@ -1748,7 +1748,7 @@
                 if (trip.supportStatus === 'Sent') {
                     reason = 'This trip was sent to Support Executive and is awaiting Support acceptance before it can start.';
                 } else if (trip.guideStatus === 'Accepted' && trip.vendorStatus === 'Accepted' && trip.paymentStatus !== 'Paid') {
-                    reason = `Traveler must complete the trip payment ($${(trip.budget || 1200).toLocaleString()}) before the trip can start.`;
+                    reason = `Traveler must complete the trip payment (${formatMoney(trip.budget || 1200)}) before the trip can start.`;
                 }
                 addUpdate(trip, 'Travel Partner', 'Start Blocked', reason, 'Pending');
                 notifyStakeholders(state, trip, 'Trip Start Blocked', `${trip.title}: ${reason}`, 'Pending', ['partner']);
@@ -4873,9 +4873,9 @@
 
     function getSelectedCurrency() {
         try {
-            return localStorage.getItem('dd_currency') || 'USD';
+            return 'INR'; // Platform currency is locked to INR
         } catch (_) {
-            return 'USD';
+            return 'INR';
         }
     }
 
@@ -6086,7 +6086,7 @@
         const state = loadState();
         const trips = state.trips || [];
         const lines = [
-            ['Trip ID', 'Title', 'Destination', 'Status', 'Traveler', 'Guide', 'Vendor', 'Start Date', 'End Date', 'Budget (USD)', 'Progress'],
+            ['Trip ID', 'Title', 'Destination', 'Status', 'Traveler', 'Guide', 'Vendor', 'Start Date', 'End Date', 'Budget (INR)', 'Progress'],
             ...trips.map((trip) => [
                 trip.id,
                 trip.title,

@@ -802,7 +802,7 @@
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="pkg-form-group">
-                        <label>Price Budget ($ USD) *</label>
+                        <label>Price Budget (₹ INR) *</label>
                         <input type="number" id="pkgFormBudget" placeholder="3500" min="100" required />
                     </div>
                     <div class="pkg-form-group">
@@ -902,12 +902,12 @@
             if (currentPackages.length > 0) {
                 const totalB = currentPackages.reduce((acc, p) => acc + (Number(p.budget) || 0), 0);
                 const avg = Math.round(totalB / currentPackages.length);
-                document.getElementById('statAvgBudget').innerText = '$' + avg.toLocaleString();
+                document.getElementById('statAvgBudget').innerText = '₹' + avg.toLocaleString('en-IN');
 
                 const dests = new Set(currentPackages.map(p => p.destination));
                 document.getElementById('statDestCount').innerText = dests.size;
             } else {
-                document.getElementById('statAvgBudget').innerText = '$0';
+                document.getElementById('statAvgBudget').innerText = '₹0';
                 document.getElementById('statDestCount').innerText = '0';
             }
         }
@@ -965,7 +965,7 @@
                             </div>
                             
                             <div class="pkg-meta-row">
-                                <div class="pkg-price-pill">$${(Number(pkg.budget) || 0).toLocaleString()} USD</div>
+                                <div class="pkg-price-pill">₹${(Number(pkg.budget) || 0).toLocaleString('en-IN')}</div>
                                 <div class="pkg-sch-count"><i data-icon="list" style="width:14px; height:14px;"></i> ${schedule.length} Events</div>
                             </div>
 
