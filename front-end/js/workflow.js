@@ -1336,49 +1336,6 @@
         parsed.deletedNotifIds = Array.isArray(parsed.deletedNotifIds) ? parsed.deletedNotifIds : [];
         const deletedSet = new Set(parsed.deletedNotifIds);
         parsed.notifications = (Array.isArray(parsed.notifications) ? parsed.notifications : []).filter(n => !deletedSet.has(n.id));
-
-        // Merge notifications from legacy/alternate stores
-        try {
-            const v5 = JSON.parse(localStorage.getItem('dream_destination_workflow_v5') || '{}');
-            if (v5 && Array.isArray(v5.notifications)) {
-                const existingIds = new Set(parsed.notifications.map(n => n.id));
-                v5.notifications.forEach(n => {
-                    if (n && n.id && !existingIds.has(n.id) && !deletedSet.has(n.id)) {
-                        parsed.notifications.unshift(n);
-                    }
-                });
-            }
-        } catch (_) {}
-
-        // Synthesize notification entries from dd_salary_payouts_v1 so every disbursed salary is guaranteed visible
-        try {
-            const salLogs = JSON.parse(localStorage.getItem('dd_salary_payouts_v1') || '[]');
-            if (Array.isArray(salLogs) && salLogs.length) {
-                const existingIds = new Set(parsed.notifications.map(n => n.id));
-                salLogs.forEach(pay => {
-                    const payNotifId = 'NOTIF-' + pay.id;
-                    if (!existingIds.has(payNotifId) && !deletedSet.has(payNotifId)) {
-                        parsed.notifications.unshift({
-                            id: payNotifId,
-                            roles: ['partner', 'support', 'guide', 'vendor', 'all', 'superuser'],
-                            tripId: '',
-                            tripTitle: 'Monthly Salary',
-                            title: 'Monthly Salary Disbursed',
-                            message: `Your monthly salary of ₹${Number(pay.amount || 0).toLocaleString()} for ${pay.month || 'Current Month'} has been successfully processed by Super Admin.`,
-                            type: 'Success',
-                            readBy: [],
-                            recipientId: pay.userId || pay.userEmail || '',
-                            userEmail: pay.userEmail || '',
-                            userName: pay.userName || '',
-                            createdAt: pay.disbursedAt || new Date().toISOString(),
-                            timestamp: pay.disbursedAt || new Date().toISOString(),
-                            read: false
-                        });
-                    }
-                });
-            }
-        } catch (_) {}
-
         parsed.issues = Array.isArray(parsed.issues) ? parsed.issues.map(normalizeIssue) : [];
         parsed.messages = Array.isArray(parsed.messages) ? parsed.messages.map(normalizeMessage) : [];
         parsed.trips = parsed.trips.map(normalizeTrip);
@@ -3206,17 +3163,15 @@
             const pEmail = (p.userEmail || p.userId || '').toLowerCase().trim();
             const pName = (p.userName || '').toLowerCase().trim();
             const pId = (p.userId || '').toLowerCase().trim();
-            const nameMatch = pName && currentName && (pName.includes(currentName) || currentName.includes(pName));
-            const emailMatch = pEmail && (pEmail === currentEmail || currentEmail.includes(pEmail) || pEmail.includes(currentEmail));
-            const idMatch = pId && (pId === currentId || pId === currentEmail || currentId === pEmail);
-            return emailMatch || idMatch || nameMatch || (salLogs.length === 1);
+            return (pEmail && (pEmail === currentEmail || currentEmail.includes(pEmail))) ||
+                   (pName && (pName === currentName || currentName.includes(pName))) ||
+                   (pId && pId === currentId);
         });
 
         const salaryNotifs = (state.notifications || []).filter(n => {
             const isSal = (n.title || '').toLowerCase().includes('salary') || (n.message || '').toLowerCase().includes('salary');
             const rec = (n.recipientId || n.userEmail || '').toLowerCase().trim();
-            const recMatch = !rec || rec === currentEmail || rec === currentId || (currentName && (n.message || '').toLowerCase().includes(currentName));
-            return isSal && recMatch;
+            return isSal && (!rec || rec === currentEmail || rec === currentId || (currentName && (n.message || '').toLowerCase().includes(currentName)));
         });
 
         if (!myPayouts.length && !salaryNotifs.length) return;
