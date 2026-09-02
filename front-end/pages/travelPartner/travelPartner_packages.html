@@ -132,27 +132,37 @@
 
         .pkg-card-media {
             position: relative;
-            height: 190px;
+            height: 200px;
             width: 100%;
             overflow: hidden;
-            background: #0f172a;
+            background: radial-gradient(circle at center, #1e293b, #0f172a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .pkg-card-media img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
             transition: transform 0.4s ease;
         }
 
+        .pkg-card-media img.fit-contain {
+            object-fit: contain !important;
+            background: radial-gradient(circle at center, #1e293b, #0f172a) !important;
+        }
+
         .pkg-card:hover .pkg-card-media img {
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .pkg-card-media-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, transparent 60%);
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.75) 0%, transparent 60%);
+            pointer-events: none;
         }
 
         .badge-duration {
@@ -825,6 +835,15 @@
                     <div class="photo-preview-box" id="photoPreviewContainer">
                         <img id="photoPreviewImg" src="../../images/maldives_package.png" alt="Preview" onerror="this.src='../../images/maldives_package.png'" />
                     </div>
+
+                    <!-- Photo Fit Mode -->
+                    <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--bg-card-alt, #f8fafc); padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border-color, #e2e8f0);">
+                        <label style="font-size: 0.8rem; font-weight: 700;">Photo Aspect Ratio & Fit:</label>
+                        <select id="pkgFormFitMode" onchange="handleFitModeChange(event)" style="padding: 5px 10px; font-size: 0.8rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                            <option value="cover">Crop & Fill Card (Full Bleed)</option>
+                            <option value="contain">Fit Entire Image (No Cutoff / Letterbox)</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="pkg-form-group">
@@ -919,7 +938,7 @@
                 return `
                     <div class="pkg-card" id="pkg-card-${pkg.id}">
                         <div class="pkg-card-media">
-                            <img src="${img}" alt="${String(pkg.title).replace(/"/g, '&quot;')}" onerror="this.src='../../images/maldives_package.png'" />
+                            <img src="${img}" class="${pkg.imageFit === 'contain' ? 'fit-contain' : ''}" alt="${String(pkg.title).replace(/"/g, '&quot;')}" onerror="this.src='../../images/maldives_package.png'" />
                             <div class="pkg-card-media-overlay"></div>
                             <div class="badge-duration"><i data-icon="clock" style="width:12px; height:12px;"></i> ${pkg.durationDays || 7} Days</div>
                             <div class="badge-pkg-id">${pkg.id}</div>
@@ -1047,6 +1066,14 @@
             updatePhotoPreview(selectedImageDataUrl);
         }
 
+        function handleFitModeChange(e) {
+            const mode = e.target.value;
+            const imgEl = document.getElementById('photoPreviewImg');
+            if (imgEl) {
+                imgEl.className = mode === 'contain' ? 'fit-contain' : '';
+            }
+        }
+
         function updatePhotoPreview(url) {
             selectedImageDataUrl = url;
             const imgEl = document.getElementById('photoPreviewImg');
@@ -1067,6 +1094,7 @@
             document.getElementById('pkgFormHighlights').value = '';
             document.getElementById('pkgFormFileInput').value = '';
             document.getElementById('pkgFormUrlInput').value = '';
+            document.getElementById('pkgFormFitMode').value = 'cover';
             
             setPhotoTab('file');
             updatePhotoPreview('../../images/maldives_package.png');
@@ -1088,6 +1116,7 @@
             document.getElementById('pkgFormDays').value = pkg.durationDays || '';
             document.getElementById('pkgFormDesc').value = pkg.description || '';
             document.getElementById('pkgFormHighlights').value = Array.isArray(pkg.highlights) ? pkg.highlights.join(', ') : '';
+            document.getElementById('pkgFormFitMode').value = pkg.imageFit || 'cover';
             
             selectedImageDataUrl = pkg.imageUrl || '../../images/maldives_package.png';
             
@@ -1102,6 +1131,9 @@
             }
 
             updatePhotoPreview(selectedImageDataUrl);
+            const previewImg = document.getElementById('photoPreviewImg');
+            if (previewImg) previewImg.className = (pkg.imageFit === 'contain') ? 'fit-contain' : '';
+
             document.getElementById('pkgModalBackdrop').classList.add('active');
         }
 
@@ -1117,6 +1149,7 @@
             const days = Number(document.getElementById('pkgFormDays').value);
             const desc = document.getElementById('pkgFormDesc').value.trim();
             const rawHighlights = document.getElementById('pkgFormHighlights').value.trim();
+            const fitMode = document.getElementById('pkgFormFitMode').value || 'cover';
 
             if (!title || !dest || !budget || !days || !desc) {
                 alert('Please fill in all required fields (Title, Destination, Budget, Duration, and Description).');
@@ -1137,7 +1170,8 @@
                     durationDays: days,
                     budget: budget,
                     highlights: highlights,
-                    imageUrl: selectedImageDataUrl
+                    imageUrl: selectedImageDataUrl,
+                    imageFit: fitMode
                 };
 
                 if (typeof updateWorkflowPackage === 'function') {
@@ -1160,6 +1194,7 @@
                     budget: budget,
                     highlights: highlights,
                     imageUrl: selectedImageDataUrl,
+                    imageFit: fitMode,
                     schedule: [
                         { day: 1, time: "09:00", title: "Airport pickup & check-in", owner: "vendor", location: dest, notes: "" },
                         { day: 2, time: "10:00", title: "Guided sight-seeing tour", owner: "guide", location: dest, notes: "" }
