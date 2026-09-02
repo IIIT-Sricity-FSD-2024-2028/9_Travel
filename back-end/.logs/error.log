@@ -854,3 +854,27 @@ Trace: NotFoundException: Cannot GET /favicon.ico
     at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
     at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
     at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+[2026-09-02T11:51:39.293Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /favicon.ico - "Cannot GET /favicon.ico"
+Trace: NotFoundException: Cannot GET /favicon.ico
+    at callback (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\routes-resolver.js:77:19)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:342:13)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:297:9
+    at processParams (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:582:12)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:291:5)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
+    at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+[2026-09-02T12:30:56.598Z] [ERROR] [HTTP-EXCEPTION] HTTP Exception [404] on GET /favicon.ico - "Cannot GET /favicon.ico"
+Trace: NotFoundException: Cannot GET /favicon.ico
+    at callback (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\routes-resolver.js:77:19)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
+    at Layer.handleRequest (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:342:13)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:297:9
+    at processParams (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:582:12)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\index.js:291:5)
+    at next (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\router\lib\route.js:151:14)
+    at LoggingMiddleware.use (C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\src\common\middleware\logging.middleware.ts:27:5)
+    at C:\Users\N BHARATH\Downloads\9_Travel-main\9_Travel-main\back-end\node_modules\@nestjs\core\router\router-proxy.js:9:23
