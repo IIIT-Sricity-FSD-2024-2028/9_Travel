@@ -132,6 +132,13 @@
         }[char]));
     }
 
+    function escapeJS(value) {
+        return String(value ?? '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+    }
+    if (typeof window !== 'undefined') {
+        window.escapeJS = escapeJS;
+    }
+
     // Session helpers — sessionStorage is tab-specific, localStorage is persistent fallback.
     // This allows each browser tab to have its own independent logged-in user.
     function readSession() {
@@ -480,9 +487,9 @@
                     if (needsPush) {
                         persistStateToBackend(remoteState, true);
                     }
-                    if (!isUserActivelyTyping()) {
-                        renderAll();
-                    }
+                }
+                if (!isUserActivelyTyping()) {
+                    renderAll();
                 }
             }
         } catch (error) {
@@ -7295,7 +7302,7 @@
             trips = (state?.trips || []).filter(t => t && t.status !== 'completed' && t.status !== 'cancelled');
         }
         if (requestedId) {
-            const exact = trips.find((trip) => trip.id === requestedId);
+            const exact = (state?.trips || []).find((trip) => trip.id === requestedId);
             if (exact) return exact;
         }
         if (kind === 'guide') {
@@ -7306,7 +7313,9 @@
 
     function renderAssignmentPage(state, kind) {
         const page = currentPage().toLowerCase();
-        if ((kind === 'guide' && !page.includes('guideassignment')) || (kind === 'vendor' && !page.includes('vendorassignment'))) return;
+        const isGuidePage = page.includes('guideassignment') || page.includes('guide_assignment');
+        const isVendorPage = page.includes('vendorassignment') || page.includes('vendor_assignment');
+        if ((kind === 'guide' && !isGuidePage) || (kind === 'vendor' && !isVendorPage)) return;
         const trip = selectedTripForAssignment(state, kind);
         const detailCard = document.querySelector('.trip-details-card');
         const list = kind === 'guide' ? document.querySelector('.guide-list') : document.querySelector('.vendor-list');
@@ -7385,7 +7394,7 @@
             list.innerHTML = guides.map((guide) => {
                 const gStatus = String(guide.status || 'Available');
                 const sLower = gStatus.toLowerCase();
-                const isAvail = sLower === 'available' || sLower === 'on duty';
+                const isAvail = sLower === 'available' || sLower === 'active' || sLower.includes('active') || sLower.includes('on duty') || sLower.includes('online');
                 const isThisAssigned = isAssigned && trip.guide?.name === guide.name;
                 const isThisAccepted = isThisAssigned && (trip.guideStatus === 'Accepted' || trip.status === 'completed');
                 const isThisPending = isThisAssigned && !isThisAccepted;
@@ -7437,7 +7446,7 @@
             list.innerHTML = vendors.map((vendor) => {
                 const vStatus = String(vendor.status || 'Available');
                 const sLower = vStatus.toLowerCase();
-                const isAvail = sLower === 'available' || sLower === 'on duty';
+                const isAvail = sLower === 'available' || sLower === 'active' || sLower.includes('active') || sLower.includes('on duty') || sLower.includes('online');
                 const isThisAssigned = isAssigned && trip.vendor?.name === vendor.name;
                 const isThisAccepted = isThisAssigned && (trip.vendorStatus === 'Accepted' || trip.status === 'completed');
                 const isThisPending = isThisAssigned && !isThisAccepted;
