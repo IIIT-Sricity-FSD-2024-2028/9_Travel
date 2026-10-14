@@ -11,8 +11,11 @@ export interface UserEntity {
   phone?: string;
   password?: string;
   role: Role;
-  status: 'Active' | 'Inactive' | 'Suspended';
+  status: 'Active' | 'Inactive' | 'Suspended' | 'Pending' | 'Rejected' | 'PENDING' | 'APPROVED' | 'REJECTED';
   monthlySalary?: number;
+  department?: string;
+  businessName?: string;
+  address?: string;
   availabilityStatus?: string;
   availability?: string;
   profile?: Record<string, any>;
@@ -156,6 +159,24 @@ export interface PackageEntity {
   imageUrl: string;
 }
 
+export interface PartnerApplicationEntity {
+  id: string;
+  applicantName: string;
+  businessName: string;
+  email: string;
+  phone: string;
+  address?: string;
+  businessDetails?: string;
+  verificationInfo?: string;
+  requestedRole: Role;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  submittedAt: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  rejectionReason?: string;
+  password?: string;
+}
+
 export interface WorkflowState {
   version: number;
   nextTripNumber: number;
@@ -170,4 +191,5 @@ export interface WorkflowState {
   messages: MessageEntity[];
   packages: PackageEntity[];
   partnerReadItems?: string[];
+  partnerApplications?: PartnerApplicationEntity[];
 }
