@@ -59,4 +59,9 @@ export class WorkflowStateDto {
   @IsOptional()
   @IsArray()
   partnerReadItems?: unknown[];
+
+  @ApiProperty({ type: Array, required: false })
+  @IsOptional()
+  @IsArray()
+  partnerApplications?: unknown[];
 }

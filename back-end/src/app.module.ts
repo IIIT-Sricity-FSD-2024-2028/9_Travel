@@ -1,6 +1,7 @@
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { APP_GUARD, APP_FILTER } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
+import { MailModule } from './mail/mail.module';
 import { RolesGuard } from './common/roles.guard';
 import { DataModule } from './data/data.module';
 import { GuidesModule } from './guides/guides.module';
@@ -13,6 +14,7 @@ import { UsersModule } from './users/users.module';
 import { VendorsModule } from './vendors/vendors.module';
 import { WorkflowModule } from './workflow/workflow.module';
 import { UploadModule } from './upload/upload.module';
+import { PartnerApplicationsModule } from './partner-applications/partner-applications.module';
 
 import { FileLoggerService } from './common/services/file-logger.service';
 import { LoggingMiddleware } from './common/middleware/logging.middleware';
@@ -22,6 +24,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 @Module({
   imports: [
+    MailModule,
     DataModule,
     AuthModule,
     UsersModule,
@@ -34,6 +37,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     NotificationsModule,
     WorkflowModule,
     UploadModule,
+    PartnerApplicationsModule,
   ],
   providers: [
     FileLoggerService,

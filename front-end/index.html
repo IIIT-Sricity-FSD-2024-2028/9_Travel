@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dream Destination</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Zero-flicker theme pre-initialisation (ported from js/theme.js).
+      // Each portal keeps its own persisted theme; dark is the default.
+      (function () {
+        try {
+          var path = window.location.pathname.toLowerCase();
+          var role = 'global';
+          if (path.indexOf('/traveler/') === 0) role = 'traveler';
+          else if (path.indexOf('/travel-partner/') === 0) role = 'partner';
+          else if (path.indexOf('/guide/') === 0) role = 'guide';
+          else if (path.indexOf('/vendor/') === 0) role = 'vendor';
+          else if (path.indexOf('/superuser/') === 0) role = 'superuser';
+          else if (path.indexOf('/support/') === 0) role = 'support';
+          else {
+            var sess = JSON.parse(sessionStorage.getItem('dd_session') || localStorage.getItem('dd_session') || '{}');
+            var s = String((sess && sess.role) || '').toLowerCase();
+            if (s.indexOf('traveler') !== -1) role = 'traveler';
+            else if (s.indexOf('partner') !== -1) role = 'partner';
+            else if (s.indexOf('guide') !== -1) role = 'guide';
+            else if (s.indexOf('vendor') !== -1) role = 'vendor';
+            else if (s.indexOf('super') !== -1) role = 'superuser';
+            else if (s.indexOf('support') !== -1) role = 'support';
+          }
+          var theme = localStorage.getItem('travelhub_theme_' + role) || localStorage.getItem('travelhub_theme') || 'dark';
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.classList.add(theme === 'dark' ? 'dark-theme' : 'light-theme');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -8,6 +8,7 @@ import {
   MessageEntity,
   NotificationEntity,
   PackageEntity,
+  PartnerApplicationEntity,
   ScheduleItemEntity,
   TripEntity,
   UpdateEntity,
@@ -196,6 +197,7 @@ export class DataService {
       messages: Array.isArray(state.messages) ? state.messages : this.state.messages,
       packages: Array.isArray(state.packages) ? state.packages : this.state.packages,
       partnerReadItems: Array.isArray(state.partnerReadItems) ? state.partnerReadItems : this.state.partnerReadItems || [],
+      partnerApplications: Array.isArray(state.partnerApplications) ? state.partnerApplications : this.state.partnerApplications || [],
     };
     this.saveStateToFile(this.state);
     return this.getState();
@@ -248,6 +250,24 @@ export class DataService {
 
   notifications(): NotificationEntity[] {
     return this.state.notifications;
+  }
+
+  partnerApplications(): PartnerApplicationEntity[] {
+    this.state.partnerApplications = Array.isArray(this.state.partnerApplications) ? this.state.partnerApplications : [];
+    return this.state.partnerApplications;
+  }
+
+  addPartnerApplication(app: PartnerApplicationEntity): PartnerApplicationEntity {
+    this.state.partnerApplications = Array.isArray(this.state.partnerApplications) ? this.state.partnerApplications : [];
+    this.state.partnerApplications.unshift(app);
+    this.saveStateToFile(this.state);
+    return app;
+  }
+
+  findPartnerApplication(id: string): PartnerApplicationEntity {
+    const app = this.partnerApplications().find((a) => a.id === id || a.email.toLowerCase() === id.toLowerCase());
+    if (!app) throw new NotFoundException(`Partner application ${id} was not found.`);
+    return app;
   }
 
   findTrip(id: string): TripEntity {
@@ -440,6 +460,7 @@ export class DataService {
       notifications: [],
       issues: [],
       messages: [],
+      partnerApplications: [],
       packages: [
         {
           id: 'PKG-1',

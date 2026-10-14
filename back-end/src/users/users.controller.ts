@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ALL_ROLES, Role } from '../common/role.enum';
 import { ApiRoleHeader, Roles } from '../common/roles.decorator';
@@ -38,8 +38,10 @@ export class UsersController {
   @Patch(':id')
   @Roles(...ALL_ROLES)
   @ApiOkResponse({ description: 'Update a user.' })
-  update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
-    return { success: true, data: this.users.update(id, dto) };
+  update(@Param('id') id: string, @Body() dto: UpdateUserDto, @Req() req: any) {
+    const callerRole = req.role;
+    const callerEmail = String(req.headers ? req.headers['x-user-email'] || '' : '').trim().toLowerCase();
+    return { success: true, data: this.users.update(id, dto, callerRole, callerEmail) };
   }
 
   @Delete(':id')

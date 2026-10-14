@@ -22,14 +22,22 @@ export function normalizeRole(value: unknown): Role | null {
     superuser: Role.SuperUser,
     'super user': Role.SuperUser,
     'super admin': Role.SuperUser,
+    super_user: Role.SuperUser,
     traveler: Role.Traveler,
+    traveller: Role.Traveler,
     partner: Role.Partner,
     'travel partner': Role.Partner,
+    travel_partner: Role.Partner,
+    travelpartner: Role.Partner,
     guide: Role.Guide,
     'tour guide': Role.Guide,
+    tour_guide: Role.Guide,
+    tourguide: Role.Guide,
     vendor: Role.Vendor,
     support: Role.Support,
     'support executive': Role.Support,
+    support_executive: Role.Support,
+    supportexecutive: Role.Support,
   };
   return map[text] || null;
 }
