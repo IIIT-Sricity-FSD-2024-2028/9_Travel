@@ -32,3 +32,5 @@ back-end/state.json
 # OS files
 .DS_Store
 Thumbs.db
+# Vite cache
+front-end/.vite/
