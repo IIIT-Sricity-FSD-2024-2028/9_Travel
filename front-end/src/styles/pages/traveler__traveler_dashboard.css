@@ -1,0 +1,19 @@
+/* Extracted verbatim from the original pages/traveler/traveler_dashboard.html inline <style> block(s) */
+/* FORCE FULL WIDTH FOR BOTTOM GRID */
+.dashboard-container .bottom-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.dashboard-container .bottom-grid>div {
+    width: 100% !important;
+    display: block !important;
+
+}
+
+.dashboard-container .card {
+    width: 100% !important;
+    max-width: none !important;
+}
