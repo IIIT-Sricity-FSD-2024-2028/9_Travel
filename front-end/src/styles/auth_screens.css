@@ -751,3 +751,147 @@ body.dark-theme .demo-pill:hover {
         padding: 4px 8px;
     }
 }
+
+/* Account Autocomplete Suggestions Dropdown */
+.account-suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45), 0 10px 10px rgba(0, 0, 0, 0.35);
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 6px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    animation: fadeInDown 0.18s ease-out;
+}
+
+[data-theme="light"] .account-suggestions-dropdown,
+body.light-theme .account-suggestions-dropdown {
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(15, 23, 42, 0.18);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12), 0 8px 10px rgba(15, 23, 42, 0.08);
+}
+
+.account-suggestions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px 4px 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 4px;
+}
+
+[data-theme="light"] .account-suggestions-header,
+body.light-theme .account-suggestions-header {
+    color: #64748b;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.account-suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    text-align: left;
+}
+
+.account-suggestion-item:hover,
+.account-suggestion-item:focus {
+    background: rgba(14, 165, 233, 0.18);
+    transform: translateX(2px);
+}
+
+[data-theme="light"] .account-suggestion-item:hover,
+body.light-theme .account-suggestion-item:hover {
+    background: rgba(14, 165, 233, 0.12);
+}
+
+.account-badge-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.account-info-col {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.account-title-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.account-role-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+[data-theme="light"] .account-role-label,
+body.light-theme .account-role-label {
+    color: #0f172a;
+}
+
+.account-email-label {
+    font-size: 0.76rem;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+[data-theme="light"] .account-email-label,
+body.light-theme .account-email-label {
+    color: #64748b;
+}
+
+.account-fill-tag {
+    font-size: 0.7rem;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(14, 165, 233, 0.2);
+    color: #38bdf8;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+[data-theme="light"] .account-fill-tag,
+body.light-theme .account-fill-tag {
+    background: rgba(14, 165, 233, 0.15);
+    color: #0284c7;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

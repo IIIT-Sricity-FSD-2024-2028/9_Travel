@@ -39,7 +39,9 @@ export function AuthProvider({ children }) {
 
     /** POST /auth/login – returns the session payload (the page decides about Inactive accounts). */
     const login = useCallback(async ({ email, password, role: selectedRole }) => {
-        const data = await authApi.login({ email, password, role: selectedRole });
+        const payload = { email, password };
+        if (selectedRole) payload.role = selectedRole;
+        const data = await authApi.login(payload);
         if (!data || !data.role) throw new Error('Invalid response from server. Please try again.');
         return data;
     }, []);
@@ -68,15 +70,6 @@ export function AuthProvider({ children }) {
         setSession(next);
         return next;
     }, [setSession]);
-
-    // Keep tabs in sync (dd_session written by another tab).
-    useEffect(() => {
-        const onStorage = (event) => {
-            if (event.key === SESSION_KEY) setSessionState(readStoredSession());
-        };
-        window.addEventListener('storage', onStorage);
-        return () => window.removeEventListener('storage', onStorage);
-    }, []);
 
     // The API client broadcasts when the backend reports the account as suspended.
     useEffect(() => {

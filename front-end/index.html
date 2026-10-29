@@ -23,7 +23,7 @@
           else if (path.indexOf('/superuser/') === 0) role = 'superuser';
           else if (path.indexOf('/support/') === 0) role = 'support';
           else {
-            var sess = JSON.parse(sessionStorage.getItem('dd_session') || localStorage.getItem('dd_session') || '{}');
+            var sess = JSON.parse(sessionStorage.getItem('dd_session') || '{}');
             var s = String((sess && sess.role) || '').toLowerCase();
             if (s.indexOf('traveler') !== -1) role = 'traveler';
             else if (s.indexOf('partner') !== -1) role = 'partner';

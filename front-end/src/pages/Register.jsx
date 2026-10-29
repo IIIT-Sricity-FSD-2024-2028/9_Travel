@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
-import { useAuth } from '../context/AuthContext';
+import { ROLE_HOME, useAuth } from '../context/AuthContext';
 import { useUI } from '../context/UIContext';
 import { authApi } from '../services/api';
 import { autoAssignTraveler, getSnapshot } from '../services/workflow';
@@ -14,9 +14,16 @@ const FEATURES = [
 const OTP_LENGTH = 6;
 
 export default function Register() {
-    const { register } = useAuth();
+    const { register, isAuthenticated, role: userRole } = useAuth();
     const { success } = useUI();
     const navigate = useNavigate();
+
+    // Redirect authenticated users to their portal dashboard
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate(ROLE_HOME[userRole] || ROLE_HOME.traveler, { replace: true });
+        }
+    }, [isAuthenticated, userRole, navigate]);
 
     const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
     const [otp, setOtp] = useState('');

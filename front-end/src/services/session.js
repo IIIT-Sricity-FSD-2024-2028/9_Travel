@@ -48,7 +48,7 @@ export function readStoredSession() {
   try {
     const tabSession = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
     if (tabSession && tabSession.email) return tabSession;
-    return JSON.parse(localStorage.getItem(SESSION_KEY) || '{}') || {};
+    return {};
   } catch {
     return {};
   }
@@ -57,7 +57,8 @@ export function readStoredSession() {
 export function writeStoredSession(session) {
   const json = JSON.stringify(session || {});
   try { sessionStorage.setItem(SESSION_KEY, json); } catch { /* storage disabled */ }
-  try { localStorage.setItem(SESSION_KEY, json); } catch { /* storage disabled */ }
+  // Ensure session is strictly tab-scoped so pasting protected URLs in new tabs asks for authentication
+  try { localStorage.removeItem(SESSION_KEY); } catch { /* ignore */ }
 }
 
 export function clearStoredSession() {

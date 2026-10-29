@@ -20,6 +20,7 @@ export function ProtectedRoute() {
  */
 export function RoleProtectedRoute({ role }) {
     const { role: userRole, isAuthenticated } = useAuth();
+    const location = useLocation();
     const { toast } = useUI();
     const allowed = isAuthenticated && userRole === role;
     const warned = useRef(false);
@@ -31,7 +32,7 @@ export function RoleProtectedRoute({ role }) {
         }
     }, [isAuthenticated, allowed, userRole, toast]);
 
-    if (!isAuthenticated) return <Navigate to="/login" replace />;
+    if (!isAuthenticated) return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
     if (!allowed) return <Navigate to={ROLE_HOME[userRole] || '/login'} replace />;
     return <Outlet />;
 }
