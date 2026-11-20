@@ -73,18 +73,7 @@ const unwrap = (response) => {
 
 export const authApi = {
   login: (body) => api.post('/auth/login', body).then(unwrap),
-  sendRegistrationOtp: (body) => api.post('/auth/send-registration-otp', body).then(unwrap),
-  verifyOtp: (body) => api.post('/auth/verify-otp', body).then(unwrap),
-  resendOtp: (email) => api.post('/auth/resend-otp', { email }).then(unwrap),
   register: (body) => api.post('/auth/register', body).then(unwrap),
-  applyPartner: (body) => api.post('/auth/apply-partner', body).then(unwrap),
-};
-
-export const partnerApplicationsApi = {
-  list: () => api.get('/partner-applications').then(unwrap),
-  get: (id) => api.get(`/partner-applications/${encodeURIComponent(id)}`).then(unwrap),
-  approve: (id) => api.post(`/partner-applications/${encodeURIComponent(id)}/approve`).then(unwrap),
-  reject: (id, rejectionReason) => api.post(`/partner-applications/${encodeURIComponent(id)}/reject`, { rejectionReason }).then(unwrap),
 };
 
 export const usersApi = {
@@ -115,28 +104,47 @@ export const tripRequestsApi = {
 export const issuesApi = {
   list: () => api.get('/issues').then(unwrap),
   get: (id) => api.get(`/issues/${encodeURIComponent(id)}`).then(unwrap),
+  create: (body) => api.post('/issues', body).then(unwrap),
+  update: (id, body) => api.patch(`/issues/${encodeURIComponent(id)}`, body).then(unwrap),
+  resolve: (id, body) => api.post(`/issues/${encodeURIComponent(id)}/resolve`, body).then(unwrap),
+  remove: (id) => api.delete(`/issues/${encodeURIComponent(id)}`).then(unwrap),
 };
 
 export const messagesApi = {
   list: (params) => api.get('/messages', { params }).then(unwrap),
+  get: (id) => api.get(`/messages/${encodeURIComponent(id)}`).then(unwrap),
+  create: (body) => api.post('/messages', body).then(unwrap),
+  update: (id, body) => api.patch(`/messages/${encodeURIComponent(id)}`, body).then(unwrap),
+  remove: (id) => api.delete(`/messages/${encodeURIComponent(id)}`).then(unwrap),
 };
 
 export const notificationsApi = {
   list: (params) => api.get('/notifications', { params }).then(unwrap),
+  markRead: (id, body) => api.patch(`/notifications/${encodeURIComponent(id)}/read`, body).then(unwrap),
+  remove: (id) => api.delete(`/notifications/${encodeURIComponent(id)}`).then(unwrap),
 };
 
 export const guidesApi = {
   list: () => api.get('/guides').then(unwrap),
+  get: (id) => api.get(`/guides/${encodeURIComponent(id)}`).then(unwrap),
+  create: (body) => api.post('/guides', body).then(unwrap),
+  update: (id, body) => api.patch(`/guides/${encodeURIComponent(id)}`, body).then(unwrap),
+  remove: (id) => api.delete(`/guides/${encodeURIComponent(id)}`).then(unwrap),
 };
 
 export const vendorsApi = {
   list: () => api.get('/vendors').then(unwrap),
+  get: (id) => api.get(`/vendors/${encodeURIComponent(id)}`).then(unwrap),
+  create: (body) => api.post('/vendors', body).then(unwrap),
+  update: (id, body) => api.patch(`/vendors/${encodeURIComponent(id)}`, body).then(unwrap),
+  remove: (id) => api.delete(`/vendors/${encodeURIComponent(id)}`).then(unwrap),
 };
 
 /** The workflow state API is what the original frontend used as its data store. */
 export const workflowApi = {
   getState: () => api.get('/workflow/state').then(unwrap),
   putState: (state) => api.put('/workflow/state', state).then(unwrap),
+  reset: () => api.post('/workflow/reset').then(unwrap),
 };
 
 /**
