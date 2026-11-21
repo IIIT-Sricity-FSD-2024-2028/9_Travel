@@ -1,9 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { authApi, usersApi } from '../services/api';
+import { useDispatch } from 'react-redux';
+import { usersApi } from '../services/api';
 import {
     SESSION_KEY, clearStoredSession, isValidSession, normRole, readStoredSession, writeStoredSession,
 } from '../services/session';
 import { ensureStateOwner, resetSnapshot } from '../services/workflow';
+import { loginUser, logout as logoutAction, registerUser, sessionStarted } from '../store/slices/authSlice';
 
 const AuthContext = createContext(null);
 
@@ -18,6 +20,7 @@ export const ROLE_HOME = {
 };
 
 export function AuthProvider({ children }) {
+    const dispatch = useDispatch();
     const [session, setSessionState] = useState(() => readStoredSession());
     const [accountStatus, setAccountStatus] = useState(() => readStoredSession().status || 'Active');
     const [suspendedMessage, setSuspendedMessage] = useState('');
@@ -31,20 +34,19 @@ export function AuthProvider({ children }) {
         if (next && next.email) {
             writeStoredSession(next);
             setSessionState(next);
+            dispatch(sessionStarted(next));
         } else {
             clearStoredSession();
             setSessionState({});
         }
-    }, []);
+    }, [dispatch]);
 
     /** POST /auth/login – returns the session payload (the page decides about Inactive accounts). */
     const login = useCallback(async ({ email, password, role: selectedRole }) => {
-        const payload = { email, password };
-        if (selectedRole) payload.role = selectedRole;
-        const data = await authApi.login(payload);
+        const data = await dispatch(loginUser({ email, password, role: selectedRole })).unwrap();
         if (!data || !data.role) throw new Error('Invalid response from server. Please try again.');
         return data;
-    }, []);
+    }, [dispatch]);
 
     /** Persists the session returned by /auth/login and prepares the workflow cache. */
     const completeLogin = useCallback((data) => {
@@ -56,20 +58,30 @@ export function AuthProvider({ children }) {
         return next;
     }, [setSession]);
 
-    const register = useCallback((payload) => authApi.register(payload), []);
+    const register = useCallback((payload) => dispatch(registerUser(payload)).unwrap(), [dispatch]);
 
     /** Clears the session but keeps the workflow cache (same as the original logout). */
     const logout = useCallback(() => {
         setSession(null);
         setAccountStatus('Active');
         resetSnapshot();
-    }, [setSession]);
+        dispatch(logoutAction());
+    }, [setSession, dispatch]);
 
     const updateSession = useCallback((partial) => {
         const next = { ...sessionRef.current, ...partial };
         setSession(next);
         return next;
     }, [setSession]);
+
+    // Keep tabs in sync (dd_session written by another tab).
+    useEffect(() => {
+        const onStorage = (event) => {
+            if (event.key === SESSION_KEY) setSessionState(readStoredSession());
+        };
+        window.addEventListener('storage', onStorage);
+        return () => window.removeEventListener('storage', onStorage);
+    }, []);
 
     // The API client broadcasts when the backend reports the account as suspended.
     useEffect(() => {
