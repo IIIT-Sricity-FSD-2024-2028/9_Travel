@@ -1,18 +1,21 @@
 import { isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 
 /**
- * Shared helpers for the async thunks of every slice.
+ * Shared helpers for the async thunks of every Redux slice.
  *
+ * Provides standardized error formatting, lifecycle management, and request status tracking.
  * Thunks reject with a plain, serializable `{ message, status }` object so the
  * Redux state stays serializable and `dispatch(thunk()).unwrap()` throws an
  * error with the same `message` / `status` fields the ApiError class exposes.
  */
 export const toRejectValue = (error) => ({
-    message: (error && error.message) || 'Request failed',
-    status: (error && error.status) || 0,
+    message: (error && (error.response?.data?.message || error.message)) || 'Request failed',
+    status: (error && (error.response?.status || error.status)) || 0,
 });
 
-/** Runs an API call and maps failures through `rejectWithValue`. */
+/**
+ * Runs an API call and maps failures through `rejectWithValue` with serializable error payloads.
+ */
 export const callApi = async (request, { rejectWithValue }) => {
     try {
         return await request();
@@ -31,7 +34,8 @@ export const STATUS = {
 
 /**
  * Common pending / fulfilled / rejected bookkeeping for a slice's thunks.
- * Uses matchers, so it must be called after the slice's own `addCase` handlers.
+ * Uses Redux Toolkit matchers to update status, error, and lastFetched timestamps.
+ * Must be called after the slice's own `addCase` handlers.
  */
 export const trackRequests = (builder, thunks) => {
     builder
