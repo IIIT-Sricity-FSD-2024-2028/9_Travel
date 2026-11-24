@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAuth } from '../context/AuthContext';
 import { useUI } from '../context/UIContext';
-import { authApi, usersApi } from '../services/api';
+import { authApi } from '../services/api';
+import { updateUser } from '../store/slices/usersSlice';
 import { canOperateSession } from '../services/workflow';
 
 /**
@@ -11,6 +13,7 @@ import { canOperateSession } from '../services/workflow';
  * Returns true when the password was changed.
  */
 export function usePasswordChange() {
+    const dispatch = useDispatch();
     const { session } = useAuth();
     const { toast } = useUI();
     const [saving, setSaving] = useState(false);
@@ -38,7 +41,7 @@ export function usePasswordChange() {
                 toast(error.status === 401 ? 'Current password is incorrect.' : error.message, 'error');
                 return false;
             }
-            await usersApi.update(session.id || session.email, { password: next });
+            await dispatch(updateUser({ id: session.id || session.email, changes: { password: next } })).unwrap();
             toast('Password updated successfully.', 'success');
             return true;
         } catch (error) {
@@ -47,7 +50,7 @@ export function usePasswordChange() {
         } finally {
             setSaving(false);
         }
-    }, [session.email, session.id, toast]);
+    }, [dispatch, session.email, session.id, toast]);
 
     return { change, saving };
 }
