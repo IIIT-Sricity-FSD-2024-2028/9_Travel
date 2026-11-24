@@ -4,7 +4,8 @@ import Icon from '../../components/icons/Icon';
 import { useUI } from '../../context/UIContext';
 import { useWorkflowState } from '../../context/WorkflowContext';
 import { useOperation } from '../../hooks/usePortal';
-import { uploadApi } from '../../services/api';
+import { useAppDispatch } from '../../store/hooks';
+import { uploadFile } from '../../store/slices/uploadsSlice';
 import { DEFAULT_PACKAGE_IMAGE, addPackage, assetUrl, deletePackage, getAllPackages, updatePackage } from '../../services/workflow';
 
 const PRESETS = [
@@ -31,6 +32,7 @@ function PackageModal({ initial, onClose, onSave }) {
     const [tab, setTab] = useState(initial.id ? photoTabFor(initial.imageUrl) : 'file');
     const [uploading, setUploading] = useState(false);
     const fileRef = useRef(null);
+    const dispatch = useAppDispatch();
     const set = (key) => (event) => setForm((f) => ({ ...f, [key]: event.target.value }));
     const setImage = (url) => setForm((f) => ({ ...f, imageUrl: url || DEFAULT_PACKAGE_IMAGE }));
 
@@ -46,7 +48,7 @@ function PackageModal({ initial, onClose, onSave }) {
         if (file.size > 5 * 1024 * 1024) { toast('The image must be 5MB or smaller.', 'error'); return; }
         setUploading(true);
         try {
-            const result = await uploadApi.upload(file);
+            const result = await dispatch(uploadFile(file)).unwrap();
             setImage(result.url);
         } catch (error) {
             toast(`Photo upload failed: ${error.message}`, 'error');
