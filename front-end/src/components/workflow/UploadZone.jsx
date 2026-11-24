@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import Icon from '../icons/Icon';
-import { fileUrl, uploadApi } from '../../services/api';
+import { fileUrl } from '../../services/api';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectUploadProgress, uploadFile } from '../../store/slices/uploadsSlice';
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED = /\.(jpg|jpeg|png|gif|webp|svg|bmp|heic|heif|tiff)$/i;
@@ -9,11 +11,15 @@ const ALLOWED = /\.(jpg|jpeg|png|gif|webp|svg|bmp|heic|heif|tiff)$/i;
  * Photo / screenshot attachment for issue reports.
  * Uses the existing NestJS UploadController: POST /upload (multipart/form-data, field "file").
  * The returned `/uploads/<file>` URL is stored on the issue as `attachmentUrl`.
+ *
+ * Redux: the upload runs through the `uploadFile` thunk of the `uploads` slice, which also
+ * dispatches `uploadProgressChanged`; the progress shown here is read back with useAppSelector.
  */
 export default function UploadZone({ value, onChange, style, toast }) {
     const inputRef = useRef(null);
+    const dispatch = useAppDispatch();
+    const progress = useAppSelector(selectUploadProgress);
     const [uploading, setUploading] = useState(false);
-    const [progress, setProgress] = useState(0);
     const [fileName, setFileName] = useState('');
     const [dragOver, setDragOver] = useState(false);
 
@@ -28,9 +34,8 @@ export default function UploadZone({ value, onChange, style, toast }) {
             return;
         }
         setUploading(true);
-        setProgress(0);
         try {
-            const result = await uploadApi.upload(file, setProgress);
+            const result = await dispatch(uploadFile(file)).unwrap();
             setFileName(result.originalname || file.name);
             onChange(result.url);
             toast?.('Photo attached successfully!', 'success');
