@@ -97,6 +97,11 @@ export const selectOpenIssues = createSelector(
     [selectAllIssues],
     (issues) => issues.filter((issue) => issue.status !== 'Resolved'),
 );
+/** All issues sorted newest first (memoized, recomputed only when the issues change). */
+export const selectIssuesNewestFirst = createSelector(
+    [selectAllIssues],
+    (issues) => issues.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+);
 export const selectIssuesStatus = (state) => state.issues.status;
 export const selectIssuesError = (state) => state.issues.error;
 
