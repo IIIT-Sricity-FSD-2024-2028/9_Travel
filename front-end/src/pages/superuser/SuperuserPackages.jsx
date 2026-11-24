@@ -4,7 +4,8 @@ import Icon from '../../components/icons/Icon';
 import { useUI } from '../../context/UIContext';
 import { useWorkflowState } from '../../context/WorkflowContext';
 import { useOperation } from '../../hooks/usePortal';
-import { uploadApi } from '../../services/api';
+import { useAppDispatch } from '../../store/hooks';
+import { uploadFile } from '../../store/slices/uploadsSlice';
 import { DEFAULT_PACKAGE_IMAGE, addPackage, assetUrl, deletePackage, formatMoney, getAllPackages, updatePackage } from '../../services/workflow';
 
 const PRESETS = [
@@ -25,6 +26,7 @@ function SuperuserPackageModal({ initial, onClose, onSave }) {
     const [tab, setTab] = useState(() => (PRESETS.some(([v]) => v === initial.imageUrl) && initial.id ? 'preset' : /^https?:/i.test(initial.imageUrl) ? 'url' : 'file'));
     const [uploading, setUploading] = useState(false);
     const fileRef = useRef(null);
+    const dispatch = useAppDispatch();
     const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
     const setImage = (url) => setForm((f) => ({ ...f, imageUrl: url || DEFAULT_PACKAGE_IMAGE }));
 
@@ -35,7 +37,7 @@ function SuperuserPackageModal({ initial, onClose, onSave }) {
         if (file.size > 5 * 1024 * 1024) { toast('The image must be 5MB or smaller.', 'error'); return; }
         setUploading(true);
         try {
-            setImage((await uploadApi.upload(file)).url);
+            setImage((await dispatch(uploadFile(file)).unwrap()).url);
         } catch (err) {
             toast(`Photo upload failed: ${err.message}`, 'error');
             if (fileRef.current) fileRef.current.value = '';
