@@ -1,4 +1,4 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit';
 import { messagesApi } from '../../services/api';
 import { STATUS, callApi, trackRequests } from '../thunkHelpers';
 import { logout } from './authSlice';
@@ -89,6 +89,11 @@ export const {
     selectIds: selectMessageIds,
     selectTotal: selectMessageCount,
 } = messagesAdapter.getSelectors((state) => state.messages);
+/** Messages of one trip, newest first (memoized: usage `useAppSelector((s) => selectMessagesForTrip(s, tripId))`). */
+export const selectMessagesForTrip = createSelector(
+    [selectAllMessages, (_, tripId) => tripId],
+    (messages, tripId) => (tripId ? messages.filter((message) => message.tripId === tripId) : []),
+);
 export const selectMessagesStatus = (state) => state.messages.status;
 export const selectMessagesError = (state) => state.messages.error;
 
