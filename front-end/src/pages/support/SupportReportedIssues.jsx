@@ -2,9 +2,12 @@ import DashboardLayout from '../../layouts/DashboardLayout';
 import Icon from '../../components/icons/Icon';
 import StatusBadge from '../../components/StatusBadge';
 import { useUI } from '../../context/UIContext';
-import { useWorkflowState } from '../../context/WorkflowContext';
+import { useEffect } from 'react';
+import { useSyncStatus } from '../../context/WorkflowContext';
 import { useWorkflowActions } from '../../hooks/useWorkflowActions';
 import { fileUrl } from '../../services/api';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchIssues, selectIssuesNewestFirst } from '../../store/slices/issuesSlice';
 
 /** getIssuePhotoUrl() from workflow.js. */
 export function issuePhotoUrl(issue) {
@@ -12,12 +15,23 @@ export function issuePhotoUrl(issue) {
     return fileUrl(issue.attachmentUrl || issue.photoUrl || issue.screenshotUrl || issue.attachment || issue.photo || '');
 }
 
-/** support/reported_issues.html (renderSupportIssues). */
+/**
+ * support/reported_issues.html (renderSupportIssues).
+ *
+ * Redux: the table reads the `issues` slice (GET /issues via the fetchIssues thunk) through the
+ * memoized selectIssuesNewestFirst selector. It reloads after every backend sync, so an issue
+ * resolved here (or reported elsewhere) shows up after its save completes.
+ */
 export default function SupportReportedIssues() {
-    const state = useWorkflowState();
+    const { lastSyncedAt } = useSyncStatus();
     const { viewAttachment } = useUI();
     const actions = useWorkflowActions();
-    const issues = (state.issues || []).slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const dispatch = useAppDispatch();
+    const issues = useAppSelector(selectIssuesNewestFirst);
+
+    useEffect(() => {
+        dispatch(fetchIssues());
+    }, [dispatch, lastSyncedAt]);
     const cards = [
         ['Total Issues', issues.length],
         ['Unassigned', issues.filter((issue) => issue.status === 'Open').length],
