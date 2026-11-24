@@ -2,7 +2,8 @@ import { useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useUI } from '../context/UIContext';
 import { useWorkflowState } from '../context/WorkflowContext';
-import { uploadApi } from '../services/api';
+import { useAppDispatch } from '../store/hooks';
+import { uploadFile } from '../store/slices/uploadsSlice';
 import { canOperateSession, getSnapshot, saveUserProfile } from '../services/workflow';
 
 /**
@@ -16,6 +17,7 @@ export function useProfile() {
     const { toast } = useUI();
     const state = useWorkflowState();
     const fileInput = useRef(null);
+    const dispatch = useAppDispatch();
 
     const userKey = String(session.email || session.name || session.id || '').toLowerCase();
     const matches = (record) => (record.email && record.email.toLowerCase() === userKey) || (record.name && record.name.toLowerCase() === userKey) || record.id === session.id;
@@ -58,14 +60,14 @@ export function useProfile() {
         }
         if (!canOperateSession()) return;
         try {
-            const result = await uploadApi.upload(file);
+            const result = await dispatch(uploadFile(file)).unwrap();
             const next = saveUserProfile(session, { picUrl: result.url });
             updateSession(next);
             toast('Profile photo updated successfully!', 'success');
         } catch (error) {
             toast(`Profile photo upload failed: ${error.message}`, 'error');
         }
-    }, [session, updateSession, toast]);
+    }, [dispatch, session, updateSession, toast]);
 
     return { session, state, user, guide, vendor, availability, memberSince, save, pickAvatar, onAvatarSelected, fileInput, snapshot: getSnapshot };
 }
