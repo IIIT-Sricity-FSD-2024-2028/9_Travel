@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from '../icons/Icon';
-import { useWorkflowState } from '../../context/WorkflowContext';
+import { useSyncStatus, useWorkflowState } from '../../context/WorkflowContext';
 import { useUI } from '../../context/UIContext';
 import { useOperation } from '../../hooks/usePortal';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchMessages, selectMessagesForTrip, sendMessage } from '../../store/slices/messagesSlice';
 import {
-    MESSAGE_ROLES, ROLE_LABELS, messageTrips, messagesForTrip, relativeTime, selectedMessageTrip, sendMemberMessage, setStoredMessageTripId,
+    MESSAGE_ROLES, ROLE_LABELS, currentSession, hydrateStateFromBackend, messageTrips, relativeTime, selectedMessageTrip, setStoredMessageTripId,
 } from '../../services/workflow';
 
 /** Recipient dropdown options (recipientOptionsHTML). */
@@ -17,11 +19,16 @@ export function RecipientOptions({ role }) {
 /**
  * Shared state + send handler for every message centre (traveler, support, embedded panels).
  * The selected trip is remembered in localStorage like the original (dd_message_trip_id).
+ *
+ * Redux: the message list comes from the `messages` slice (GET /messages?tripId via the
+ * fetchMessages thunk) and sending dispatches the sendMessage thunk (POST /messages).
  */
 export function useMessageCenter(role) {
     const state = useWorkflowState();
+    const { lastSyncedAt } = useSyncStatus();
     const { toast } = useUI();
     const operate = useOperation();
+    const dispatch = useAppDispatch();
     const [selectedId, setSelectedId] = useState('');
     const [recipient, setRecipient] = useState('all');
     const [body, setBody] = useState('');
@@ -29,7 +36,12 @@ export function useMessageCenter(role) {
     const trips = messageTrips(state);
     const trip = selectedMessageTrip(state, selectedId);
     const tripId = trip?.id || '';
-    const messages = messagesForTrip(state, tripId);
+    const messages = useAppSelector((s) => selectMessagesForTrip(s, tripId));
+
+    // Load the selected trip's messages into the store, and reload after every backend sync.
+    useEffect(() => {
+        if (tripId) dispatch(fetchMessages({ tripId }));
+    }, [dispatch, tripId, lastSyncedAt]);
 
     const selectTrip = (id) => {
         setStoredMessageTripId(id);
@@ -42,11 +54,20 @@ export function useMessageCenter(role) {
             toast('Select a trip and enter a message first.', 'error');
             return;
         }
-        operate(() => {
+        operate(async () => {
             setStoredMessageTripId(tripId);
-            sendMemberMessage({ tripId, toRole: recipient || 'all', body: text, fromRole: role });
+            const toRole = recipient || 'all';
+            await dispatch(sendMessage({
+                tripId,
+                fromRole: role,
+                fromName: currentSession().name || ROLE_LABELS[role] || 'Member',
+                toRoles: [toRole],
+                body: text,
+            })).unwrap();
             setBody('');
             toast('Message sent and notified to the selected members.', 'success');
+            // The backend also added a trip update + notifications: refresh the workflow copy.
+            hydrateStateFromBackend({ force: true, ignoreRecentWrites: true });
         });
     };
 
