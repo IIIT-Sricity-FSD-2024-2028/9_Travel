@@ -5,7 +5,8 @@ import Icon from '../../components/icons/Icon';
 import { useUI } from '../../context/UIContext';
 import { useOperation } from '../../hooks/usePortal';
 import { PATHS } from '../../routes/paths';
-import { uploadApi } from '../../services/api';
+import { useAppDispatch } from '../../store/hooks';
+import { uploadFile } from '../../store/slices/uploadsSlice';
 import { DEFAULT_PACKAGE_IMAGE, PACKAGE_IMAGE_PRESETS, addPackage, assetUrl } from '../../services/workflow';
 
 const P = PATHS.partner;
@@ -15,6 +16,7 @@ const newRow = () => ({ key: `row-${++rowSeq}`, day: 1, time: '09:00', title: ''
 /** Package cover photo: upload through POST /upload or pick a preset image. */
 export function PackagePhotoPicker({ value, onChange, toast }) {
     const inputRef = useRef(null);
+    const dispatch = useAppDispatch();
     const [uploading, setUploading] = useState(false);
     const isPreset = PACKAGE_IMAGE_PRESETS.some((p) => p.value === value);
 
@@ -25,7 +27,7 @@ export function PackagePhotoPicker({ value, onChange, toast }) {
         if (file.size > 5 * 1024 * 1024) { toast('The image must be 5MB or smaller.', 'error'); return; }
         setUploading(true);
         try {
-            const result = await uploadApi.upload(file);
+            const result = await dispatch(uploadFile(file)).unwrap();
             onChange(result.url);
             toast('Package photo uploaded.', 'success');
         } catch (error) {
